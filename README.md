@@ -4,8 +4,8 @@ Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 
 
 ## 🚀 Tecnologias
 
-- **Laravel 10** - Framework PHP
-- **PHP 8.2** - Linguagem de programação
+- **Laravel 12** - Framework PHP
+- **PHP 8.3** - Linguagem de programação
 - **MySQL 8** - Banco de dados
 - **Redis** - Cache e filas
 - **Nginx** - Servidor web
