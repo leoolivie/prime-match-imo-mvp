@@ -20,6 +20,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Home Route
+    |--------------------------------------------------------------------------
+    |
+    | The home route is where users are redirected after authentication.
+    | This replaces the old RouteServiceProvider::HOME constant.
+    |
+    */
+
+    'home' => '/home',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
