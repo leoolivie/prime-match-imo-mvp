@@ -40,9 +40,13 @@ Route::middleware(['auth'])->prefix('businessman')->name('businessman.')->group(
     Route::get('/dashboard', [BusinessmanDashboardController::class, 'index'])->name('dashboard');
     Route::get('/plans', [BusinessmanDashboardController::class, 'plans'])->name('plans');
     Route::post('/subscribe/{plan}', [BusinessmanDashboardController::class, 'subscribe'])->name('subscribe');
+    // Properties (businessman)
     Route::get('/properties', [BusinessmanDashboardController::class, 'properties'])->name('properties');
     Route::get('/properties/create', [BusinessmanDashboardController::class, 'createProperty'])->name('property.create');
     Route::post('/properties', [BusinessmanDashboardController::class, 'storeProperty'])->name('property.store');
+    Route::get('/properties/{property}/edit', [BusinessmanDashboardController::class, 'editProperty'])->name('property.edit');
+    Route::put('/properties/{property}', [BusinessmanDashboardController::class, 'updateProperty'])->name('property.update');
+    Route::delete('/properties/{property}', [BusinessmanDashboardController::class, 'destroyProperty'])->name('property.destroy');
 });
 
 // Prime Broker routes

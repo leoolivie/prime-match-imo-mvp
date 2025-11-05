@@ -23,9 +23,9 @@ class BusinessmanDashboardController extends Controller
         $subscription = $user->activeSubscription;
         
         $stats = [
-            'total_properties' => $user->properties()->count(),
-            'active_properties' => $user->properties()->where('active', true)->count(),
-            'total_leads' => $user->properties()->withCount('leads')->get()->sum('leads_count'),
+            'total_properties' => Property::where('user_id', $user->id)->count(),
+            'active_properties' => Property::where('user_id', $user->id)->where('active', true)->count(),
+            'total_leads' => Property::where('user_id', $user->id)->withCount('leads')->get()->sum('leads_count'),
         ];
 
         return view('businessman.dashboard', compact('properties', 'subscription', 'stats'));
@@ -44,7 +44,7 @@ class BusinessmanDashboardController extends Controller
         $user = Auth::user();
 
         // Cancel any existing active subscriptions
-        $user->subscriptions()
+        Subscription::where('user_id', $user->id)
             ->where('status', 'active')
             ->update(['status' => 'cancelled', 'cancelled_at' => now()]);
 
@@ -113,7 +113,7 @@ class BusinessmanDashboardController extends Controller
             'registration_number' => 'nullable|string',
         ]);
 
-        Property::create([
+        $property = Property::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
@@ -132,7 +132,92 @@ class BusinessmanDashboardController extends Controller
             'active' => true,
         ]);
 
+        // Handle images
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+            $images = array_slice($images, 0, 6);
+            foreach ($images as $i => $img) {
+                $path = $img->store('properties/' . $property->id, 'public');
+                $property->images()->create([
+                    'path' => $path,
+                    'is_primary' => $i === 0,
+                    'order' => $i,
+                ]);
+            }
+        }
+
+        // Handle video
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $vpath = $video->store('properties/videos/' . $property->id, 'public');
+            $property->update(['video_url' => $vpath]);
+        }
+
         return redirect()->route('businessman.properties')
             ->with('success', 'Imóvel cadastrado com sucesso!');
+    }
+
+    public function editProperty(Property $property)
+    {
+        $this->authorize('update', $property);
+
+        return view('businessman.property-edit', compact('property'));
+    }
+
+    public function updateProperty(Request $request, Property $property)
+    {
+        $this->authorize('update', $property);
+
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'type' => 'required|in:apartment,house,commercial,land,other',
+            'transaction_type' => 'required|in:sale,rent,both',
+            'price' => 'required|numeric|min:0',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string|size:2',
+            'bedrooms' => 'nullable|integer|min:0',
+            'bathrooms' => 'nullable|integer|min:0',
+            'area' => 'nullable|numeric|min:0',
+        ]);
+
+        $property->update(array_merge($data, [
+            'registration_number' => $request->registration_number,
+        ]));
+
+        // Handle new images (append, limit to 6)
+        if ($request->hasFile('images')) {
+            $existing = $property->images()->count();
+            $images = $request->file('images');
+            $allowed = max(0, 6 - $existing);
+            $images = array_slice($images, 0, $allowed);
+            foreach ($images as $i => $img) {
+                $path = $img->store('properties/' . $property->id, 'public');
+                $property->images()->create([
+                    'path' => $path,
+                    'is_primary' => false,
+                    'order' => $existing + $i,
+                ]);
+            }
+        }
+
+        // Handle video replacement
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $vpath = $video->store('properties/videos/' . $property->id, 'public');
+            $property->update(['video_url' => $vpath]);
+        }
+
+        return redirect()->route('businessman.properties')->with('success', 'Imóvel atualizado com sucesso!');
+    }
+
+    public function destroyProperty(Property $property)
+    {
+        $this->authorize('delete', $property);
+
+        $property->delete();
+
+        return redirect()->route('businessman.properties')->with('success', 'Imóvel excluído com sucesso!');
     }
 }
