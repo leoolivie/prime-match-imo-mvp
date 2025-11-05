@@ -4,13 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +22,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'whatsapp',
+        'terms_accepted',
+        'terms_accepted_at',
+        'active',
     ];
 
     /**
@@ -41,5 +48,63 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'terms_accepted' => 'boolean',
+        'terms_accepted_at' => 'datetime',
+        'active' => 'boolean',
     ];
+
+    // Role checks
+    public function isInvestor(): bool
+    {
+        return $this->role === 'investor';
+    }
+
+    public function isBusinessman(): bool
+    {
+        return $this->role === 'businessman';
+    }
+
+    public function isPrimeBroker(): bool
+    {
+        return $this->role === 'prime_broker';
+    }
+
+    public function isMaster(): bool
+    {
+        return $this->role === 'master';
+    }
+
+    // Relationships
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription()
+    {
+        return $this->hasOne(Subscription::class)
+            ->where('status', 'active')
+            ->where('end_date', '>=', now());
+    }
+
+    public function primeSearches()
+    {
+        return $this->hasMany(PrimeSearch::class);
+    }
+
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'investor_id');
+    }
+
+    public function brokerLeads()
+    {
+        return $this->hasMany(Lead::class, 'prime_broker_id');
+    }
 }
+
