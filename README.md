@@ -1,66 +1,276 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Prime Match Imo - Sistema SaaS Imobiliário
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 10, Docker, e Tailwind CSS.
 
-## About Laravel
+## 🚀 Tecnologias
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Laravel 10** - Framework PHP
+- **PHP 8.2** - Linguagem de programação
+- **MySQL 8** - Banco de dados
+- **Redis** - Cache e filas
+- **Nginx** - Servidor web
+- **Docker & Docker Compose** - Containerização
+- **Tailwind CSS** - Framework CSS
+- **Alpine.js** - JavaScript reativo
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Pré-requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Docker & Docker Compose instalados
+- Git
+- Make (opcional, mas recomendado)
 
-## Learning Laravel
+## 🔧 Instalação e Configuração
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Clone o repositório
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/leoolivie/prime-match-imo-mvp.git
+cd prime-match-imo-mvp
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Configure o ambiente
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Construa e inicie os containers Docker
 
-### Premium Partners
+```bash
+# Usando Make (recomendado)
+make build
+make up
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# Ou usando Docker Compose diretamente
+docker compose build
+docker compose up -d
+```
 
-## Contributing
+### 4. Instale as dependências do Laravel
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# Usando Make
+make install
 
-## Code of Conduct
+# Ou usando Docker Compose
+docker compose exec php-fpm composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Gere a chave da aplicação
 
-## Security Vulnerabilities
+```bash
+docker compose exec php-fpm php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 6. Execute as migrations e seeders
 
-## License
+```bash
+# Usando Make
+make migrate
+make seed
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Ou para fazer tudo de uma vez (fresh install)
+make fresh
+
+# Ou usando Docker Compose
+docker compose exec php-fpm php artisan migrate
+docker compose exec php-fpm php artisan db:seed
+```
+
+### 7. Acesse a aplicação
+
+Abra seu navegador e acesse: [http://localhost:8080](http://localhost:8080)
+
+## 👥 Usuários de Teste
+
+Após executar os seeders, você terá acesso aos seguintes usuários de teste:
+
+| Papel | E-mail | Senha | Descrição |
+|-------|--------|-------|-----------|
+| Master (Admin) | master@primematch.com | password | Administrador do sistema |
+| Corretor Prime | broker@primematch.com | password | Corretor de imóveis |
+| Empresário | businessman@primematch.com | password | Proprietário com assinatura ativa |
+| Investidor | investor@primematch.com | password | Investidor buscando imóveis |
+
+## 🏗️ Estrutura do Projeto
+
+```
+prime-match-imo-mvp/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── AuthController.php
+│   │   ├── Investor/
+│   │   ├── Businessman/
+│   │   ├── Broker/
+│   │   └── Master/
+│   └── Models/
+│       ├── User.php
+│       ├── Property.php
+│       ├── Subscription.php
+│       ├── SubscriptionPlan.php
+│       ├── Lead.php
+│       ├── PrimeSearch.php
+│       └── Partner.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── docker/
+│   └── nginx/
+├── resources/
+│   └── views/
+├── docker-compose.yml
+├── Dockerfile
+└── Makefile
+```
+
+## 🎯 Funcionalidades
+
+### Landing Page
+- Apresentação do sistema
+- Informações sobre planos e recursos
+- Formulário de cadastro
+
+### Para Investidores
+- **Busca Prime**: Busca avançada de imóveis com filtros
+- **Alertas**: Criação de alertas personalizados
+- **Leads**: Registro de interesse em imóveis
+- **Dashboard**: Visualização de buscas e leads
+
+### Para Empresários
+- **Gestão de Imóveis**: CRUD completo de imóveis
+- **Planos de Assinatura**: 
+  - **Prime Mensal** (R$ 350/mês): Até 5 imóveis
+  - **Prime Trimestral** (R$ 250/mês): Até 15 imóveis
+  - **Prime Anual** (R$ 200/mês): Imóveis ilimitados + 1 destaque/mês
+- **Leads**: Visualização de interessados
+- **Métricas**: Dashboard com estatísticas
+
+### Para Corretores Prime
+- **Gestão de Leads**: Atribuição e acompanhamento
+- **WhatsApp**: Contato direto com investidores
+- **CRM**: Sistema de acompanhamento de leads
+- **Métricas**: Performance e conversões
+
+### Para Master (Admin)
+- **CRUD de Usuários**: Gestão completa de usuários
+- **Gestão de Imóveis**: Visualização e moderação
+- **Parceiros**: Cadastro de parceiros do sistema
+- **Assinaturas**: Gestão de planos e pagamentos
+- **Relatórios**: Dashboards com métricas do sistema
+
+## 📊 Planos de Assinatura
+
+| Plano | Valor/mês | Limite de Imóveis | Benefícios |
+|-------|-----------|-------------------|------------|
+| Prime Mensal | R$ 350 | 5 | Corretor prime, suporte, consultoria |
+| Prime Trimestral | R$ 250 | 15 | Corretor prime, suporte avançado, parceiros |
+| Prime Anual | R$ 200 | Ilimitado | 1 destaque/mês + todos os benefícios |
+
+## 🔐 Segurança e Privacidade
+
+- **Matrícula de Imóvel**: Campo privado, visível apenas para proprietário e master
+- **Autenticação**: Sistema seguro com hash de senhas
+- **Autorização**: Controle de acesso baseado em papéis (RBAC)
+- **Termos de Uso**: Consentimento obrigatório no cadastro
+
+## 🛠️ Comandos Make Disponíveis
+
+```bash
+make up              # Inicia os containers
+make down            # Para os containers
+make restart         # Reinicia os containers
+make logs            # Visualiza logs em tempo real
+make bash            # Acessa o container PHP
+make migrate         # Executa migrations
+make seed            # Executa seeders
+make fresh           # Recria banco de dados com seeders
+make install         # Instala dependências do Composer
+make test            # Executa testes
+make build           # Constrói as imagens Docker
+make rebuild         # Reconstrói as imagens do zero
+```
+
+## 🐳 Serviços Docker
+
+| Serviço | Função | Porta |
+|---------|--------|-------|
+| nginx | Servidor web | 8080:80 |
+| php-fpm | Aplicação Laravel | (interno) |
+| mysql | Banco de dados | 3306:3306 |
+| redis | Cache e filas | 6379:6379 |
+| mailpit | SMTP fake para testes | 8025:8025 (web), 1025:1025 (smtp) |
+
+### Mailpit
+Para visualizar os e-mails enviados pela aplicação em ambiente de desenvolvimento, acesse:
+[http://localhost:8025](http://localhost:8025)
+
+## 🧪 Testes
+
+Para executar os testes:
+
+```bash
+make test
+
+# Ou
+docker compose exec php-fpm php artisan test
+```
+
+## 📝 Arquitetura
+
+O sistema segue os princípios:
+- **MVC** (Model-View-Controller)
+- **SOLID**
+- **Clean Code**
+- **Repository Pattern** (preparado para implementação)
+- **Service Layer** (preparado para implementação)
+
+### Camadas da Aplicação
+
+```
+Controllers → Services → Repositories → Models
+     ↓
+  Policies
+     ↓
+   Events → Listeners → Jobs
+```
+
+## 🔄 Fluxo de Trabalho
+
+### Busca Prime (Investidor)
+1. Investidor preenche formulário de busca
+2. Sistema filtra imóveis disponíveis
+3. Opção de criar alerta para novas correspondências
+4. Investidor registra interesse (cria lead)
+5. Lead atribuído a corretor prime
+6. Corretor entra em contato via WhatsApp
+
+### Cadastro de Imóvel (Empresário)
+1. Empresário verifica plano ativo e limite
+2. Preenche dados do imóvel
+3. Matrícula mantida privada
+4. Imóvel aparece nas buscas
+5. Leads são gerados automaticamente
+
+## 🚀 Próximas Implementações
+
+- [ ] Upload de imagens de imóveis
+- [ ] Integração com WhatsApp Business API
+- [ ] Sistema de pagamentos (Stripe/PagSeguro)
+- [ ] Notificações por e-mail
+- [ ] Sistema de reviews
+- [ ] API RESTful
+- [ ] App mobile (React Native)
+- [ ] Testes automatizados completos
+- [ ] CI/CD pipeline
+
+## 📄 Licença
+
+Este projeto é proprietário e confidencial.
+
+## 👨‍💻 Desenvolvido por
+
+Prime Match Imo Team
+
+---
+
+**Nota**: Este é um MVP (Minimum Viable Product). Funcionalidades adicionais serão implementadas nas próximas iterações.
