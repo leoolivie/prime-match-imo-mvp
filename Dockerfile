@@ -33,7 +33,9 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 # Copy existing application directory permissions
-RUN chown -R www-data:www-data /var/www/html \
+# Ensure necessary directories exist before changing ownership/permissions
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 

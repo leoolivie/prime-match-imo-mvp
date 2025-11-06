@@ -16,9 +16,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Master/Admin user
-        $master = User::create([
+        $master = User::updateOrCreate([
+            'email' => 'master@primematch.com'
+        ], [
             'name' => 'Admin Master',
-            'email' => 'master@primematch.com',
             'password' => Hash::make('password'),
             'role' => 'master',
             'phone' => '(11) 99999-0001',
@@ -29,9 +30,10 @@ class UserSeeder extends Seeder
         ]);
 
         // Prime Broker user
-        $broker = User::create([
+        $broker = User::updateOrCreate([
+            'email' => 'broker@primematch.com'
+        ], [
             'name' => 'Carlos Silva',
-            'email' => 'broker@primematch.com',
             'password' => Hash::make('password'),
             'role' => 'prime_broker',
             'phone' => '(11) 99999-0002',
@@ -42,9 +44,10 @@ class UserSeeder extends Seeder
         ]);
 
         // Businessman user with subscription
-        $businessman = User::create([
+        $businessman = User::updateOrCreate([
+            'email' => 'businessman@primematch.com'
+        ], [
             'name' => 'João Empresário',
-            'email' => 'businessman@primematch.com',
             'password' => Hash::make('password'),
             'role' => 'businessman',
             'phone' => '(11) 99999-0003',
@@ -65,9 +68,10 @@ class UserSeeder extends Seeder
         ]);
 
         // Investor user
-        $investor = User::create([
+        $investor = User::updateOrCreate([
+            'email' => 'investor@primematch.com'
+        ], [
             'name' => 'Maria Investidora',
-            'email' => 'investor@primematch.com',
             'password' => Hash::make('password'),
             'role' => 'investor',
             'phone' => '(11) 99999-0004',
@@ -78,9 +82,10 @@ class UserSeeder extends Seeder
         ]);
 
         // Additional users for testing
-        User::create([
+        User::updateOrCreate([
+            'email' => 'investor2@primematch.com'
+        ], [
             'name' => 'Pedro Investidor',
-            'email' => 'investor2@primematch.com',
             'password' => Hash::make('password'),
             'role' => 'investor',
             'phone' => '(11) 99999-0005',
@@ -90,9 +95,10 @@ class UserSeeder extends Seeder
             'active' => true,
         ]);
 
-        User::create([
+        User::updateOrCreate([
+            'email' => 'businessman2@primematch.com'
+        ], [
             'name' => 'Ana Empresária',
-            'email' => 'businessman2@primematch.com',
             'password' => Hash::make('password'),
             'role' => 'businessman',
             'phone' => '(11) 99999-0006',
