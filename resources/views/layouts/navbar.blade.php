@@ -1,5 +1,5 @@
-@php
-    $conciergeLink = 'https://wa.me/5514996845854?text=' . rawurlencode('Olá concierge Prime Match Imo, gostaria de conversar sobre novas oportunidades.');
+﻿@php
+    $conciergeLink = 'https://wa.me/5514996845854?text=' . rawurlencode('OlÃ¡ concierge Prime Match Imo, gostaria de conversar sobre novas oportunidades.');
 @endphp
 
 <nav class="relative z-50 border-b border-white/10 bg-lux-black/90 backdrop-blur-xl">
@@ -10,21 +10,20 @@
                 <span class="flex h-12 w-12 items-center justify-center rounded-3xl border border-white/15 bg-white/5 text-lg font-semibold tracking-wide shadow-[0_0_25px_rgba(255,215,0,0.25)] transition group-hover:border-lux-gold/60 group-hover:text-white">PM</span>
                 <div>
                     <p class="text-lg font-semibold tracking-wide text-white">Prime Match Imo</p>
-                    <p class="text-[11px] uppercase tracking-[0.35em] text-white/60">Plataforma imobiliária inteligente</p>
+                   
                 </div>
             </a>
-            <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-white/70">
-                <a href="{{ route('landing.businessman') }}" class="transition hover:text-white">Empresários</a>
-                <a href="{{ route('landing.investor') }}" class="transition hover:text-white">Investidores</a>
-                <a href="{{ route('landing.master') }}" class="transition hover:text-white">Master</a>
-                <a href="{{ route('home') }}#concierge" class="transition hover:text-white">Concierge</a>
+            <div class="hidden lg:flex items-center gap-4">
+                <a href="{{ route('landing.investor') }}" class="lux-gold-button whitespace-nowrap text-xs font-semibold uppercase tracking-[0.25em]">
+                    Investidor prime
+                </a>
+                <a href="{{ route('landing.businessman') }}" class="lux-outline-button whitespace-nowrap text-xs font-semibold uppercase tracking-[0.25em]">
+                    Empresário prime
+                </a>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ $conciergeLink }}" target="_blank" rel="noopener" class="lux-outline-button whitespace-nowrap">
                     Falar com concierge
-                </a>
-                <a href="{{ auth()->check() ? route('investor.search') : route('register') }}" class="lux-gold-button whitespace-nowrap">
-                    Ativar busca prime
                 </a>
                 @auth
                     <span class="hidden sm:inline-flex items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/60">

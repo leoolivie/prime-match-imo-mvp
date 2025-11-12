@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Prime Match Imo - Plataforma imobiliária inteligente com concierge prime')
+@section('title', 'Prime Match Imo')
 
 @section('content')
 @php
@@ -33,7 +33,7 @@
         <div class="relative lux-container py-24">
             <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
                 <div class="space-y-10">
-                    <span class="lux-badge-gold">Plataforma imobiliária inteligente</span>
+                    <span class="lux-badge-gold"></span>
                     <div class="space-y-6">
                         <h1 class="font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
                             Matchmaking imobiliário com curadoria prime e concierge 24/7
