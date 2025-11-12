@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="balGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#09111a" />
+      <stop offset="60%" stop-color="#0c1f2c" />
+      <stop offset="100%" stop-color="#03131d" />
+    </linearGradient>
+    <linearGradient id="balSky" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1b3f59" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#4a708e" stop-opacity="0.55" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="540" fill="url(#balGradient)" />
+  <rect x="0" y="0" width="800" height="220" fill="url(#balSky)" />
+  <rect x="0" y="220" width="800" height="20" fill="#0b2738" />
+  <rect x="0" y="240" width="800" height="60" fill="#0d3346" />
+  <rect x="0" y="300" width="800" height="240" fill="#07222f" />
+  <g fill="#1a3648" opacity="0.75">
+    <rect x="120" y="180" width="80" height="240" rx="12" />
+    <rect x="220" y="140" width="80" height="280" rx="12" />
+    <rect x="320" y="160" width="80" height="260" rx="12" />
+    <rect x="420" y="120" width="90" height="300" rx="12" />
+    <rect x="520" y="150" width="80" height="270" rx="12" />
+    <rect x="620" y="190" width="70" height="230" rx="12" />
+  </g>
+  <rect x="0" y="440" width="800" height="100" fill="#0b1d27" opacity="0.8" />
+  <rect x="0" y="480" width="800" height="60" fill="#051118" opacity="0.9" />
+</svg>
