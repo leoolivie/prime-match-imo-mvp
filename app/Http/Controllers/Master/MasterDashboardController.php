@@ -8,6 +8,7 @@ use App\Models\Property;
 use App\Models\Subscription;
 use App\Models\Partner;
 use App\Models\Lead;
+use App\Models\TelemetryMetric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,8 +24,10 @@ class MasterDashboardController extends Controller
             'total_properties' => Property::count(),
             'active_properties' => Property::where('active', true)->count(),
             'total_subscriptions' => Subscription::where('status', 'active')->count(),
-            'total_leads' => Lead::count(),
+            'visits_30' => TelemetryMetric::globalSum('view_imovel', 30),
+            'clicks_30' => TelemetryMetric::globalSum('click_whatsapp_concierge', 30),
         ];
+        $stats['conversion'] = $stats['visits_30'] > 0 ? round(($stats['clicks_30'] / $stats['visits_30']) * 100, 1) : 0;
 
         $recentUsers = User::latest()->take(5)->get();
         $recentProperties = Property::with('owner')->latest()->take(5)->get();

@@ -36,9 +36,9 @@
                         <span class="text-white/40">Planos premium</span>
                     </div>
                     <div class="lux-stat-bubble">
-                        <span class="text-white/60">Leads</span>
-                        <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_leads']) }}</span>
-                        <span class="text-white/40">Pipeline concierge</span>
+                        <span class="text-white/60">WhatsApp (30d)</span>
+                        <span class="text-2xl font-semibold text-white">{{ number_format($stats['clicks_30']) }}</span>
+                        <span class="text-white/40">Cliques concierge</span>
                     </div>
                 </div>
             </div>
@@ -93,9 +93,9 @@
                 <div class="lux-card-dark">
                     <h3 class="text-lg font-semibold text-white">Alertas críticos</h3>
                     <ul class="mt-4 space-y-3 text-sm text-white/60">
-                        <li>• Planos premium prestes a vencer: {{ max($stats['total_subscriptions'] - 2, 0) }}</li>
-                        <li>• Imóveis aguardando diligência concierge: {{ max($stats['total_properties'] - $stats['active_properties'], 0) }}</li>
-                        <li>• Leads aguardando contato humano: {{ max($stats['total_leads'] - 10, 0) }}</li>
+                        <li>• Visitas nos últimos 30 dias: {{ number_format($stats['visits_30']) }}</li>
+                        <li>• Cliques concierge nos últimos 30 dias: {{ number_format($stats['clicks_30']) }}</li>
+                        <li>• Conversão agregada: {{ number_format($stats['conversion'], 1) }}%</li>
                     </ul>
                 </div>
             </div>
