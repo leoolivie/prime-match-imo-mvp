@@ -3,266 +3,328 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Base Colors */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    :root {
+        /* Base Colors */
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
+        --primary: 222.2 47.4% 11.2%;
+        --primary-foreground: 210 40% 98%;
+        --secondary: 210 40% 96.1%;
+        --secondary-foreground: 222.2 47.4% 11.2%;
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+        --accent: 210 40% 96.1%;
+        --accent-foreground: 222.2 47.4% 11.2%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 40% 98%;
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 222.2 84% 4.9%;
+        --radius: 0.5rem;
 
-    /* Luxury Colors */
-    --lux-black: 0 0% 8%;
-    --lux-slate: 220 15% 25%;
-    --lux-graphite: 220 10% 45%;
-    --lux-ice: 200 20% 95%;
-    --lux-gold: 43 96% 56%;
+        /* Luxury Colors */
+        --lux-black: 0 0% 8%;
+        --lux-slate: 220 15% 25%;
+        --lux-graphite: 220 10% 45%;
+        --lux-ice: 200 20% 95%;
+        --lux-gold: 43 96% 56%;
 
-    /* Sidebar Colors */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+        /* Sidebar Colors */
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 240 5.3% 26.1%;
+        --sidebar-primary: 240 5.9% 10%;
+        --sidebar-primary-foreground: 0 0% 98%;
+        --sidebar-accent: 240 4.8% 95.9%;
+        --sidebar-accent-foreground: 240 5.9% 10%;
+        --sidebar-border: 220 13% 91%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(222.2 47.4% 11.2%) 0%, hsl(220 15% 25%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(200 20% 95%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%) 0%, hsl(38 92% 50%) 100%);
+        /* Gradients */
+        --gradient-hero: linear-gradient(
+            135deg,
+            hsl(222.2 47.4% 11.2%) 0%,
+            hsl(220 15% 25%) 100%
+        );
+        --gradient-card: linear-gradient(
+            135deg,
+            hsl(0 0% 100%) 0%,
+            hsl(200 20% 95%) 100%
+        );
+        --gradient-gold: linear-gradient(
+            135deg,
+            hsl(43 96% 56%) 0%,
+            hsl(38 92% 50%) 100%
+        );
 
-    /* Shadows */
-    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-gold: 0 0 20px hsl(43 96% 56% / 0.3), 0 0 40px hsl(43 96% 56% / 0.1);
-  }
+        /* Shadows */
+        --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+            0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-gold: 0 0 20px hsl(43 96% 56% / 0.3),
+            0 0 40px hsl(43 96% 56% / 0.1);
+    }
 
-  .dark {
-    /* Dark Mode Colors */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    .dark {
+        /* Dark Mode Colors */
+        --background: 222.2 84% 4.9%;
+        --foreground: 210 40% 98%;
+        --card: 222.2 84% 4.9%;
+        --card-foreground: 210 40% 98%;
+        --popover: 222.2 84% 4.9%;
+        --popover-foreground: 210 40% 98%;
+        --primary: 210 40% 98%;
+        --primary-foreground: 222.2 47.4% 11.2%;
+        --secondary: 217.2 32.6% 17.5%;
+        --secondary-foreground: 210 40% 98%;
+        --muted: 217.2 32.6% 17.5%;
+        --muted-foreground: 215 20.2% 65.1%;
+        --accent: 217.2 32.6% 17.5%;
+        --accent-foreground: 210 40% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 40% 98%;
+        --border: 217.2 32.6% 17.5%;
+        --input: 217.2 32.6% 17.5%;
+        --ring: 212.7 26.8% 83.9%;
 
-    /* Dark Mode Sidebar */
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+        /* Dark Mode Sidebar */
+        --sidebar-background: 240 5.9% 10%;
+        --sidebar-foreground: 240 4.8% 95.9%;
+        --sidebar-primary: 224.3 76.3% 48%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Dark Mode Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(222.2 84% 4.9%) 0%, hsl(220 15% 15%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(222.2 84% 4.9%) 0%, hsl(217.2 32.6% 17.5%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%) 0%, hsl(38 92% 50%) 100%);
+        /* Dark Mode Gradients */
+        --gradient-hero: linear-gradient(
+            135deg,
+            hsl(222.2 84% 4.9%) 0%,
+            hsl(220 15% 15%) 100%
+        );
+        --gradient-card: linear-gradient(
+            135deg,
+            hsl(222.2 84% 4.9%) 0%,
+            hsl(217.2 32.6% 17.5%) 100%
+        );
+        --gradient-gold: linear-gradient(
+            135deg,
+            hsl(43 96% 56%) 0%,
+            hsl(38 92% 50%) 100%
+        );
 
-    /* Dark Mode Shadows */
-    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-    --shadow-gold: 0 0 30px hsl(43 96% 56% / 0.4), 0 0 60px hsl(43 96% 56% / 0.2);
-  }
+        /* Dark Mode Shadows */
+        --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3),
+            0 2px 4px -2px rgb(0 0 0 / 0.3);
+        --shadow-gold: 0 0 30px hsl(43 96% 56% / 0.4),
+            0 0 60px hsl(43 96% 56% / 0.2);
+    }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-lux-black text-lux-ice;
-    background-image: radial-gradient(circle at top left, rgba(255, 215, 0, 0.08), transparent 55%),
-      radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.08), transparent 60%);
-    background-attachment: fixed;
-  }
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-lux-black text-lux-ice;
+        background-image: radial-gradient(
+                circle at top left,
+                rgba(255, 215, 0, 0.08),
+                transparent 55%
+            ),
+            radial-gradient(
+                circle at bottom right,
+                rgba(59, 130, 246, 0.08),
+                transparent 60%
+            );
+        background-attachment: fixed;
+    }
 }
 
 @layer components {
-  .lux-container {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
+    .lux-container {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
 
-  .lux-section {
-    @apply relative py-16 sm:py-20;
-  }
+    .lux-section {
+        @apply relative py-16 sm:py-20;
+    }
 
-  .lux-section::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.45), transparent);
-    opacity: 0.4;
-  }
+    .lux-section::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 215, 0, 0.45),
+            transparent
+        );
+        opacity: 0.4;
+    }
 
-  .lux-section:last-of-type::after {
-    display: none;
-  }
+    .lux-section:last-of-type::after {
+        display: none;
+    }
 
-  .lux-hero {
-    background: radial-gradient(circle at top left, rgba(255, 215, 0, 0.28), transparent 52%),
-      radial-gradient(circle at top right, rgba(59, 130, 246, 0.25), transparent 58%),
-      linear-gradient(135deg, rgba(4, 7, 15, 0.95) 0%, rgba(5, 11, 23, 0.92) 55%, rgba(8, 21, 38, 0.88) 100%);
-    @apply relative overflow-hidden text-white;
-  }
+    .lux-hero {
+        background: radial-gradient(
+                circle at top left,
+                rgba(255, 215, 0, 0.28),
+                transparent 52%
+            ),
+            radial-gradient(
+                circle at top right,
+                rgba(59, 130, 246, 0.25),
+                transparent 58%
+            ),
+            linear-gradient(
+                135deg,
+                rgba(4, 7, 15, 0.95) 0%,
+                rgba(5, 11, 23, 0.92) 55%,
+                rgba(8, 21, 38, 0.88) 100%
+            );
+        @apply relative overflow-hidden text-white;
+    }
 
-  .lux-hero::before {
-    content: "";
-    position: absolute;
-    inset-inline: 15%;
-    inset-block-start: -120px;
-    height: 320px;
-    border-radius: 9999px;
-    filter: blur(100px);
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(255, 215, 0, 0) 70%);
-    opacity: 0.6;
-  }
+    .lux-hero::before {
+        content: "";
+        position: absolute;
+        inset-inline: 15%;
+        inset-block-start: -120px;
+        height: 320px;
+        border-radius: 9999px;
+        filter: blur(100px);
+        background: radial-gradient(
+            circle,
+            rgba(255, 215, 0, 0.35) 0%,
+            rgba(255, 215, 0, 0) 70%
+        );
+        opacity: 0.6;
+    }
 
-  .lux-hero::after {
-    content: "";
-    position: absolute;
-    inset-block-end: -160px;
-    inset-inline: 5%;
-    height: 280px;
-    border-radius: 9999px;
-    filter: blur(120px);
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, rgba(99, 102, 241, 0) 70%);
-    opacity: 0.5;
-  }
+    .lux-hero::after {
+        content: "";
+        position: absolute;
+        inset-block-end: -160px;
+        inset-inline: 5%;
+        height: 280px;
+        border-radius: 9999px;
+        filter: blur(120px);
+        background: radial-gradient(
+            circle,
+            rgba(99, 102, 241, 0.3) 0%,
+            rgba(99, 102, 241, 0) 70%
+        );
+        opacity: 0.5;
+    }
 
-  .lux-card-dark {
-    @apply rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_25px_80px_rgba(7,16,45,0.45)] backdrop-blur-xl;
-  }
+    .lux-card-dark {
+        @apply rounded-3xl border border-white/10 bg-white/5 p-8 shadow-[0_25px_80px_rgba(7,16,45,0.45)] backdrop-blur-xl;
+    }
 
-  .lux-card-surface {
-    @apply rounded-3xl border border-white/10 bg-white/3 p-6 shadow-[0_20px_70px_rgba(7,16,45,0.35)] backdrop-blur-lg;
-  }
+    .lux-card-surface {
+        @apply rounded-3xl border border-white/10 bg-white/30 p-6 shadow-[0_20px_70px_rgba(7,16,45,0.35)] backdrop-blur-lg;
+    }
 
-  .lux-card-gold {
-    @apply rounded-3xl border border-lux-gold/40 bg-lux-gold/10 p-6 text-lux-ice shadow-lux-glow;
-  }
+    .lux-card-gold {
+        @apply rounded-3xl border border-lux-gold/40 bg-lux-gold/10 p-6 text-lux-ice shadow-lux-glow;
+    }
 
-  .lux-card-graphite {
-    @apply rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl;
-  }
+    .lux-card-graphite {
+        @apply rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl;
+    }
 
-  .lux-gold-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-lux-gold px-6 py-3 text-sm font-semibold text-lux-black shadow-lux-glow transition hover:-translate-y-0.5 hover:shadow-[0_0_35px_rgba(255,215,0,0.5)];
-  }
+    .lux-gold-button {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-lux-gold px-6 py-3 text-sm font-semibold text-lux-black shadow-lux-glow transition hover:-translate-y-0.5 hover:shadow-[0_0_35px_rgba(255,215,0,0.5)];
+    }
 
-  .lux-outline-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-lux-ice transition hover:border-lux-gold/80 hover:text-white;
-  }
+    .lux-outline-button {
+        @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-lux-ice transition hover:border-lux-gold/80 hover:text-white;
+    }
 
-  .lux-tab {
-    @apply rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-lux-ice/70 transition hover:border-lux-gold/60 hover:text-white;
-  }
+    .lux-tab {
+        @apply rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-lux-ice/70 transition hover:border-lux-gold/60 hover:text-white;
+    }
 
-  .lux-tab-active {
-    @apply border-lux-gold/80 bg-white/10 text-white shadow-[0_0_25px_rgba(255,215,0,0.25)];
-  }
+    .lux-tab-active {
+        @apply border-lux-gold/80 bg-white/10 text-white shadow-[0_0_25px_rgba(255,215,0,0.25)];
+    }
 
-  .lux-metric-card {
-    @apply flex flex-col gap-2 rounded-3xl border border-white/10 bg-white/5 p-6 text-left shadow-[0_25px_60px_rgba(7,16,45,0.4)] backdrop-blur-xl;
-  }
+    .lux-metric-card {
+        @apply flex flex-col gap-2 rounded-3xl border border-white/10 bg-white/5 p-6 text-left shadow-[0_25px_60px_rgba(7,16,45,0.4)] backdrop-blur-xl;
+    }
 
-  .lux-badge-gold {
-    @apply inline-flex items-center gap-2 rounded-full border border-lux-gold/40 bg-lux-gold/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-lux-gold;
-  }
+    .lux-badge-gold {
+        @apply inline-flex items-center gap-2 rounded-full border border-lux-gold/40 bg-lux-gold/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-lux-gold;
+    }
 
-  .lux-badge-outline {
-    @apply inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white/70;
-  }
+    .lux-badge-outline {
+        @apply inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-white/70;
+    }
 
-  .lux-divider {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
-  }
+    .lux-divider {
+        @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    }
 
-  .lux-grid-cards {
-    @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3;
-  }
+    .lux-grid-cards {
+        @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3;
+    }
 
-  .lux-property-card {
-    @apply relative flex h-full flex-col gap-5 overflow-hidden rounded-3xl border border-white/10 bg-white/4 p-6 shadow-[0_20px_60px_rgba(7,16,45,0.35)] backdrop-blur-lg transition hover:-translate-y-1 hover:shadow-[0_35px_90px_rgba(255,215,0,0.18)];
-  }
+    .lux-property-card {
+        @apply relative flex h-full flex-col gap-5 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_20px_60px_rgba(7,16,45,0.35)] backdrop-blur-lg transition hover:-translate-y-1 hover:shadow-[0_35px_90px_rgba(255,215,0,0.18)];
+    }
 
-  .lux-property-status {
-    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em];
-  }
+    .lux-property-status {
+        @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em];
+    }
 
-  .lux-stat-bubble {
-    @apply flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs uppercase tracking-[0.25em];
-  }
+    .lux-stat-bubble {
+        @apply flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs uppercase tracking-[0.25em];
+    }
 
-  .glass-card {
-    @apply rounded-2xl border border-white/20 bg-white/10 px-4 py-5 backdrop-blur-lg shadow-[0_10px_40px_rgba(15,37,101,0.35)];
-  }
+    .glass-card {
+        @apply rounded-2xl border border-white/20 bg-white/10 px-4 py-5 backdrop-blur-lg shadow-[0_10px_40px_rgba(15,37,101,0.35)];
+    }
 
-  .gold-badge {
-    @apply inline-flex items-center gap-2 rounded-full border border-yellow-400/40 bg-yellow-300/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 md:text-sm;
-  }
+    .gold-badge {
+        @apply inline-flex items-center gap-2 rounded-full border border-yellow-400/40 bg-yellow-300/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 md:text-sm;
+    }
 
-  .lux-card {
-    @apply rounded-3xl border border-slate-200/70 bg-white p-10 shadow-[0_25px_70px_rgba(15,37,101,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(15,37,101,0.12)];
-  }
+    .lux-card {
+        @apply rounded-3xl border border-slate-200/70 bg-white p-10 shadow-[0_25px_70px_rgba(15,37,101,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(15,37,101,0.12)];
+    }
 
-  .lux-card-icon {
-    @apply mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full text-2xl;
-  }
+    .lux-card-icon {
+        @apply mb-6 inline-flex h-14 w-14 items-center justify-center rounded-full text-2xl;
+    }
 
-  .badge-outline {
-    @apply inline-flex items-center rounded-full border border-white/30 px-4 py-1 text-sm font-medium text-white/70;
-  }
+    .badge-outline {
+        @apply inline-flex items-center rounded-full border border-white/30 px-4 py-1 text-sm font-medium text-white/70;
+    }
 
-  .timeline-step {
-    @apply flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(15,37,101,0.18)];
-  }
+    .timeline-step {
+        @apply flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(15,37,101,0.18)];
+    }
 
-  .timeline-index {
-    @apply flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/50 to-indigo-500/40 text-lg font-semibold;
-  }
+    .timeline-index {
+        @apply flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/50 to-indigo-500/40 text-lg font-semibold;
+    }
 
-  .plan-card {
-    @apply flex h-full flex-col rounded-3xl border border-slate-200/60 bg-white p-8 shadow-[0_20px_60px_rgba(15,37,101,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(15,37,101,0.12)];
-  }
+    .plan-card {
+        @apply flex h-full flex-col rounded-3xl border border-slate-200/60 bg-white p-8 shadow-[0_20px_60px_rgba(15,37,101,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(15,37,101,0.12)];
+    }
 
-  .plan-button {
-    @apply mt-8 inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-blue-500 hover:text-blue-600;
-  }
+    .plan-button {
+        @apply mt-8 inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-blue-500 hover:text-blue-600;
+    }
 
-  .testimonial-card {
-    @apply rounded-3xl border border-slate-200 bg-white p-10 shadow-[0_20px_60px_rgba(15,37,101,0.08)];
-  }
+    .testimonial-card {
+        @apply rounded-3xl border border-slate-200 bg-white p-10 shadow-[0_20px_60px_rgba(15,37,101,0.08)];
+    }
 }
