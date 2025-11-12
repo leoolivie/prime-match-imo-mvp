@@ -22,6 +22,30 @@ class PrimeMatchImoTest extends TestCase
     }
 
     /** @test */
+    public function investor_landing_page_is_accessible()
+    {
+        $response = $this->get('/investidor');
+        $response->assertStatus(200);
+        $response->assertSee('Experiência prime para investidores');
+    }
+
+    /** @test */
+    public function businessman_landing_page_is_accessible()
+    {
+        $response = $this->get('/empresario');
+        $response->assertStatus(200);
+        $response->assertSee('Experiência prime para empresários');
+    }
+
+    /** @test */
+    public function master_landing_page_is_accessible()
+    {
+        $response = $this->get('/master-landing');
+        $response->assertStatus(200);
+        $response->assertSee('Comando total para masters');
+    }
+
+    /** @test */
     public function users_can_register_as_investor_or_businessman()
     {
         $response = $this->post('/register', [
@@ -78,6 +102,25 @@ class PrimeMatchImoTest extends TestCase
     }
 
     /** @test */
+    public function master_can_access_businessman_dashboard()
+    {
+        $master = User::factory()->create(['role' => 'master']);
+
+        $response = $this->actingAs($master)->get('/businessman/dashboard');
+        $response->assertStatus(200);
+        $response->assertSee('Dashboard do Empresário');
+    }
+
+    /** @test */
+    public function investor_cannot_access_businessman_dashboard()
+    {
+        $investor = User::factory()->create(['role' => 'investor']);
+
+        $response = $this->actingAs($investor)->get('/businessman/dashboard');
+        $response->assertStatus(403);
+    }
+
+    /** @test */
     public function broker_can_access_dashboard()
     {
         $broker = User::factory()->create(['role' => 'prime_broker']);
@@ -95,6 +138,15 @@ class PrimeMatchImoTest extends TestCase
         $response = $this->actingAs($master)->get('/master/dashboard');
         $response->assertStatus(200);
         $response->assertSee('Dashboard Master');
+    }
+
+    /** @test */
+    public function businessman_cannot_access_master_dashboard()
+    {
+        $businessman = User::factory()->create(['role' => 'businessman']);
+
+        $response = $this->actingAs($businessman)->get('/master/dashboard');
+        $response->assertStatus(403);
     }
 
     /** @test */

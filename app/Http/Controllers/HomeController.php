@@ -10,4 +10,19 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function investor()
+    {
+        return view('landing.investor');
+    }
+
+    public function businessman()
+    {
+        return view('landing.businessman');
+    }
+
+    public function master()
+    {
+        return view('landing.master');
+    }
 }
