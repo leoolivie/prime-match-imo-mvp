@@ -16,13 +16,13 @@
     
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-background text-foreground font-inter">
+<body class="font-inter antialiased bg-lux-black text-lux-ice">
     @include('layouts.navbar')
 
     <main class="min-h-screen">
         @if(session('success'))
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-                <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded">
+                <div class="rounded-2xl border border-emerald-400/30 bg-emerald-500/15 px-4 py-3 text-sm font-medium text-emerald-200">
                     {{ session('success') }}
                 </div>
             </div>
@@ -30,7 +30,7 @@
 
         @if(session('error'))
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-                <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
+                <div class="rounded-2xl border border-red-400/30 bg-red-500/15 px-4 py-3 text-sm font-medium text-red-200">
                     {{ session('error') }}
                 </div>
             </div>

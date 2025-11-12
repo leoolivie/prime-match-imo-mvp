@@ -33,6 +33,7 @@ Route::middleware(['auth'])->prefix('investor')->name('investor.')->group(functi
     Route::get('/search', [InvestorDashboardController::class, 'search'])->name('search');
     Route::post('/search', [InvestorDashboardController::class, 'searchResults'])->name('search.results');
     Route::post('/lead/{property}', [InvestorDashboardController::class, 'createLead'])->name('lead.create');
+    Route::post('/lead/{property}/concierge', [InvestorDashboardController::class, 'contactConcierge'])->name('lead.concierge');
 });
 
 // Businessman routes
