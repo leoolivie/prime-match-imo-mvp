@@ -1,82 +1,138 @@
 @extends('layouts.app')
 
-@section('title', 'Prime Match Imo - Conectamos pessoas a imóveis extraordinários')
+@section('title', 'Prime Match Imo - Plataforma imobiliária inteligente com concierge prime')
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden bg-[#050B2C] text-white">
-        <div class="absolute inset-0 opacity-60" style="background: radial-gradient(circle at top left, rgba(80,130,255,0.35), transparent 40%), radial-gradient(circle at bottom right, rgba(128,90,213,0.35), transparent 45%);"></div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-32">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8">
-                    <span class="inline-flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm uppercase tracking-[0.3em]">Matchmaking Imobiliário</span>
-                    <h1 class="text-4xl sm:text-5xl xl:text-6xl font-semibold leading-tight">Encontre o imóvel perfeito com a curadoria Prime Match Imo</h1>
-                    <p class="text-lg text-white/80 leading-relaxed">
-                        Conectamos investidores, empresários e corretores através de uma plataforma inteligente que combina tecnologia avançada e atendimento prime para gerar negócios memoráveis.
-                    </p>
+@php
+    $heroSlides = [
+        [
+            'title' => 'Cobertura cinematográfica nos Jardins',
+            'location' => 'São Paulo • Jardins',
+            'price' => '12.800.000',
+            'financial' => 'Cap rate 6,8% • Upside concierge +12%',
+            'highlights' => ['Penthouse 620m²', '3 suítes masters', 'Rooftop skyline'],
+        ],
+        [
+            'title' => 'AAA Corporate na Faria Lima',
+            'location' => 'São Paulo • Vila Olímpia',
+            'price' => '64.000.000',
+            'financial' => 'Yield 11,2% • Vacância 0%',
+            'highlights' => ['Torre corporativa completa', 'Match com 4 fundos ativos', 'Retrofit premium 2024'],
+        ],
+        [
+            'title' => 'Retreat pé na areia - Praia do Forte',
+            'location' => 'Bahia • Praia do Forte',
+            'price' => '8.900.000',
+            'financial' => 'ROI turístico projetado 17% a.a.',
+            'highlights' => ['Portfolio hospitality', 'Concierge full-service', 'Tax shield + concierge'],
+        ],
+    ];
+@endphp
+
+    <section class="lux-hero">
+        <div class="relative lux-container py-24">
+            <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+                <div class="space-y-10">
+                    <span class="lux-badge-gold">Plataforma imobiliária inteligente</span>
+                    <div class="space-y-6">
+                        <h1 class="font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
+                            Matchmaking imobiliário com curadoria prime e concierge 24/7
+                        </h1>
+                        <p class="max-w-2xl text-base text-white/70 sm:text-lg">
+                            Conectamos investidores, empresários e concierge prime em um ecossistema omnichannel
+                            que combina inteligência artificial, dados financeiros em tempo real e atendimento humano
+                            para desbloquear negócios extraordinários.
+                        </p>
+                    </div>
                     <div class="flex flex-wrap gap-4">
-                        <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 px-8 py-3 text-lg font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:from-indigo-500 hover:to-purple-500">
-                            Comece gratuitamente
+                        <a href="{{ route('register') }}" class="lux-gold-button text-sm uppercase tracking-[0.25em]">
+                            Começar agora
                         </a>
-                        <a href="{{ route('login') }}" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-8 py-3 text-lg font-semibold text-white/80 transition hover:border-white hover:text-white">
-                            Já sou cliente
+                        <a href="{{ route('investor.search') }}" class="lux-outline-button text-sm uppercase tracking-[0.25em]">
+                            Ativar busca prime
+                        </a>
+                        <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, quero ativar minha curadoria prime.') }}" target="_blank" rel="noopener" class="lux-outline-button text-sm uppercase tracking-[0.25em]">
+                            Concierge imediato
                         </a>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6">
-                        <div class="glass-card text-left">
-                            <div class="text-3xl font-semibold">+1.2k</div>
-                            <p class="text-xs uppercase tracking-wide text-white/60">Matches gerados</p>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.35em] text-white/50">Matching IA</p>
+                            <p class="mt-3 text-2xl font-semibold text-white">98% de aderência</p>
+                            <p class="mt-1 text-sm text-white/60">Perfis validados e recomendações hiperpersonalizadas.</p>
                         </div>
-                        <div class="glass-card text-left">
-                            <div class="text-3xl font-semibold">+180M</div>
-                            <p class="text-xs uppercase tracking-wide text-white/60">em VGV movimentado</p>
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.35em] text-white/50">Concierge</p>
+                            <p class="mt-3 text-2xl font-semibold text-white">24/7 dedicado</p>
+                            <p class="mt-1 text-sm text-white/60">Pipeline acompanhado em todos os canais.</p>
                         </div>
-                        <div class="glass-card text-left">
-                            <div class="text-3xl font-semibold">24h</div>
-                            <p class="text-xs uppercase tracking-wide text-white/60">curadoria dedicada</p>
-                        </div>
-                        <div class="glass-card text-left">
-                            <div class="text-3xl font-semibold">98%</div>
-                            <p class="text-xs uppercase tracking-wide text-white/60">satisfação dos clientes</p>
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.35em] text-white/50">Capital monitorado</p>
+                            <p class="mt-3 text-2xl font-semibold text-white">R$ 180M+</p>
+                            <p class="mt-1 text-sm text-white/60">Negócios orquestrados com governança prime.</p>
                         </div>
                     </div>
                 </div>
                 <div class="relative">
-                    <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-blue-500/40 blur-3xl"></div>
-                    <div class="absolute -bottom-16 -right-8 h-48 w-48 rounded-full bg-purple-500/40 blur-3xl"></div>
-                    <div class="relative rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl shadow-[0_25px_80px_rgba(15,37,101,0.45)]">
+                    <div class="lux-card-dark" x-data="{
+                        active: 0,
+                        slides: @js($heroSlides),
+                        interval: null,
+                        init() {
+                            this.interval = setInterval(() => {
+                                this.active = (this.active + 1) % this.slides.length;
+                            }, 6500);
+                        }
+                    }">
                         <div class="flex items-center justify-between border-b border-white/10 pb-6">
                             <div>
-                                <p class="text-sm uppercase tracking-[0.3em] text-white/50">Fluxo Prime</p>
-                                <h3 class="text-2xl font-semibold">Match Perfeito</h3>
+                                <p class="text-xs uppercase tracking-[0.3em] text-white/50">Carrossel cinematográfico</p>
+                                <h3 class="mt-2 text-2xl font-semibold text-white">Imóveis em destaque</h3>
                             </div>
-                            <span class="gold-badge">Premium</span>
+                            <span class="lux-badge-gold">Concierge ready</span>
                         </div>
-                        <div class="space-y-6 pt-6">
-                            <div class="flex items-start gap-3">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/30">1</div>
-                                <div>
-                                    <h4 class="font-semibold">Briefing inteligente</h4>
-                                    <p class="text-sm text-white/70">Coletamos seus objetivos de investimento com precisão e segurança.</p>
+                        <div class="mt-8 space-y-8">
+                            <template x-for="(slide, index) in slides" :key="index">
+                                <div x-show="active === index" x-transition.opacity.duration.500ms class="space-y-6">
+                                    <div>
+                                        <p class="text-sm uppercase tracking-[0.3em] text-white/50" x-text="slide.location"></p>
+                                        <h4 class="mt-2 text-2xl font-semibold text-white" x-text="slide.title"></h4>
+                                    </div>
+                                    <div class="flex flex-wrap gap-3">
+                                        <template x-for="highlight in slide.highlights" :key="highlight">
+                                            <span class="lux-badge-outline" x-text="highlight"></span>
+                                        </template>
+                                    </div>
+                                    <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 sm:grid-cols-2">
+                                        <div>
+                                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</p>
+                                            <p class="mt-1 text-xl font-semibold text-white" x-text="'R$ ' + slide.price"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Snapshot financeiro</p>
+                                            <p class="mt-1 text-sm text-white/70" x-text="slide.financial"></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-3">
+                                        <a href="{{ route('register') }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Solicitar visita</a>
+                                        <a href="{{ route('login') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Baixar dossiê</a>
+                                    </div>
                                 </div>
+                            </template>
+                        </div>
+                        <div class="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
+                            <div class="flex gap-2">
+                                <template x-for="(slide, index) in slides" :key="'dot-' + index">
+                                    <button type="button"
+                                            class="h-2 w-8 rounded-full transition"
+                                            :class="active === index ? 'bg-lux-gold shadow-[0_0_25px_rgba(255,215,0,0.4)]' : 'bg-white/10 hover:bg-white/30'"
+                                            @click="active = index"></button>
+                                </template>
                             </div>
-                            <div class="flex items-start gap-3">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/30">2</div>
-                                <div>
-                                    <h4 class="font-semibold">Curadoria especializada</h4>
-                                    <p class="text-sm text-white/70">Nossa equipe seleciona oportunidades exclusivas alinhadas ao seu perfil.</p>
-                                </div>
+                            <div class="flex gap-2">
+                                <button type="button" class="lux-outline-button px-4 py-2" @click="active = (active + slides.length - 1) % slides.length">Anterior</button>
+                                <button type="button" class="lux-outline-button px-4 py-2" @click="active = (active + 1) % slides.length">Próximo</button>
                             </div>
-                            <div class="flex items-start gap-3">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/30">3</div>
-                                <div>
-                                    <h4 class="font-semibold">Match &amp; negociação</h4>
-                                    <p class="text-sm text-white/70">Você recebe um dossiê completo para avançar com segurança.</p>
-                                </div>
-                            </div>
-                            <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-[#050B2C] transition hover:bg-blue-50">
-                                Criar minha conta
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -84,186 +140,54 @@
         </div>
     </section>
 
-    <!-- Value Propositions -->
-    <section class="relative bg-white py-20">
-        <div class="absolute inset-x-0 -top-24 h-24 bg-gradient-to-b from-white/0 to-white"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="gold-badge uppercase tracking-[0.2em]">Experiência 360º</span>
-                <h2 class="mt-6 text-4xl font-semibold text-slate-900">Uma jornada completa para cada perfil</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-                    Do investidor que busca performance ao corretor que deseja amplificar seus resultados, a Prime Match Imo entrega soluções personalizadas e acompanhadas por especialistas.
-                </p>
-            </div>
-            <div class="grid gap-10 lg:grid-cols-3">
-                <div class="lux-card">
-                    <div class="lux-card-icon bg-blue-500/15 text-blue-600">👤</div>
-                    <h3 class="text-2xl font-semibold text-slate-900">Investidores</h3>
-                    <p class="mt-4 text-slate-600">Conheça oportunidades com alto potencial, análises completas e suporte consultivo para decisões estratégicas.</p>
-                    <ul class="mt-6 space-y-3 text-sm text-slate-500">
-                        <li class="flex items-center gap-2"><span class="text-blue-500">▹</span> Alertas inteligentes e personalização total</li>
-                        <li class="flex items-center gap-2"><span class="text-blue-500">▹</span> Indicadores de rentabilidade com simulações</li>
-                        <li class="flex items-center gap-2"><span class="text-blue-500">▹</span> Curadoria de imóveis prime off-market</li>
-                    </ul>
-                </div>
-                <div class="lux-card">
-                    <div class="lux-card-icon bg-emerald-500/15 text-emerald-600">🏢</div>
-                    <h3 class="text-2xl font-semibold text-slate-900">Empresários</h3>
-                    <p class="mt-4 text-slate-600">Ganhe visibilidade, acompanhe métricas em tempo real e acelere negociações com leads qualificados.</p>
-                    <ul class="mt-6 space-y-3 text-sm text-slate-500">
-                        <li class="flex items-center gap-2"><span class="text-emerald-500">▹</span> Gestão completa do portfólio de imóveis</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-500">▹</span> Destaques, tours virtuais e materiais exclusivos</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-500">▹</span> Consultoria estratégica para lançamentos</li>
-                    </ul>
-                </div>
-                <div class="lux-card">
-                    <div class="lux-card-icon bg-purple-500/15 text-purple-600">🎯</div>
-                    <h3 class="text-2xl font-semibold text-slate-900">Corretores Prime</h3>
-                    <p class="mt-4 text-slate-600">Amplie sua carteira com clientes verificados e ferramentas digitais para conduzir todo o relacionamento.</p>
-                    <ul class="mt-6 space-y-3 text-sm text-slate-500">
-                        <li class="flex items-center gap-2"><span class="text-purple-500">▹</span> CRM integrado com alertas em tempo real</li>
-                        <li class="flex items-center gap-2"><span class="text-purple-500">▹</span> Comunicações oficiais via WhatsApp e e-mail</li>
-                        <li class="flex items-center gap-2"><span class="text-purple-500">▹</span> Métricas de performance e capacitações</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Match Flow -->
-    <section class="bg-slate-950 py-20 text-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-                <div class="max-w-xl space-y-6">
-                    <span class="gold-badge uppercase tracking-[0.3em]">Fluxo Exclusivo</span>
-                    <h2 class="text-4xl font-semibold leading-tight">Tecnologia e atendimento humano para um match sem atritos</h2>
-                    <p class="text-white/70 leading-relaxed">
-                        Cada etapa é construída para entregar confiança e resultados. Nosso painel acompanha você e sua equipe do primeiro contato até a assinatura, com atualizações em tempo real.
+    <section class="lux-section">
+        <div class="lux-container">
+            <div class="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
+                <div class="space-y-6">
+                    <span class="lux-badge-outline">Resultados prime</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Governança, concierge e IA trabalhando juntos</h2>
+                    <p class="max-w-xl text-lg text-white/60">
+                        Do briefing ao fechamento, integramos dados financeiros, diligência documental e uma equipe concierge premium para acelerar negociações com transparência e desempenho.
                     </p>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                        <div class="lux-metric-card">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Matches IA</p>
+                            <p class="text-3xl font-semibold text-white">1.200+</p>
+                            <p class="text-sm text-white/60">Alertas personalizados e recomendações calibradas diariamente.</p>
+                        </div>
+                        <div class="lux-metric-card">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Concierge</p>
+                            <p class="text-3xl font-semibold text-white">24 horas</p>
+                            <p class="text-sm text-white/60">Equipe prime cuidando de agendamentos, diligência e follow-ups.</p>
+                        </div>
+                        <div class="lux-metric-card">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">VGV monitorado</p>
+                            <p class="text-3xl font-semibold text-white">R$ 180M+</p>
+                            <p class="text-sm text-white/60">Pipeline com previsibilidade, governança e KPIs em tempo real.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lux-card-graphite">
                     <div class="flex flex-wrap gap-3">
-                        <span class="badge-outline">KPI em tempo real</span>
-                        <span class="badge-outline">Gestão documental</span>
-                        <span class="badge-outline">Suporte dedicado</span>
+                        <span class="lux-badge-gold">Prime concierge</span>
+                        <span class="lux-badge-outline">Omnichannel</span>
                     </div>
-                </div>
-                <div class="relative flex-1">
-                    <div class="absolute -inset-6 rounded-3xl bg-gradient-to-br from-blue-500/30 to-indigo-500/20 blur-2xl"></div>
-                    <div class="relative space-y-6 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-                        <div class="timeline-step">
-                            <div class="timeline-index">01</div>
-                            <div>
-                                <h3 class="text-xl font-semibold">Cadastro &amp; perfil</h3>
-                                <p class="text-sm text-white/70">Validação segura dos dados e definição das preferências ou portfólio de imóveis.</p>
-                            </div>
+                    <div class="mt-8 grid gap-6 md:grid-cols-2">
+                        <div class="space-y-3">
+                            <h3 class="text-lg font-semibold text-white">Tecnologia + pessoas</h3>
+                            <p class="text-sm text-white/60">Dashboards premium conectam IA, equipe concierge e parceiros estratégicos para um acompanhamento sem fricção.</p>
                         </div>
-                        <div class="timeline-step">
-                            <div class="timeline-index">02</div>
-                            <div>
-                                <h3 class="text-xl font-semibold">Curadoria assistida</h3>
-                                <p class="text-sm text-white/70">Equipe prime prepara dossiês personalizados com insights exclusivos.</p>
-                            </div>
+                        <div class="space-y-3">
+                            <h3 class="text-lg font-semibold text-white">Dossiês instantâneos</h3>
+                            <p class="text-sm text-white/60">Cada imóvel ganha ficha técnica, indicadores financeiros, jornada de diligência e histórico de interações.</p>
                         </div>
-                        <div class="timeline-step">
-                            <div class="timeline-index">03</div>
-                            <div>
-                                <h3 class="text-xl font-semibold">Match inteligente</h3>
-                                <p class="text-sm text-white/70">Integração entre investidores, corretores e empresários com acompanhamento dedicado.</p>
-                            </div>
+                        <div class="space-y-3">
+                            <h3 class="text-lg font-semibold text-white">Integração concierge</h3>
+                            <p class="text-sm text-white/60">WhatsApp, vídeo, telefone ou e-mail com roteamento automático e resumos prontos para acelerar a decisão.</p>
                         </div>
-                        <div class="timeline-step">
-                            <div class="timeline-index">04</div>
-                            <div>
-                                <h3 class="text-xl font-semibold">Fechamento prime</h3>
-                                <p class="text-sm text-white/70">Suporte jurídico e financeiro até a assinatura, com KPIs pós-venda.</p>
-                            </div>
-                        </div>
-                        <a href="{{ route('register') }}" class="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:from-indigo-500 hover:to-purple-500">
-                            Agendar demonstração
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Plans -->
-    <section class="bg-white py-20">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="gold-badge uppercase tracking-[0.3em]">Planos Prime</span>
-                <h2 class="mt-6 text-4xl font-semibold text-slate-900">Escolha a intensidade da sua jornada</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-                    Todos os planos incluem acesso ao ecossistema Prime Match Imo, suporte especializado e métricas que impulsionam decisões inteligentes.
-                </p>
-            </div>
-            <div class="grid gap-10 lg:grid-cols-3">
-                <div class="plan-card">
-                    <h3 class="text-xl font-semibold text-slate-900">Prime Start</h3>
-                    <p class="mt-2 text-sm text-slate-500">Ideal para começar a explorar oportunidades com curadoria estratégica.</p>
-                    <div class="mt-6 text-4xl font-semibold text-slate-900">R$ 350<span class="text-base font-normal text-slate-500">/mês</span></div>
-                    <ul class="mt-6 space-y-3 text-sm text-slate-500">
-                        <li>Até 5 imóveis com relatórios completos</li>
-                        <li>Curadoria prime sob demanda</li>
-                        <li>Suporte via WhatsApp em horário comercial</li>
-                        <li>Dashboard com indicadores básicos</li>
-                    </ul>
-                    <a href="{{ route('register') }}" class="plan-button">Assinar Start</a>
-                </div>
-                <div class="plan-card border-2 border-blue-500 shadow-[0_25px_70px_rgba(59,130,246,0.15)]">
-                    <div class="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-4 py-1 text-sm font-semibold text-blue-600">Mais escolhido</div>
-                    <h3 class="mt-4 text-xl font-semibold text-slate-900">Prime Growth</h3>
-                    <p class="mt-2 text-sm text-slate-500">Perfeito para quem deseja escalar resultados com monitoramento ativo.</p>
-                    <div class="mt-6 text-4xl font-semibold text-slate-900">R$ 250<span class="text-base font-normal text-slate-500">/mês</span></div>
-                    <ul class="mt-6 space-y-3 text-sm text-slate-500">
-                        <li>Até 15 imóveis com destaque premium</li>
-                        <li>Consultorias mensais personalizadas</li>
-                        <li>Integração com CRM e leads qualificados</li>
-                        <li>Analytics avançado e relatórios mensais</li>
-                    </ul>
-                    <a href="{{ route('register') }}" class="plan-button bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20 hover:from-indigo-500 hover:to-purple-500">Quero o Growth</a>
-                </div>
-                <div class="plan-card">
-                    <h3 class="text-xl font-semibold text-slate-900">Prime Legacy</h3>
-                    <p class="mt-2 text-sm text-slate-500">Para operações robustas que exigem exclusividade e atenção total.</p>
-                    <div class="mt-6 text-4xl font-semibold text-slate-900">R$ 200<span class="text-base font-normal text-slate-500">/mês</span></div>
-                    <ul class="mt-6 space-y-3 text-sm text-slate-500">
-                        <li>Portfólio ilimitado com curadoria contínua</li>
-                        <li>Destaques exclusivos e produção de mídia</li>
-                        <li>Suporte 24/7 e squad dedicado</li>
-                        <li>Monitoramento pós-venda e NPS</li>
-                    </ul>
-                    <a href="{{ route('register') }}" class="plan-button">Conversar com um especialista</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="bg-slate-50 py-20">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <span class="gold-badge uppercase tracking-[0.3em]">Histórias reais</span>
-                <h2 class="mt-6 text-4xl font-semibold text-slate-900">Clientes que elevaram seus resultados</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Nossa plataforma cria conexões de valor que transformam negócios imobiliários em experiências únicas.</p>
-            </div>
-            <div class="grid gap-8 md:grid-cols-2">
-                <div class="testimonial-card">
-                    <p class="text-lg text-slate-600">“Em menos de dois meses, conseguimos fechar três operações relevantes. A curadoria e o acompanhamento foram decisivos para reduzir riscos e acelerar o processo.”</p>
-                    <div class="mt-6 flex items-center gap-4">
-                        <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500"></div>
-                        <div>
-                            <p class="font-semibold text-slate-900">Fernanda Souza</p>
-                            <p class="text-sm text-slate-500">Investidora • São Paulo/SP</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="text-lg text-slate-600">“A equipe Prime Match Imo entende as dores de quem está lançando empreendimentos. Além de leads altamente qualificados, recebemos inteligência de mercado constantemente.”</p>
-                    <div class="mt-6 flex items-center gap-4">
-                        <div class="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500"></div>
-                        <div>
-                            <p class="font-semibold text-slate-900">Eduardo Martins</p>
-                            <p class="text-sm text-slate-500">Diretor Comercial • Curitiba/PR</p>
+                        <div class="space-y-3">
+                            <h3 class="text-lg font-semibold text-white">Comandos rápidos</h3>
+                            <p class="text-sm text-white/60">Quick actions para investidores, empresários e corretores acionarem concierge e visitas instantaneamente.</p>
                         </div>
                     </div>
                 </div>
@@ -271,16 +195,327 @@
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="relative overflow-hidden bg-[#050B2C] py-20 text-white">
-        <div class="absolute inset-0 opacity-60" style="background: radial-gradient(circle at top right, rgba(59,130,246,0.25), transparent 40%), radial-gradient(circle at bottom left, rgba(124,58,237,0.25), transparent 45%);"></div>
-        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span class="gold-badge uppercase tracking-[0.3em]">Pronto para evoluir?</span>
-            <h2 class="mt-6 text-4xl font-semibold">Conduzimos você ao imóvel certo, no momento ideal</h2>
-            <p class="mt-4 text-lg text-white/80">Cadastre-se agora e descubra como o matchmaking imobiliário premium impulsiona negócios para investidores, empresários e corretores.</p>
-            <div class="mt-8 flex flex-wrap justify-center gap-4">
-                <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-lg font-semibold text-[#050B2C] shadow-lg transition hover:bg-blue-50">Criar conta gratuita</a>
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 rounded-full border border-white/30 px-8 py-3 text-lg font-semibold text-white/80 transition hover:border-white hover:text-white">Entrar na minha conta</a>
+    <section id="investidor" class="lux-section">
+        <div class="lux-container">
+            <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+                <div class="max-w-xl space-y-6">
+                    <span class="lux-badge-outline">Para investidores</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Landing cinematográfica com filtros inteligentes</h2>
+                    <p class="text-white/60">
+                        Acesse imóveis com indicadores financeiros atualizados, status de diligência e ações rápidas para visita, dossiê ou concierge – tudo sem sair do dashboard.
+                    </p>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Filtros prime</p>
+                            <p class="mt-2 text-sm text-white/70">Cidade, tipologia, faixa de valor e preferências financeiras com salvamento automático.</p>
+                        </div>
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Cards cinematográficos</p>
+                            <p class="mt-2 text-sm text-white/70">Descrição curada, snapshots financeiros e status de diligência com CTAs omnichannel.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lux-card-dark w-full max-w-2xl">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-6">
+                        <h3 class="text-xl font-semibold text-white">Como funciona</h3>
+                        <div class="flex gap-2">
+                            <span class="lux-tab lux-tab-active">Recomendações</span>
+                            <span class="lux-tab">Negociações</span>
+                            <span class="lux-tab">Watchlist</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid gap-4">
+                        <div class="lux-property-card">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Campos do Jordão • High-end</p>
+                                    <h4 class="mt-1 text-lg font-semibold text-white">Chalé boutique com concierge full service</h4>
+                                </div>
+                                <span class="lux-property-status text-white/70">Diligência 92%</span>
+                            </div>
+                            <p class="text-sm text-white/60">Renda híbrida com estadias premium e programa de hospitalidade exclusivo com concierge Prime Match.</p>
+                            <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-3">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">R$ 6.480.000</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Yield esperado</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">14,5% a.a.</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Concierge</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">Pronto em 5 min</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="{{ route('register') }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Marcar visita</a>
+                                <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, quero falar sobre o chalé boutique de Campos do Jordão.') }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Concierge agora</a>
+                                <a href="{{ route('login') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Salvar na watchlist</a>
+                            </div>
+                        </div>
+                        <div class="lux-property-card">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Florianópolis • Corporate</p>
+                                    <h4 class="mt-1 text-lg font-semibold text-white">Campus tech com contrato triple net</h4>
+                                </div>
+                                <span class="lux-property-status text-white/70">Negociação ativa</span>
+                            </div>
+                            <p class="text-sm text-white/60">Contrato de 12 anos com reajuste IPCA, expansão planejada e concierge dedicado para visitas e due diligence.</p>
+                            <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-3">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">R$ 42.000.000</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Cap rate</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">9,2%</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Concierge</p>
+                                    <p class="mt-1 text-lg font-semibold text-white">War room pronto</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="{{ route('register') }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Agendar dossiê</a>
+                                <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, quero avançar com o campus tech em Florianópolis.') }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Concierge</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="empresario" class="lux-section">
+        <div class="lux-container">
+            <div class="grid gap-12 lg:grid-cols-[1fr_1fr]">
+                <div class="space-y-6">
+                    <span class="lux-badge-outline">Para empresários</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Dashboard premium com simulador de ROI e planos com glow dourado</h2>
+                    <p class="text-white/60">
+                        Cadastre imóveis em minutos, acompanhe métricas em tempo real e destaque lançamentos com anéis dourados e sombras exclusivas para conquistar investidores.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <span class="lux-badge-gold">Planos flexíveis</span>
+                            <span class="lux-badge-outline">ROI turbo</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-white/60">
+                            <li>• Alternância mensal, trimestral ou anual com comparação dinâmica.</li>
+                            <li>• Cartões destacados com brilho dourado e CTA concierge.</li>
+                            <li>• Simulador ajustável com lift de concierge e métricas auxiliares.</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="{{ route('login') }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Ver painel</a>
+                        <a href="{{ route('register') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Solicitar demonstração</a>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="lux-card-dark">
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="text-xl font-semibold text-white">Planos prime</h3>
+                            <div class="flex gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                                <span class="lux-tab lux-tab-active">Mensal</span>
+                                <span class="lux-tab">Trimestral</span>
+                                <span class="lux-tab">Anual</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+                            <div class="lux-card-gold">
+                                <p class="text-xs uppercase tracking-[0.3em] text-lux-gold/80">Essential</p>
+                                <p class="mt-3 text-2xl font-semibold text-white">R$ 890</p>
+                                <p class="mt-2 text-xs text-white/70">Match básicos + concierge agendado</p>
+                            </div>
+                            <div class="lux-card-gold border-2 border-lux-gold/70 bg-lux-gold/15 shadow-[0_0_35px_rgba(255,215,0,0.45)]">
+                                <p class="text-xs uppercase tracking-[0.3em] text-lux-gold/80">Prime</p>
+                                <p class="mt-3 text-2xl font-semibold text-white">R$ 2.450</p>
+                                <p class="mt-2 text-xs text-white/70">Destaques ilimitados e concierge on-demand</p>
+                            </div>
+                            <div class="lux-card-gold">
+                                <p class="text-xs uppercase tracking-[0.3em] text-lux-gold/80">Master</p>
+                                <p class="mt-3 text-2xl font-semibold text-white">Sob consulta</p>
+                                <p class="mt-2 text-xs text-white/70">Estruturas personalizadas, equipe e IA dedicadas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lux-card-dark">
+                        <h3 class="text-xl font-semibold text-white">Simulador de ROI</h3>
+                        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                            <div class="lux-stat-bubble">
+                                <span class="text-white/50">Receita potencial</span>
+                                <span class="text-xl font-semibold text-white">R$ 4,2M</span>
+                                <span class="text-white/40">Com concierge + IA</span>
+                            </div>
+                            <div class="lux-stat-bubble">
+                                <span class="text-white/50">Lift concierge</span>
+                                <span class="text-xl font-semibold text-white">+27%</span>
+                                <span class="text-white/40">Conversão em 60 dias</span>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-sm text-white/60">Ajuste variáveis de preço, ocupação e pipeline de leads para visualizar cenários de crescimento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="master" class="lux-section">
+        <div class="lux-container">
+            <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+                <div class="space-y-6">
+                    <span class="lux-badge-outline">Master dashboard</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Painel administrativo com cartões dourados e orquestração total</h2>
+                    <p class="text-white/60">
+                        Visualize performance, abra qualquer dashboard em nova aba, ajuste marca, IA e permissões em tempo real com controles dourados e badges premium.
+                    </p>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Atalhos</p>
+                            <p class="mt-2 text-sm text-white/70">"Ver como" investidor, empresário ou concierge em um clique para conduzir operações.</p>
+                        </div>
+                        <div class="lux-card-surface">
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/50">Orquestração</p>
+                            <p class="mt-2 text-sm text-white/70">Tabs para planos, pagamentos, imóveis, usuários e alertas com filtros rápidos e ações instantâneas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lux-card-dark">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-6">
+                        <h3 class="text-xl font-semibold text-white">Painel master</h3>
+                        <div class="flex gap-2 text-xs uppercase tracking-[0.3em] text-white/60">
+                            <span class="lux-tab lux-tab-active">Planos</span>
+                            <span class="lux-tab">Pagamentos</span>
+                            <span class="lux-tab">Imóveis</span>
+                            <span class="lux-tab">Alertas</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid gap-5 md:grid-cols-2">
+                        <div class="lux-card-gold">
+                            <h4 class="text-lg font-semibold text-white">Radar de performance</h4>
+                            <p class="mt-2 text-sm text-white/70">KPIs em tempo real, funil de negociações, conversão concierge e distribuição por perfil.</p>
+                        </div>
+                        <div class="lux-card-gold">
+                            <h4 class="text-lg font-semibold text-white">Gerar relatórios</h4>
+                            <p class="mt-2 text-sm text-white/70">Exportação com branding customizado, insights de IA e trilhas de auditoria.</p>
+                        </div>
+                        <div class="lux-card-gold">
+                            <h4 class="text-lg font-semibold text-white">Ajustes de marca/IA</h4>
+                            <p class="mt-2 text-sm text-white/70">Controle de voice & tone, recomendações de IA e permissões de criação de imóveis.</p>
+                        </div>
+                        <div class="lux-card-gold">
+                            <h4 class="text-lg font-semibold text-white">Segmentação</h4>
+                            <p class="mt-2 text-sm text-white/70">Filtre usuários por perfil, status, plano ou concierge responsável em poucos cliques.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <a href="{{ route('login') }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Abrir dashboard Master</a>
+                        <a href="{{ route('login') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Ver como investidor</a>
+                        <a href="{{ route('login') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Ver como empresário</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="concierge" class="lux-section">
+        <div class="lux-container">
+            <div class="space-y-12">
+                <div class="space-y-4 text-center">
+                    <span class="lux-badge-outline">Concierge e prova social</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Momentos concierge que encantam</h2>
+                    <p class="mx-auto max-w-3xl text-lg text-white/60">Integração direta com WhatsApp, telefone, vídeo ou e-mail. Cada ação gera resumo automático da oportunidade e registro no pipeline.</p>
+                </div>
+                <div class="grid gap-6 lg:grid-cols-3">
+                    <div class="lux-card-dark">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-white">Confiança</h3>
+                            <span class="lux-badge-gold">NPS 98</span>
+                        </div>
+                        <p class="mt-4 text-sm text-white/60">Auditorias, trilhas de aprovação e selos de diligência com status dourado garantem segurança para investidores e empresários.</p>
+                    </div>
+                    <div class="lux-card-dark">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-white">Depoimentos</h3>
+                            <span class="lux-badge-gold">Stories prime</span>
+                        </div>
+                        <p class="mt-4 text-sm text-white/60">"A Prime Match Imo conectou nosso family office a três oportunidades off-market com concierge impecável" – Aline F., São Paulo.</p>
+                    </div>
+                    <div class="lux-card-dark">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-white">Próximos lançamentos</h3>
+                            <span class="lux-badge-gold">Coming soon</span>
+                        </div>
+                        <p class="mt-4 text-sm text-white/60">Residenciais boutique no litoral norte, complexos corporativos e propriedades rurais produtivas com dossiê prime.</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-white/60">
+                    <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, quero falar agora com o time prime.') }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">WhatsApp concierge</a>
+                    <a href="mailto:concierge@primematchimo.com.br" class="lux-outline-button text-xs uppercase tracking-[0.3em]">E-mail dedicado</a>
+                    <a href="tel:+5514996845854" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Telefone direto</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lux-section">
+        <div class="lux-container">
+            <div class="space-y-10">
+                <div class="space-y-4 text-center">
+                    <span class="lux-badge-outline">Os 12 prime</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Nossos pilares de excelência</h2>
+                </div>
+                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                    @foreach([
+                        'Curadoria humanizada com IA assistida',
+                        'Concierge omnichannel com SLA de 5 minutos',
+                        'Dossiês completos com indicadores financeiros',
+                        'Watchlist inteligente com alertas personalizados',
+                        'Simuladores de ROI com cenários dinâmicos',
+                        'Integração com consultoria jurídica e fiscal',
+                        'Planos flexíveis com glow dourado',
+                        'Dashboards premium com trilhas de auditoria',
+                        'Prova social e métricas de confiança em tempo real',
+                        'Visitas presenciais e virtuais com concierge',
+                        'Orquestração master com permissões avançadas',
+                        'Comunicação automatizada com resumo das oportunidades',
+                    ] as $pillar)
+                        <div class="lux-card-surface flex items-start gap-4">
+                            <span class="mt-1 flex h-8 w-8 items-center justify-center rounded-full border border-lux-gold/50 bg-lux-gold/10 text-sm font-semibold text-lux-gold">★</span>
+                            <p class="text-sm text-white/70">{{ $pillar }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="lux-section">
+        <div class="lux-container">
+            <div class="grid gap-12 lg:grid-cols-[1fr_1.1fr]">
+                <div class="space-y-6">
+                    <span class="lux-badge-outline">Jornada prime</span>
+                    <h2 class="font-poppins text-4xl font-semibold text-white">Quatro etapas para um match memorável</h2>
+                    <p class="text-white/60">Do briefing ao pós-venda, cada etapa é acompanhada por concierge, IA e especialistas para garantir velocidade, governança e brilho dourado em cada interação.</p>
+                </div>
+                <div class="grid gap-4">
+                    @foreach([
+                        ['index' => '01', 'title' => 'Briefing inteligente', 'desc' => 'Coletamos objetivos de investimento ou portfólio com validação de dados e compliance.'],
+                        ['index' => '02', 'title' => 'Curadoria assistida', 'desc' => 'Equipe prime prepara dossiês com análises financeiras, insights e cronogramas.'],
+                        ['index' => '03', 'title' => 'Match & negociação', 'desc' => 'Negociação acompanhada com concierge omnichannel, visitas e war room digital.'],
+                        ['index' => '04', 'title' => 'Fechamento prime', 'desc' => 'Suporte jurídico, financeiro e concierge pós-fechamento com métricas contínuas.'],
+                    ] as $step)
+                        <div class="lux-card-dark flex items-center gap-6">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-full border border-lux-gold/60 bg-lux-gold/15 text-lg font-semibold text-lux-gold">{{ $step['index'] }}</div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">{{ $step['title'] }}</h3>
+                                <p class="mt-1 text-sm text-white/60">{{ $step['desc'] }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>

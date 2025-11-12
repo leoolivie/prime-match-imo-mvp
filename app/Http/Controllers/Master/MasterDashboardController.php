@@ -106,7 +106,7 @@ class MasterDashboardController extends Controller
     // Property Management
     public function properties()
     {
-        $properties = Property::with('owner')->paginate(20);
+        $properties = Property::with('owner')->withCount('leads')->paginate(20);
         return view('master.properties.index', compact('properties'));
     }
 

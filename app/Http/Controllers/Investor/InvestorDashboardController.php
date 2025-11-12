@@ -11,20 +11,86 @@ use Illuminate\Support\Facades\Auth;
 
 class InvestorDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        
-        $searches = PrimeSearch::where('user_id', $user->id)
-            ->latest()
-            ->paginate(10);
-            
-        $leads = Lead::where('investor_id', $user->id)
-            ->with(['property', 'primeBroker'])
-            ->latest()
-            ->paginate(10);
 
-        return view('investor.dashboard', compact('searches', 'leads'));
+        $searchQuery = PrimeSearch::where('user_id', $user->id)->latest();
+        $leadBaseQuery = Lead::where('investor_id', $user->id);
+
+        $metrics = [
+            'searches' => (clone $searchQuery)->count(),
+            'matches' => (clone $leadBaseQuery)->count(),
+            'negotiations' => (clone $leadBaseQuery)->whereIn('status', ['negotiating', 'viewing_scheduled', 'viewing_done'])->count(),
+        ];
+
+        $leads = (clone $leadBaseQuery)
+            ->with(['property.primaryImage', 'primeBroker'])
+            ->latest()
+            ->paginate(6);
+
+        $searches = $searchQuery->take(6)->get();
+
+        $featuredProperties = Property::with(['primaryImage', 'owner'])
+            ->where('active', true)
+            ->where('status', 'available')
+            ->orderByDesc('highlighted')
+            ->orderByDesc('highlighted_until')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        $propertyFilters = Property::query()
+            ->select('city')
+            ->whereNotNull('city')
+            ->distinct()
+            ->orderBy('city')
+            ->pluck('city');
+
+        $propertiesQuery = Property::with(['primaryImage', 'owner'])
+            ->where('active', true)
+            ->where('status', 'available');
+
+        if ($request->filled('city') && $request->city !== 'todas') {
+            $propertiesQuery->where('city', $request->city);
+        }
+
+        if ($request->filled('type') && $request->type !== 'todas') {
+            $propertiesQuery->where('type', $request->type);
+        }
+
+        if ($request->filled('value_range') && $request->value_range !== 'todas') {
+            [$min, $max] = match ($request->value_range) {
+                'ate-1m' => [0, 1000000],
+                '1-5m' => [1000000, 5000000],
+                '5-10m' => [5000000, 10000000],
+                '10m+' => [10000000, null],
+                default => [null, null],
+            };
+
+            if (!is_null($min)) {
+                $propertiesQuery->where('price', '>=', $min);
+            }
+
+            if (!is_null($max)) {
+                $propertiesQuery->where('price', '<=', $max);
+            }
+        }
+
+        $properties = $propertiesQuery
+            ->orderByDesc('highlighted')
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('investor.dashboard', compact(
+            'searches',
+            'leads',
+            'featuredProperties',
+            'properties',
+            'propertyFilters',
+            'metrics',
+        ));
     }
 
     public function search()
@@ -121,5 +187,46 @@ class InvestorDashboardController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Interesse registrado! Um corretor prime entrará em contato em breve.');
+    }
+
+    public function contactConcierge(Property $property)
+    {
+        $user = Auth::user();
+
+        if (!$property->active || $property->status !== 'available') {
+            return redirect()->back()->with('error', 'Este imóvel não está disponível no momento.');
+        }
+
+        $lead = Lead::firstOrCreate(
+            [
+                'property_id' => $property->id,
+                'investor_id' => $user->id,
+            ],
+            [
+                'status' => 'new',
+            ]
+        );
+
+        $lead->update([
+            'status' => 'contacted',
+            'notes' => trim(($lead->notes ?? '') . "\nContato via concierge (WhatsApp) em " . now()->format('d/m/Y H:i')),
+            'contacted_at' => now(),
+        ]);
+
+        $message = rawurlencode(
+            sprintf(
+                'Olá Prime Concierge, sou %s. Quero avançar com o imóvel %s em %s/%s (ID %d) anunciado por %s. Valor: R$ %s. Meu e-mail: %s. Obrigado!',
+                $user->name,
+                $property->title,
+                $property->city,
+                $property->state,
+                $property->id,
+                optional($property->owner)->name ?? 'Empresário Prime',
+                number_format($property->price, 2, ',', '.'),
+                $user->email
+            )
+        );
+
+        return redirect()->away('https://wa.me/5514996845854?text=' . $message);
     }
 }

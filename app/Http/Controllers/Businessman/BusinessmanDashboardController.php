@@ -73,7 +73,8 @@ class BusinessmanDashboardController extends Controller
     {
         $user = Auth::user();
         $properties = Property::where('user_id', $user->id)
-            ->with(['primaryImage', 'leads'])
+            ->with(['primaryImage'])
+            ->withCount('leads')
             ->latest()
             ->paginate(15);
 

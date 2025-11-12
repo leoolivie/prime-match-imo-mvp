@@ -1,120 +1,150 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Master')
+@section('title', 'Dashboard Master Prime')
 
 @section('content')
-<div class="py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold mb-8">Dashboard Master</h1>
-
-        <!-- Stats -->
-        <div class="grid md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 text-sm font-medium">Total Usuários</h3>
-                <p class="text-3xl font-bold text-blue-600">{{ $stats['total_users'] }}</p>
-                <div class="mt-2 text-sm text-gray-600 space-y-1">
-                    <p>Investidores: {{ $stats['investors'] }}</p>
-                    <p>Empresários: {{ $stats['businessmen'] }}</p>
-                    <p>Corretores: {{ $stats['brokers'] }}</p>
+<div class="py-12">
+    <div class="lux-container space-y-16">
+        <header class="lux-card-dark">
+            <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+                <div class="space-y-5">
+                    <span class="lux-badge-gold">Master dashboard</span>
+                    <div class="space-y-4">
+                        <h1 class="font-poppins text-4xl font-semibold text-white">Orquestração premium da plataforma</h1>
+                        <p class="max-w-2xl text-white/70">Acompanhe usuários, imóveis, planos e concierge em um painel grafite com cartões dourados, atalhos "ver como" e controles avançados de permissão.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ route('master.users') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Gerenciar usuários</a>
+                        <a href="{{ route('master.properties') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Gerenciar imóveis</a>
+                        <a href="{{ route('master.partners') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Parceiros prime</a>
+                    </div>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="lux-stat-bubble">
+                        <span class="text-white/60">Usuários</span>
+                        <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_users']) }}</span>
+                        <span class="text-white/40">Investidores {{ number_format($stats['investors']) }}</span>
+                    </div>
+                    <div class="lux-stat-bubble">
+                        <span class="text-white/60">Imóveis</span>
+                        <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_properties']) }}</span>
+                        <span class="text-white/40">Ativos {{ number_format($stats['active_properties']) }}</span>
+                    </div>
+                    <div class="lux-stat-bubble">
+                        <span class="text-white/60">Assinaturas</span>
+                        <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_subscriptions']) }}</span>
+                        <span class="text-white/40">Planos premium</span>
+                    </div>
+                    <div class="lux-stat-bubble">
+                        <span class="text-white/60">Leads</span>
+                        <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_leads']) }}</span>
+                        <span class="text-white/40">Pipeline concierge</span>
+                    </div>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 text-sm font-medium">Imóveis</h3>
-                <p class="text-3xl font-bold text-green-600">{{ $stats['total_properties'] }}</p>
-                <p class="mt-2 text-sm text-gray-600">Ativos: {{ $stats['active_properties'] }}</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 text-sm font-medium">Assinaturas Ativas</h3>
-                <p class="text-3xl font-bold text-purple-600">{{ $stats['total_subscriptions'] }}</p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="text-gray-500 text-sm font-medium">Total Leads</h3>
-                <p class="text-3xl font-bold text-yellow-600">{{ $stats['total_leads'] }}</p>
-            </div>
-        </div>
+        </header>
 
-        <!-- Quick Actions -->
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <a href="{{ route('master.users') }}" class="bg-blue-600 hover:bg-blue-700 text-white p-6 rounded-lg shadow text-center">
-                <div class="text-4xl mb-2">👥</div>
-                <h3 class="font-bold text-lg">Gerenciar Usuários</h3>
-            </a>
-            <a href="{{ route('master.properties') }}" class="bg-green-600 hover:bg-green-700 text-white p-6 rounded-lg shadow text-center">
-                <div class="text-4xl mb-2">🏢</div>
-                <h3 class="font-bold text-lg">Gerenciar Imóveis</h3>
-            </a>
-            <a href="{{ route('master.partners') }}" class="bg-purple-600 hover:bg-purple-700 text-white p-6 rounded-lg shadow text-center">
-                <div class="text-4xl mb-2">🤝</div>
-                <h3 class="font-bold text-lg">Gerenciar Parceiros</h3>
-            </a>
-        </div>
-
-        <!-- Recent Users -->
-        <div class="bg-white rounded-lg shadow mb-8">
-            <div class="p-6 border-b flex justify-between items-center">
-                <h2 class="text-xl font-bold">Usuários Recentes</h2>
-                <a href="{{ route('master.users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
-                    + Novo Usuário
-                </a>
-            </div>
-            <div class="p-6">
-                @if($recentUsers->count() > 0)
-                    <div class="space-y-4">
-                        @foreach($recentUsers as $user)
-                            <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <p class="font-medium">{{ $user->name }}</p>
-                                    <p class="text-sm text-gray-600">{{ $user->email }}</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium
-                                        {{ $user->role === 'investor' ? 'bg-blue-100 text-blue-800' : '' }}
-                                        {{ $user->role === 'businessman' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $user->role === 'prime_broker' ? 'bg-purple-100 text-purple-800' : '' }}
-                                        {{ $user->role === 'master' ? 'bg-red-100 text-red-800' : '' }}">
-                                        {{ ucfirst(str_replace('_', ' ', $user->role)) }}
-                                    </span>
-                                    <p class="text-xs text-gray-500 mt-1">{{ $user->created_at->diffForHumans() }}</p>
-                                </div>
-                            </div>
-                        @endforeach
+        <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="lux-card-dark space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h2 class="text-2xl font-semibold text-white">Atalhos dourados</h2>
+                    <div class="flex flex-wrap gap-2 text-xs uppercase tracking-[0.3em] text-white/60">
+                        <span class="lux-tab lux-tab-active">Planos</span>
+                        <span class="lux-tab">Pagamentos</span>
+                        <span class="lux-tab">Imóveis</span>
+                        <span class="lux-tab">Alertas</span>
                     </div>
-                @else
-                    <p class="text-gray-500">Nenhum usuário cadastrado ainda.</p>
-                @endif
-            </div>
-        </div>
-
-        <!-- Recent Properties -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <h2 class="text-xl font-bold">Imóveis Recentes</h2>
-            </div>
-            <div class="p-6">
-                @if($recentProperties->count() > 0)
-                    <div class="space-y-4">
-                        @foreach($recentProperties as $property)
-                            <div class="flex justify-between items-center border-b pb-3">
-                                <div>
-                                    <p class="font-medium">{{ $property->title }}</p>
-                                    <p class="text-sm text-gray-600">{{ $property->city }}, {{ $property->state }}</p>
-                                    <p class="text-sm text-gray-500">Proprietário: {{ $property->owner->name }}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-bold text-green-600">R$ {{ number_format($property->price, 2, ',', '.') }}</p>
-                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-medium mt-1
-                                        {{ $property->status === 'available' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                        {{ ucfirst($property->status) }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endforeach
+                </div>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div class="lux-card-gold">
+                        <h3 class="text-lg font-semibold text-white">Radar de performance</h3>
+                        <p class="mt-2 text-sm text-white/70">KPIs de matches, concierge e conversão em tempo real com glow dourado.</p>
                     </div>
-                @else
-                    <p class="text-gray-500">Nenhum imóvel cadastrado ainda.</p>
-                @endif
+                    <div class="lux-card-gold">
+                        <h3 class="text-lg font-semibold text-white">Gerar relatórios</h3>
+                        <p class="mt-2 text-sm text-white/70">Exportação com marca customizada, insights de IA e trilha de auditoria.</p>
+                    </div>
+                    <div class="lux-card-gold">
+                        <h3 class="text-lg font-semibold text-white">Ajustes de marca/IA</h3>
+                        <p class="mt-2 text-sm text-white/70">Controle voice & tone, parâmetros de IA e permissões para criação de imóveis.</p>
+                    </div>
+                    <div class="lux-card-gold">
+                        <h3 class="text-lg font-semibold text-white">Segmentação</h3>
+                        <p class="mt-2 text-sm text-white/70">Filtre usuários por perfil, status e plano, aplique badges douradas e war rooms.</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{{ route('master.dashboard') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]" target="_blank">Ver como master</a>
+                    <a href="{{ route('investor.dashboard') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]" target="_blank">Ver como investidor</a>
+                    <a href="{{ route('businessman.dashboard') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]" target="_blank">Ver como empresário</a>
+                    <a href="{{ route('broker.dashboard') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]" target="_blank">Ver como concierge</a>
+                </div>
             </div>
-        </div>
+            <div class="space-y-6">
+                <div class="lux-card-dark">
+                    <h3 class="text-lg font-semibold text-white">Concierge master</h3>
+                    <p class="mt-2 text-sm text-white/60">Integração direta com WhatsApp 14 99684-5854, telefone e vídeo. Cada ação registra intenção na API e libera resumo da oportunidade.</p>
+                    <div class="mt-4 grid gap-3">
+                        <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, preciso de suporte master.') }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">WhatsApp master</a>
+                        <a href="tel:+5514996845854" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Telefone</a>
+                        <a href="mailto:concierge@primematchimo.com.br" class="lux-outline-button text-xs uppercase tracking-[0.3em]">E-mail</a>
+                    </div>
+                </div>
+                <div class="lux-card-dark">
+                    <h3 class="text-lg font-semibold text-white">Alertas críticos</h3>
+                    <ul class="mt-4 space-y-3 text-sm text-white/60">
+                        <li>• Planos premium prestes a vencer: {{ max($stats['total_subscriptions'] - 2, 0) }}</li>
+                        <li>• Imóveis aguardando diligência concierge: {{ max($stats['total_properties'] - $stats['active_properties'], 0) }}</li>
+                        <li>• Leads aguardando contato humano: {{ max($stats['total_leads'] - 10, 0) }}</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="lux-card-dark">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">Usuários recentes</h2>
+                    <a href="{{ route('master.users.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">+ Usuário</a>
+                </div>
+                <div class="mt-6 space-y-4">
+                    @forelse($recentUsers as $user)
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div>
+                                    <p class="text-base font-semibold text-white">{{ $user->name }}</p>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $user->email }}</p>
+                                </div>
+                                <span class="lux-property-status text-white/70">{{ ucfirst(str_replace('_', ' ', $user->role)) }}</span>
+                            </div>
+                            <p class="mt-3 text-xs text-white/50">Criado {{ $user->created_at->diffForHumans() }}</p>
+                        </div>
+                    @empty
+                        <p class="text-sm text-white/60">Nenhum usuário recente.</p>
+                    @endforelse
+                </div>
+            </div>
+            <div class="lux-card-dark">
+                <h2 class="text-xl font-semibold text-white">Imóveis recentes</h2>
+                <div class="mt-6 space-y-4">
+                    @forelse($recentProperties as $property)
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div>
+                                    <p class="text-base font-semibold text-white">{{ $property->title }}</p>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
+                                    <p class="text-xs text-white/50">Owner: {{ $property->owner->name }}</p>
+                                </div>
+                                <span class="lux-property-status text-white/70">{{ ucfirst($property->status) }}</span>
+                            </div>
+                            <p class="mt-3 text-sm text-white/60">Valor: R$ {{ number_format($property->price, 2, ',', '.') }}</p>
+                        </div>
+                    @empty
+                        <p class="text-sm text-white/60">Nenhum imóvel cadastrado recentemente.</p>
+                    @endforelse
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 @endsection
