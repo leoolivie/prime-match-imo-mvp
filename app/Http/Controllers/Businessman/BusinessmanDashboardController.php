@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
+use App\Models\TelemetryMetric;
+use App\Services\TelemetryRecorder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,17 +18,40 @@ class BusinessmanDashboardController extends Controller
         $user = Auth::user();
         
         $properties = Property::where('user_id', $user->id)
-            ->withCount('leads')
+            ->with('primaryImage')
+            ->orderByDesc('highlighted')
             ->latest()
-            ->paginate(10);
-            
+            ->paginate(6);
+
+        $propertyIds = $properties->pluck('id')->all();
+        $metricsTotal = TelemetryMetric::totalsForProperties($propertyIds, ['view_imovel', 'click_whatsapp_concierge']);
+        $metrics7 = TelemetryMetric::totalsForProperties($propertyIds, ['view_imovel', 'click_whatsapp_concierge'], 7);
+        $metrics30 = TelemetryMetric::totalsForProperties($propertyIds, ['view_imovel', 'click_whatsapp_concierge'], 30);
+
+        $properties->getCollection()->transform(function (Property $property) use ($metricsTotal, $metrics7, $metrics30) {
+            $views30 = $metrics30[$property->id]['view_imovel'] ?? 0;
+            $clicks30 = $metrics30[$property->id]['click_whatsapp_concierge'] ?? 0;
+
+            $property->dashboard_metrics = [
+                'views7' => $metrics7[$property->id]['view_imovel'] ?? 0,
+                'views30' => $views30,
+                'clicks' => $metricsTotal[$property->id]['click_whatsapp_concierge'] ?? 0,
+                'clicks30' => $clicks30,
+                'conversion' => $views30 > 0 ? round(($clicks30 / $views30) * 100, 1) : 0,
+            ];
+
+            return $property;
+        });
+
         $subscription = $user->activeSubscription;
-        
+
         $stats = [
             'total_properties' => Property::where('user_id', $user->id)->count(),
             'active_properties' => Property::where('user_id', $user->id)->where('active', true)->count(),
-            'total_leads' => Property::where('user_id', $user->id)->withCount('leads')->get()->sum('leads_count'),
+            'visits_30' => array_reduce($metrics30, fn ($carry, $metrics) => $carry + ($metrics['view_imovel'] ?? 0), 0),
+            'clicks_30' => array_reduce($metrics30, fn ($carry, $metrics) => $carry + ($metrics['click_whatsapp_concierge'] ?? 0), 0),
         ];
+        $stats['conversion'] = $stats['visits_30'] > 0 ? round(($stats['clicks_30'] / $stats['visits_30']) * 100, 1) : 0;
 
         return view('businessman.dashboard', compact('properties', 'subscription', 'stats'));
     }
@@ -73,10 +98,26 @@ class BusinessmanDashboardController extends Controller
     {
         $user = Auth::user();
         $properties = Property::where('user_id', $user->id)
-            ->with(['primaryImage'])
-            ->withCount('leads')
+            ->with('primaryImage')
+            ->orderByDesc('highlighted')
             ->latest()
-            ->paginate(15);
+            ->paginate(12);
+
+        $propertyIds = $properties->pluck('id')->all();
+        $metrics30 = TelemetryMetric::totalsForProperties($propertyIds, ['view_imovel', 'click_whatsapp_concierge'], 30);
+
+        $properties->getCollection()->transform(function (Property $property) use ($metrics30) {
+            $views30 = $metrics30[$property->id]['view_imovel'] ?? 0;
+            $clicks30 = $metrics30[$property->id]['click_whatsapp_concierge'] ?? 0;
+
+            $property->dashboard_metrics = [
+                'views30' => $views30,
+                'clicks30' => $clicks30,
+                'conversion' => $views30 > 0 ? round(($clicks30 / $views30) * 100, 1) : 0,
+            ];
+
+            return $property;
+        });
 
         return view('businessman.properties', compact('properties'));
     }
@@ -99,38 +140,46 @@ class BusinessmanDashboardController extends Controller
 
     public function storeProperty(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'type' => 'required|in:apartment,house,commercial,land,other',
             'transaction_type' => 'required|in:sale,rent,both',
             'price' => 'required|numeric|min:0',
-            'address' => 'required|string',
+            'address' => 'nullable|string',
             'city' => 'required|string',
             'state' => 'required|string|size:2',
+            'zip_code' => 'nullable|string',
             'bedrooms' => 'nullable|integer|min:0',
             'bathrooms' => 'nullable|integer|min:0',
             'area' => 'nullable|numeric|min:0',
             'registration_number' => 'nullable|string',
+            'parking' => 'nullable|integer|min:0',
+            'year_built' => 'nullable|integer|min:1800|max:' . now()->year,
+            'highlighted' => 'sometimes|boolean',
         ]);
+
+        $action = $request->input('action', 'save');
 
         $property = Property::create([
             'user_id' => Auth::id(),
-            'title' => $request->title,
-            'description' => $request->description,
-            'type' => $request->type,
-            'transaction_type' => $request->transaction_type,
-            'price' => $request->price,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'zip_code' => $request->zip_code,
-            'bedrooms' => $request->bedrooms,
-            'bathrooms' => $request->bathrooms,
-            'area' => $request->area,
-            'registration_number' => $request->registration_number,
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'type' => $data['type'],
+            'transaction_type' => $data['transaction_type'],
+            'price' => $data['price'],
+            'address' => $data['address'] ?? null,
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'zip_code' => $data['zip_code'] ?? null,
+            'bedrooms' => $data['bedrooms'] ?? null,
+            'bathrooms' => $data['bathrooms'] ?? null,
+            'area' => $data['area'] ?? null,
+            'registration_number' => $data['registration_number'] ?? null,
+            'highlighted' => $request->boolean('highlighted'),
+            'features' => $this->buildFeatures($request),
             'status' => 'available',
-            'active' => true,
+            'active' => $action === 'publish',
         ]);
 
         // Handle images
@@ -154,8 +203,23 @@ class BusinessmanDashboardController extends Controller
             $property->update(['video_url' => $vpath]);
         }
 
+        if ($property->highlighted) {
+            app(TelemetryRecorder::class)->record('highlight_toggle', [
+                'property_id' => $property->id,
+                'user_type' => 'empresario',
+                'context' => 'cadastro',
+            ], [
+                'highlighted' => true,
+            ]);
+        }
+
+        if ($action === 'preview') {
+            return redirect()->route('properties.show', ['property' => $property, 'preview' => 1])
+                ->with('success', 'Imóvel salvo como rascunho para pré-visualização.');
+        }
+
         return redirect()->route('businessman.properties')
-            ->with('success', 'Imóvel cadastrado com sucesso!');
+            ->with('success', $action === 'publish' ? 'Imóvel publicado e enviado para a vitrine!' : 'Rascunho salvo com sucesso.');
     }
 
     public function editProperty(Property $property)
@@ -178,13 +242,26 @@ class BusinessmanDashboardController extends Controller
             'address' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string|size:2',
+            'zip_code' => 'nullable|string',
             'bedrooms' => 'nullable|integer|min:0',
             'bathrooms' => 'nullable|integer|min:0',
             'area' => 'nullable|numeric|min:0',
+            'parking' => 'nullable|integer|min:0',
+            'year_built' => 'nullable|integer|min:1800|max:' . now()->year,
+            'highlighted' => 'sometimes|boolean',
+            'status' => 'nullable|in:available,reserved,sold,rented',
+            'active' => 'sometimes|boolean',
         ]);
+
+        $action = $request->input('action', 'save');
+        $originalHighlight = $property->highlighted;
 
         $property->update(array_merge($data, [
             'registration_number' => $request->registration_number,
+            'highlighted' => $request->boolean('highlighted', $property->highlighted),
+            'features' => $this->buildFeatures($request),
+            'active' => $action === 'publish' ? true : ($request->has('active') ? $request->boolean('active') : $property->active),
+            'status' => $data['status'] ?? $property->status,
         ]));
 
         // Handle new images (append, limit to 6)
@@ -210,7 +287,22 @@ class BusinessmanDashboardController extends Controller
             $property->update(['video_url' => $vpath]);
         }
 
-        return redirect()->route('businessman.properties')->with('success', 'Imóvel atualizado com sucesso!');
+        if ($originalHighlight !== $property->highlighted) {
+            app(TelemetryRecorder::class)->record('highlight_toggle', [
+                'property_id' => $property->id,
+                'user_type' => 'empresario',
+                'context' => 'painel',
+            ], [
+                'highlighted' => $property->highlighted,
+            ]);
+        }
+
+        if ($action === 'preview') {
+            return redirect()->route('properties.show', ['property' => $property, 'preview' => 1])
+                ->with('success', 'Pré-visualização atualizada.');
+        }
+
+        return redirect()->route('businessman.properties')->with('success', $action === 'publish' ? 'Imóvel publicado com sucesso!' : 'Imóvel atualizado com sucesso!');
     }
 
     public function destroyProperty(Property $property)
@@ -220,5 +312,13 @@ class BusinessmanDashboardController extends Controller
         $property->delete();
 
         return redirect()->route('businessman.properties')->with('success', 'Imóvel excluído com sucesso!');
+    }
+
+    protected function buildFeatures(Request $request): array
+    {
+        return array_filter([
+            'vagas' => $request->input('parking'),
+            'ano' => $request->input('year_built'),
+        ], fn ($value) => !is_null($value) && $value !== '');
     }
 }

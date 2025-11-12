@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Investor\InvestorDashboardController;
 use App\Http\Controllers\Businessman\BusinessmanDashboardController;
 use App\Http\Controllers\Broker\BrokerDashboardController;
+use App\Http\Controllers\ConciergeRedirectController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Investor\InvestorDashboardController;
 use App\Http\Controllers\Master\MasterDashboardController;
+use App\Http\Controllers\PropertyCatalogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +18,12 @@ use App\Http\Controllers\Master\MasterDashboardController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/investidor', [HomeController::class, 'investor'])->name('landing.investor');
+Route::get('/investidor', [PropertyCatalogController::class, 'investor'])->name('investor.catalog');
 Route::get('/empresario', [HomeController::class, 'businessman'])->name('landing.businessman');
 Route::get('/master-landing', [HomeController::class, 'master'])->name('landing.master');
+Route::get('/patrocinadores', [HomeController::class, 'sponsors'])->name('sponsors');
+Route::get('/imovel/{property}', [PropertyCatalogController::class, 'show'])->name('properties.show');
+Route::get('/concierge', ConciergeRedirectController::class)->name('concierge.redirect');
 
 // Authentication routes
 Route::middleware('guest')->group(function () {

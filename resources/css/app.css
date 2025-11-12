@@ -29,8 +29,8 @@
         /* Luxury Colors */
         --lux-black: 0 0% 8%;
         --lux-slate: 220 15% 25%;
-        --lux-graphite: 220 10% 45%;
-        --lux-ice: 200 20% 95%;
+        --lux-graphite: 220 10% 35%;
+        --lux-ice: 0 0% 92%;
         --lux-gold: 43 96% 56%;
 
         /* Sidebar Colors */
@@ -46,13 +46,13 @@
         /* Gradients */
         --gradient-hero: linear-gradient(
             135deg,
-            hsl(222.2 47.4% 11.2%) 0%,
-            hsl(220 15% 25%) 100%
+            hsl(0 0% 6%) 0%,
+            hsl(0 0% 13%) 100%
         );
         --gradient-card: linear-gradient(
             135deg,
             hsl(0 0% 100%) 0%,
-            hsl(200 20% 95%) 100%
+            hsl(0 0% 92%) 100%
         );
         --gradient-gold: linear-gradient(
             135deg,
@@ -132,12 +132,12 @@
         @apply bg-lux-black text-lux-ice;
         background-image: radial-gradient(
                 circle at top left,
-                rgba(255, 215, 0, 0.08),
+                rgba(255, 215, 0, 0.12),
                 transparent 55%
             ),
             radial-gradient(
                 circle at bottom right,
-                rgba(59, 130, 246, 0.08),
+                rgba(32, 32, 32, 0.4),
                 transparent 60%
             );
         background-attachment: fixed;
@@ -180,14 +180,14 @@
             ),
             radial-gradient(
                 circle at top right,
-                rgba(59, 130, 246, 0.25),
+                rgba(203, 161, 53, 0.22),
                 transparent 58%
             ),
             linear-gradient(
                 135deg,
-                rgba(4, 7, 15, 0.95) 0%,
-                rgba(5, 11, 23, 0.92) 55%,
-                rgba(8, 21, 38, 0.88) 100%
+                rgba(4, 4, 4, 0.95) 0%,
+                rgba(7, 7, 7, 0.9) 55%,
+                rgba(10, 10, 10, 0.88) 100%
             );
         @apply relative overflow-hidden text-white;
     }
@@ -218,8 +218,8 @@
         filter: blur(120px);
         background: radial-gradient(
             circle,
-            rgba(99, 102, 241, 0.3) 0%,
-            rgba(99, 102, 241, 0) 70%
+            rgba(203, 161, 53, 0.28) 0%,
+            rgba(203, 161, 53, 0) 70%
         );
         opacity: 0.5;
     }
@@ -237,7 +237,7 @@
     }
 
     .lux-card-graphite {
-        @apply rounded-3xl border border-white/10 bg-slate-900/60 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl;
+        @apply rounded-3xl border border-white/10 bg-[#121212]/80 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl;
     }
 
     .lux-gold-button {
@@ -289,15 +289,15 @@
     }
 
     .glass-card {
-        @apply rounded-2xl border border-white/20 bg-white/10 px-4 py-5 backdrop-blur-lg shadow-[0_10px_40px_rgba(15,37,101,0.35)];
+        @apply rounded-2xl border border-white/20 bg-white/10 px-4 py-5 backdrop-blur-lg shadow-[0_10px_40px_rgba(0,0,0,0.35)];
     }
 
     .gold-badge {
-        @apply inline-flex items-center gap-2 rounded-full border border-yellow-400/40 bg-yellow-300/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-yellow-400 md:text-sm;
+        @apply inline-flex items-center gap-2 rounded-full border border-lux-gold/40 bg-lux-gold/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-lux-gold md:text-sm;
     }
 
     .lux-card {
-        @apply rounded-3xl border border-slate-200/70 bg-white p-10 shadow-[0_25px_70px_rgba(15,37,101,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(15,37,101,0.12)];
+        @apply rounded-3xl border border-white/10 bg-[#111111] p-10 shadow-[0_25px_70px_rgba(0,0,0,0.45)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(203,161,53,0.2)];
     }
 
     .lux-card-icon {
@@ -309,22 +309,22 @@
     }
 
     .timeline-step {
-        @apply flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(15,37,101,0.18)];
+        @apply flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.3)];
     }
 
     .timeline-index {
-        @apply flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500/50 to-indigo-500/40 text-lg font-semibold;
+        @apply flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#CBA135]/80 to-[#8A6A24]/70 text-lg font-semibold text-black;
     }
 
     .plan-card {
-        @apply flex h-full flex-col rounded-3xl border border-slate-200/60 bg-white p-8 shadow-[0_20px_60px_rgba(15,37,101,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(15,37,101,0.12)];
+        @apply flex h-full flex-col rounded-3xl border border-white/10 bg-[#111111] p-8 shadow-[0_20px_60px_rgba(0,0,0,0.4)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(203,161,53,0.2)];
     }
 
     .plan-button {
-        @apply mt-8 inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-blue-500 hover:text-blue-600;
+        @apply mt-8 inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-lux-gold hover:text-lux-gold;
     }
 
     .testimonial-card {
-        @apply rounded-3xl border border-slate-200 bg-white p-10 shadow-[0_20px_60px_rgba(15,37,101,0.08)];
+        @apply rounded-3xl border border-white/10 bg-[#111111] p-10 shadow-[0_20px_60px_rgba(0,0,0,0.35)];
     }
 }
