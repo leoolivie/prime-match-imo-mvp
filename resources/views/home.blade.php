@@ -122,7 +122,7 @@
                 <div class="timeline-step">
                     <div class="timeline-index">03</div>
                     <div>
-                        <h3 class="text-lg font-semibold text-white">Negociação conduzida no WhatsApp</h3>
+                        <h3 class="text-lg font-semibold text-white">Negociação conduzida pelo concierge</h3>
                         <p class="text-sm text-white/60">Visitas, propostas e diligência ocorrem em um canal seguro. Você acompanha o histórico e recebe atualizações com métricas agregadas.</p>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                 get total() {
                     return this.$refs?.slides?.children?.length ?? 0;
                 }
-            }" class="space-y-8">
+            }" x-cloak class="space-y-8">
             <div class="relative overflow-hidden">
                 <div class="grid gap-6 md:grid-cols-2" x-ref="slides">
                     @forelse($featured as $index => $property)
@@ -163,7 +163,7 @@
                                 : asset('images/placeholders/luxury-property.svg');
                             $amenities = collect($property->features ?? [])->filter()->take(3);
                         @endphp
-                        <article x-show="active === {{ $index }}" x-transition.opacity.duration.500ms class="lux-card-dark grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+                        <article x-cloak x-show="active === {{ $index }}" x-transition.opacity.duration.500ms class="lux-card-dark grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
                             <div class="space-y-6">
                                 <div class="space-y-2">
                                     <span class="lux-badge-gold">{{ $property->highlighted ? 'Formato destaque premium' : 'Disponível' }}</span>
@@ -196,7 +196,7 @@
                             </div>
                         </article>
                     @empty
-                        <article class="lux-card-dark">
+                        <article x-cloak class="lux-card-dark">
                             <h3 class="text-xl font-semibold text-white">Curadoria em preparação</h3>
                             <p class="mt-3 text-sm text-white/60">Cadastre imóveis premium ou explore a vitrine para liberar destaques acompanhados pelo concierge.</p>
                         </article>

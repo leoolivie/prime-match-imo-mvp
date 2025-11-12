@@ -18,7 +18,6 @@
                 <span class="flex h-12 w-12 items-center justify-center rounded-3xl border border-white/15 bg-white/5 text-lg font-semibold tracking-wide shadow-[0_0_25px_rgba(255,215,0,0.25)] transition group-hover:border-lux-gold/60 group-hover:text-white">PM</span>
                 <div class="leading-tight">
                     <p class="text-lg font-semibold tracking-wide text-white">Prime Match Imo</p>
-                    <p class="text-xs uppercase tracking-[0.35em] text-white/50">Concierge único · WhatsApp</p>
                 </div>
             </a>
             <div class="hidden items-center gap-3 lg:flex">
