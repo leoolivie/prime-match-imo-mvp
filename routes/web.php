@@ -16,6 +16,9 @@ use App\Http\Controllers\Master\MasterDashboardController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/investidor', [HomeController::class, 'investor'])->name('landing.investor');
+Route::get('/empresario', [HomeController::class, 'businessman'])->name('landing.businessman');
+Route::get('/master-landing', [HomeController::class, 'master'])->name('landing.master');
 
 // Authentication routes
 Route::middleware('guest')->group(function () {
@@ -28,7 +31,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 // Investor routes
-Route::middleware(['auth'])->prefix('investor')->name('investor.')->group(function () {
+Route::middleware(['auth', 'role:investor,master'])->prefix('investor')->name('investor.')->group(function () {
     Route::get('/dashboard', [InvestorDashboardController::class, 'index'])->name('dashboard');
     Route::get('/search', [InvestorDashboardController::class, 'search'])->name('search');
     Route::post('/search', [InvestorDashboardController::class, 'searchResults'])->name('search.results');
@@ -37,7 +40,7 @@ Route::middleware(['auth'])->prefix('investor')->name('investor.')->group(functi
 });
 
 // Businessman routes
-Route::middleware(['auth'])->prefix('businessman')->name('businessman.')->group(function () {
+Route::middleware(['auth', 'role:businessman,master'])->prefix('businessman')->name('businessman.')->group(function () {
     Route::get('/dashboard', [BusinessmanDashboardController::class, 'index'])->name('dashboard');
     Route::get('/plans', [BusinessmanDashboardController::class, 'plans'])->name('plans');
     Route::post('/subscribe/{plan}', [BusinessmanDashboardController::class, 'subscribe'])->name('subscribe');
@@ -58,7 +61,7 @@ Route::middleware(['auth'])->prefix('broker')->name('broker.')->group(function (
 });
 
 // Master/Admin routes
-Route::middleware(['auth'])->prefix('master')->name('master.')->group(function () {
+Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->group(function () {
     Route::get('/dashboard', [MasterDashboardController::class, 'index'])->name('dashboard');
     
     // Users

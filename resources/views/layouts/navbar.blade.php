@@ -14,10 +14,10 @@
                 </div>
             </a>
             <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-white/70">
-                <a href="{{ route('home') }}#empresario" class="transition hover:text-white">Empresários</a>
-                <a href="{{ route('home') }}#investidor" class="transition hover:text-white">Investidores</a>
+                <a href="{{ route('landing.businessman') }}" class="transition hover:text-white">Empresários</a>
+                <a href="{{ route('landing.investor') }}" class="transition hover:text-white">Investidores</a>
+                <a href="{{ route('landing.master') }}" class="transition hover:text-white">Master</a>
                 <a href="{{ route('home') }}#concierge" class="transition hover:text-white">Concierge</a>
-                <a href="{{ route('home') }}#master" class="transition hover:text-white">Master</a>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ $conciergeLink }}" target="_blank" rel="noopener" class="lux-outline-button whitespace-nowrap">
