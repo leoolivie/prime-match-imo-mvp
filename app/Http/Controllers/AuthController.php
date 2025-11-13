@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         $redirect = $request->input('redirect');
 
-        if ($redirect && Str::startsWith($redirect, '/') && !Str::contains($redirect, '://') && !Str::contains($redirect, '//')) {
+        if ($redirect && $this->isValidRedirectPath($redirect)) {
             $request->session()->put('url.intended', $redirect);
         }
 
@@ -93,5 +93,22 @@ class AuthController extends Controller
             'investor' => '/investor/dashboard',
             default => '/dashboard',
         };
+    }
+
+    protected function isValidRedirectPath(string $redirect): bool
+    {
+        if (!Str::startsWith($redirect, '/')) {
+            return false;
+        }
+
+        if (Str::startsWith($redirect, '//')) {
+            return false;
+        }
+
+        if (Str::contains($redirect, '://')) {
+            return false;
+        }
+
+        return true;
     }
 }
