@@ -149,6 +149,20 @@
         @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
     }
 
+    .lux-select {
+        @apply w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none;
+    }
+
+    .lux-select option {
+        color: rgb(15 23 42);
+    }
+
+    .lux-select option:checked,
+    .lux-select option:hover {
+        background-color: rgba(17, 24, 39, 0.85);
+        color: #f9fafb;
+    }
+
     .lux-section {
         @apply relative py-16 sm:py-20;
     }
