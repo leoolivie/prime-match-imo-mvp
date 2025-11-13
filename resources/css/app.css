@@ -142,6 +142,11 @@
             );
         background-attachment: fixed;
     }
+    input,
+    textarea,
+    select {
+        color: rgb(15 23 42);
+    }
 }
 
 @layer components {
@@ -150,7 +155,7 @@
     }
 
     .lux-select {
-        @apply w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none;
+        @apply w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-lux-black focus:border-lux-gold focus:outline-none;
     }
 
     .lux-select option {
@@ -348,4 +353,3 @@
         display: none !important;
     }
 }
-
