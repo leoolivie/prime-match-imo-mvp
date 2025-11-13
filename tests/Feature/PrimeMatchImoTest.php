@@ -166,7 +166,7 @@ class PrimeMatchImoTest extends TestCase
 
         $response = $this->actingAs($master)->get('/businessman/properties');
         $response->assertOk();
-        $response->assertSee('Minha vitrine');
+        $response->assertSee('Imóveis cadastrados');
     }
 
     /** @test */
