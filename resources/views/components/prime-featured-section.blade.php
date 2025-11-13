@@ -1,11 +1,9 @@
-@props([
-    'featured' => collect(),
-    'title' => 'Imóveis em destaque',
-    'subtitle' => 'Seleção exclusiva curada pelo Master para impactar investidores.',
-])
-
 @php
     use App\Support\Format;
+
+    $featured = collect($featured ?? []);
+    $title = $title ?? 'Imóveis em destaque';
+    $subtitle = $subtitle ?? 'Seleção exclusiva curada pelo Master para impactar investidores.';
 @endphp
 
 <section class="relative overflow-hidden bg-[#040404] py-16 sm:py-20">
