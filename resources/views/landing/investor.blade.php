@@ -3,6 +3,13 @@
 @section('title', 'Investidores - Prime Match Imo')
 
 @section('content')
+    <span class="sr-only">Experiência prime para investidores</span>
+    @include('components.prime-featured-section', [
+        'featured' => $featured,
+        'title' => 'Coleção Prime para investidores',
+        'subtitle' => 'Imóveis curados pelo Master com concierge dedicado antes de qualquer outra informação.',
+    ])
+
     <section class="relative overflow-hidden bg-gradient-to-b from-black via-[#0A0A0A] to-black">
         <div class="lux-container py-20">
             <div class="relative overflow-hidden rounded-[40px] border border-white/10 bg-black/70 shadow-[0_0_80px_rgba(0,0,0,0.6)]">

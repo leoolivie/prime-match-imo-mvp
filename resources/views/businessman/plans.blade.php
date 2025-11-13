@@ -50,7 +50,7 @@
                             @if($plan->highlight_limit > 0)
                                 <div class="flex items-start">
                                     <span class="text-green-500 mr-2">✓</span>
-                                    <span>{{ $plan->highlight_limit }} destaque por mês</span>
+                                    <span>Elegível para curadoria Master (até {{ $plan->highlight_limit }} convites mensais para a vitrine prime)</span>
                                 </div>
                             @endif
 

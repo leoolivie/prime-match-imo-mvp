@@ -13,7 +13,7 @@
             <div class="space-y-2">
                 <span class="lux-badge-gold">Editar imóvel</span>
                 <h1 class="font-poppins text-3xl font-semibold text-white">{{ $property->title }}</h1>
-                <p class="text-sm text-white/60">Atualize dados, destaque premium e materiais. As alterações refletem imediatamente após publicação.</p>
+                <p class="text-sm text-white/60">Atualize dados e materiais. Destaques premium são curados pelo time Master e refletem automaticamente após publicação.</p>
             </div>
             <a href="{{ ConciergeLink::forBusinessmanSupport($property) }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Concierge</a>
         </div>
@@ -105,9 +105,9 @@
                         <input type="checkbox" name="active" value="1" id="active" class="h-4 w-4 rounded border-white/20 bg-transparent text-lux-gold focus:ring-lux-gold" @checked(old('active', $property->active)) />
                         <label for="active" class="text-sm text-white/70">Imóvel ativo na vitrine</label>
                     </div>
-                    <div class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <input type="checkbox" name="highlighted" value="1" id="highlighted" class="h-4 w-4 rounded border-white/20 bg-transparent text-lux-gold focus:ring-lux-gold" @checked(old('highlighted', $property->highlighted)) />
-                        <label for="highlighted" class="text-sm text-white/70">Destaque premium ativo</label>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+                        <p class="font-medium text-white">Destaques prime</p>
+                        <p class="mt-1 text-white/60">Somente o Master pode promover imóveis para a vitrine destaque. O concierge analisará imóveis publicados para oportunidades especiais.</p>
                     </div>
                 </div>
 

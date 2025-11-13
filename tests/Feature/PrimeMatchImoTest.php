@@ -221,7 +221,6 @@ class PrimeMatchImoTest extends TestCase
             'area' => 120,
             'parking' => 2,
             'year_built' => 2020,
-            'highlighted' => true,
             'action' => 'publish',
         ];
 

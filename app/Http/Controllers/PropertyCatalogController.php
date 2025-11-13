@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FeaturedProperty;
 use App\Models\Property;
 use App\Models\TelemetryMetric;
 use App\Services\TelemetryRecorder;
@@ -64,15 +65,10 @@ class PropertyCatalogController extends Controller
             ]));
         }
 
-        $featured = Property::with(['primaryImage'])
-            ->where('active', true)
-            ->where('status', 'available')
-            ->where(function ($query) {
-                $query->where('highlighted', true)
-                    ->orWhereNotNull('highlighted_until');
-            })
-            ->orderByDesc('highlighted_until')
-            ->take(6)
+        $featured = FeaturedProperty::where('status', 'available')
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
+            ->take(16)
             ->get();
 
         $cities = Property::query()
@@ -180,8 +176,6 @@ class PropertyCatalogController extends Controller
         }
 
         $matches = $properties
-            ->orderByDesc('highlighted')
-            ->orderByDesc('highlighted_until')
             ->latest()
             ->take(5)
             ->get()
@@ -203,7 +197,7 @@ class PropertyCatalogController extends Controller
                     'bedrooms' => $property->bedrooms,
                     'bathrooms' => $property->bathrooms,
                     'features' => array_values(array_filter($property->features ?? [])),
-                    'highlighted' => (bool) $property->highlighted,
+                    'highlighted' => false,
                     'image_url' => $image,
                     'detail_url' => route('properties.show', ['property' => $property, 'source' => 'busca_prime']),
                     'concierge_url' => ConciergeLink::forInvestorCard($property),

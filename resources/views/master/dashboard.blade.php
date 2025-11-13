@@ -17,6 +17,7 @@
                         <a href="{{ route('master.users') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Gerenciar usuários</a>
                         <a href="{{ route('master.properties') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Gerenciar imóveis</a>
                         <a href="{{ route('master.partners') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Parceiros prime</a>
+                        <a href="{{ route('master.featured-properties.index') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Imóveis em destaque</a>
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
