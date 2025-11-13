@@ -32,6 +32,10 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
+# Copy entrypoint script that will prepare runtime permissions
+COPY docker/php-fpm/entrypoint.sh /usr/local/bin/primematch-entrypoint.sh
+RUN chmod +x /usr/local/bin/primematch-entrypoint.sh
+
 # Copy existing application directory permissions
 # Ensure necessary directories exist before changing ownership/permissions
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
@@ -41,4 +45,5 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
+ENTRYPOINT ["primematch-entrypoint.sh"]
 CMD ["php-fpm"]
