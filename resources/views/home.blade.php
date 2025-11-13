@@ -11,7 +11,7 @@
 @include('components.prime-featured-section', [
     'featured' => $featured,
     'title' => 'Imóveis em Destaque Prime',
-    'subtitle' => 'Coleção selecionada manualmente pelo Master para abrir sua experiência com ativos exclusivos.',
+    'subtitle' => 'Coleção selecionada manualmente pelo Concierge Master para abrir sua experiência com ativos exclusivos.',
 ])
 
 <section class="lux-hero">
