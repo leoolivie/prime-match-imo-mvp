@@ -221,7 +221,7 @@
                         </li>
                         <li class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
                             <span class="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-lux-gold/15 text-sm font-semibold text-lux-gold">02</span>
-                            <span>Acesse uma base segmentada de 40 mil investidores.</span>
+                            <span>Sistema identifica os investidores certo para seu imóvel.</span>
                         </li>
                         <li class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
                             <span class="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-lux-gold/15 text-sm font-semibold text-lux-gold">03</span>
@@ -283,7 +283,7 @@
                     <div class="timeline-step">
                         <span class="timeline-index">01</span>
                         <div>
-                            <h3 class="text-lg font-semibold text-white">40 mil investidores qualificados</h3>
+                            <h3 class="text-lg font-semibold text-white">Base de investidores qualificados</h3>
                             <p class="mt-1 text-sm text-white/70">Capazes de impulsionar vendas com agilidade e liquidez.</p>
                         </div>
                     </div>
