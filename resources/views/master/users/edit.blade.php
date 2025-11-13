@@ -53,6 +53,7 @@
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Status</label>
                         <div class="mt-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                            <input type="hidden" name="active" value="0" />
                             <input type="checkbox" name="active" value="1" id="active" class="h-4 w-4 rounded border-white/20 bg-transparent text-lux-gold focus:ring-lux-gold" @checked(old('active', $user->active)) />
                             <label for="active" class="text-sm text-white/70">Usuário ativo</label>
                         </div>
