@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Property;
 use App\Models\TelemetryMetric;
 use App\Services\TelemetryRecorder;
+use App\Support\ConciergeLink;
+use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -122,6 +124,94 @@ class PropertyCatalogController extends Controller
             'amenities' => $amenities,
             'metrics' => $metrics,
             'isPreview' => $isPreview,
+        ]);
+    }
+
+    public function primeSearch(Request $request)
+    {
+        $validated = $request->validate([
+            'city' => 'nullable|string|max:255',
+            'type' => 'nullable|string|in:apartment,house,commercial,land,other',
+            'budget_min' => 'nullable|numeric|min:0',
+            'budget_max' => 'nullable|numeric|min:0',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string|max:255',
+            'urgency' => 'nullable|string|max:255',
+            'details' => 'nullable|string|max:1000',
+        ]);
+
+        $budgetMin = array_key_exists('budget_min', $validated) ? $validated['budget_min'] : null;
+        $budgetMax = array_key_exists('budget_max', $validated) ? $validated['budget_max'] : null;
+
+        $budgetMin = is_null($budgetMin) ? null : (float) $budgetMin;
+        $budgetMax = is_null($budgetMax) ? null : (float) $budgetMax;
+
+        if (!is_null($budgetMin) && !is_null($budgetMax) && $budgetMin > $budgetMax) {
+            [$budgetMin, $budgetMax] = [$budgetMax, $budgetMin];
+        }
+
+        $properties = Property::query()
+            ->with('primaryImage')
+            ->where('active', true)
+            ->where('status', 'available');
+
+        if (!empty($validated['city'])) {
+            $properties->where('city', 'like', '%' . $validated['city'] . '%');
+        }
+
+        if (!empty($validated['type'])) {
+            $properties->where('type', $validated['type']);
+        }
+
+        if (!is_null($budgetMin)) {
+            $properties->where('price', '>=', $budgetMin);
+        }
+
+        if (!is_null($budgetMax)) {
+            $properties->where('price', '<=', $budgetMax);
+        }
+
+        if (!empty($validated['tags'])) {
+            $properties->where(function ($query) use ($validated) {
+                foreach ($validated['tags'] as $tag) {
+                    $query->whereJsonContains('features', $tag);
+                }
+            });
+        }
+
+        $matches = $properties
+            ->orderByDesc('highlighted')
+            ->orderByDesc('highlighted_until')
+            ->latest()
+            ->take(5)
+            ->get()
+            ->map(function (Property $property) {
+                $image = optional($property->primaryImage)->path
+                    ? asset('storage/' . $property->primaryImage->path)
+                    : asset('images/placeholders/luxury-property.svg');
+
+                return [
+                    'id' => $property->id,
+                    'title' => $property->title,
+                    'city' => $property->city,
+                    'state' => $property->state,
+                    'type' => $property->type,
+                    'price' => $property->price,
+                    'price_formatted' => Format::currency($property->price),
+                    'area' => $property->area,
+                    'area_formatted' => $property->area ? Format::area($property->area) : null,
+                    'bedrooms' => $property->bedrooms,
+                    'bathrooms' => $property->bathrooms,
+                    'features' => array_values(array_filter($property->features ?? [])),
+                    'highlighted' => (bool) $property->highlighted,
+                    'image_url' => $image,
+                    'detail_url' => route('properties.show', ['property' => $property, 'source' => 'busca_prime']),
+                    'concierge_url' => ConciergeLink::forInvestorCard($property),
+                ];
+            });
+
+        return response()->json([
+            'matches' => $matches,
         ]);
     }
 

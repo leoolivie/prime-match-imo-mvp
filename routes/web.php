@@ -19,6 +19,7 @@ use App\Http\Controllers\PropertyCatalogController;
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/investidor', [PropertyCatalogController::class, 'investor'])->name('investor.catalog');
+Route::post('/investidor/busca-prime', [PropertyCatalogController::class, 'primeSearch'])->name('investor.prime-search');
 Route::get('/empresario', [HomeController::class, 'businessman'])->name('landing.businessman');
 Route::get('/master-landing', [HomeController::class, 'master'])->name('landing.master');
 Route::get('/patrocinadores', [HomeController::class, 'sponsors'])->name('sponsors');
