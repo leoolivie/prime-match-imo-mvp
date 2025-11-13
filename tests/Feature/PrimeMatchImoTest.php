@@ -7,13 +7,14 @@ use App\Models\Property;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PrimeMatchImoTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function landing_page_is_accessible()
     {
         $response = $this->get('/');
@@ -21,23 +22,23 @@ class PrimeMatchImoTest extends TestCase
         $response->assertSee('Prime Match Imo');
     }
 
-    /** @test */
+    #[Test]
     public function investor_landing_page_is_accessible()
     {
         $response = $this->get('/investidor');
         $response->assertStatus(200);
-        $response->assertSee('Experiência prime para investidores');
+        $response->assertSee('Descubra imóveis curados pelo concierge');
     }
 
-    /** @test */
+    #[Test]
     public function businessman_landing_page_is_accessible()
     {
         $response = $this->get('/empresario');
         $response->assertStatus(200);
-        $response->assertSee('Experiência prime para empresários');
+        $response->assertSee('Apresentação de Plataforma Exclusiva para Empresários');
     }
 
-    /** @test */
+    #[Test]
     public function master_landing_page_is_accessible()
     {
         $response = $this->get('/master-landing');
@@ -45,7 +46,7 @@ class PrimeMatchImoTest extends TestCase
         $response->assertSee('Comando total para masters');
     }
 
-    /** @test */
+    #[Test]
     public function users_can_register_as_investor_or_businessman()
     {
         $response = $this->post('/register', [
@@ -64,7 +65,7 @@ class PrimeMatchImoTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function users_can_login()
     {
         $user = User::factory()->create([
@@ -81,7 +82,7 @@ class PrimeMatchImoTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    /** @test */
+    #[Test]
     public function investor_can_access_dashboard()
     {
         $investor = User::factory()->create(['role' => 'investor']);
@@ -91,27 +92,27 @@ class PrimeMatchImoTest extends TestCase
         $response->assertSee('Dashboard do Investidor');
     }
 
-    /** @test */
+    #[Test]
     public function businessman_can_access_dashboard()
     {
         $businessman = User::factory()->create(['role' => 'businessman']);
 
         $response = $this->actingAs($businessman)->get('/businessman/dashboard');
         $response->assertStatus(200);
-        $response->assertSee('Dashboard do Empresário');
+        $response->assertSee('Gerencie seu portfólio com suporte concierge');
     }
 
-    /** @test */
+    #[Test]
     public function master_can_access_businessman_dashboard()
     {
         $master = User::factory()->create(['role' => 'master']);
 
         $response = $this->actingAs($master)->get('/businessman/dashboard');
         $response->assertStatus(200);
-        $response->assertSee('Dashboard do Empresário');
+        $response->assertSee('Gerencie seu portfólio com suporte concierge');
     }
 
-    /** @test */
+    #[Test]
     public function master_can_access_investor_dashboard()
     {
         $master = User::factory()->create(['role' => 'master']);
@@ -121,7 +122,7 @@ class PrimeMatchImoTest extends TestCase
         $response->assertSee('Bem-vindo ao seu cockpit cinematográfico');
     }
 
-    /** @test */
+    #[Test]
     public function investor_cannot_access_businessman_dashboard()
     {
         $investor = User::factory()->create(['role' => 'investor']);
@@ -130,17 +131,17 @@ class PrimeMatchImoTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function broker_can_access_dashboard()
     {
         $broker = User::factory()->create(['role' => 'prime_broker']);
 
         $response = $this->actingAs($broker)->get('/broker/dashboard');
         $response->assertStatus(200);
-        $response->assertSee('Dashboard do Corretor');
+        $response->assertSee('Curadoria compartilhada com apoio direto do concierge');
     }
 
-    /** @test */
+    #[Test]
     public function master_can_access_dashboard()
     {
         $master = User::factory()->create(['role' => 'master']);
@@ -150,7 +151,7 @@ class PrimeMatchImoTest extends TestCase
         $response->assertSee('Dashboard Master');
     }
 
-    /** @test */
+    #[Test]
     public function businessman_cannot_access_master_dashboard()
     {
         $businessman = User::factory()->create(['role' => 'businessman']);
@@ -159,17 +160,17 @@ class PrimeMatchImoTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function master_can_access_businessman_properties_index()
     {
         $master = User::factory()->create(['role' => 'master']);
 
         $response = $this->actingAs($master)->get('/businessman/properties');
         $response->assertOk();
-        $response->assertSee('Minha vitrine');
+        $response->assertSee('Imóveis cadastrados');
     }
 
-    /** @test */
+    #[Test]
     public function master_can_subscribe_to_businessman_plan()
     {
         $master = User::factory()->create(['role' => 'master']);
@@ -187,7 +188,7 @@ class PrimeMatchImoTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function master_with_active_subscription_can_create_businessman_property()
     {
         $master = User::factory()->create(['role' => 'master']);
@@ -234,7 +235,7 @@ class PrimeMatchImoTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function businessman_with_subscription_can_create_property()
     {
         $businessman = User::factory()->create(['role' => 'businessman']);
@@ -266,7 +267,7 @@ class PrimeMatchImoTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function property_registration_number_is_hidden_by_default()
     {
         $property = Property::factory()->create([
@@ -277,7 +278,7 @@ class PrimeMatchImoTest extends TestCase
         $this->assertArrayNotHasKey('registration_number', $propertyArray);
     }
 
-    /** @test */
+    #[Test]
     public function subscription_plan_limits_are_enforced()
     {
         $plan = SubscriptionPlan::factory()->create([

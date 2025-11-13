@@ -30,37 +30,46 @@
                     <div class="flex flex-wrap items-center gap-4">
                         <span class="lux-badge-gold">Apresentação exclusiva</span>
                         <span class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/70">
-                            Empresários Prime
+                            Empresário Prime
                         </span>
                     </div>
                     <h1 class="max-w-2xl font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
-                        Apresentação de Plataforma Exclusiva para Empresários
+                        Apresentação da Plataforma Exclusiva para o Empresário Prime
                     </h1>
                     <p class="max-w-2xl text-base text-white/70 sm:text-lg">
                         Solução inovadora para o empresário do setor imobiliário de alto padrão. Cadastre até 50 imóveis sem custo inicial, conecte-se a investidores qualificados e conte com concierge único para acelerar negociações.
                     </p>
                     <div class="flex flex-wrap gap-4">
+                        <div class="flex flex-wrap gap-4">
+                            <a
+                                href="{{ $heroUrl }}"
+                                class="lux-gold-button text-sm uppercase tracking-[0.25em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lux-gold"
+                                data-track-event="hero_cta_whatsapp"
+                                data-track-payload='{"source":"hero_primary"}'
+                                target="_blank"
+                                rel="noopener"
+                                aria-label="Falar com o concierge via WhatsApp"
+                            >
+                                Falar com o Concierge
+                            </a>
+                            <a
+                                href="{{ $demoUrl }}"
+                                class="lux-outline-button text-sm uppercase tracking-[0.25em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lux-gold"
+                                data-track-event="hero_cta_whatsapp"
+                                data-track-payload='{"source":"hero_demo"}'
+                                target="_blank"
+                                rel="noopener"
+                                aria-label="Agendar demonstração via WhatsApp"
+                            >
+                                Agendar Demonstração
+                            </a>
+                        </div>
                         <a
-                            href="{{ $heroUrl }}"
-                            class="lux-gold-button text-sm uppercase tracking-[0.25em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lux-gold"
-                            data-track-event="hero_cta_whatsapp"
-                            data-track-payload='{"source":"hero_primary"}'
-                            target="_blank"
-                            rel="noopener"
-                            aria-label="Falar com o concierge via WhatsApp"
-                        >
-                            Falar com o Concierge
-                        </a>
-                        <a
-                            href="{{ $demoUrl }}"
+                            href="{{ route('businessman.dashboard') }}"
                             class="lux-outline-button text-sm uppercase tracking-[0.25em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lux-gold"
-                            data-track-event="hero_cta_whatsapp"
-                            data-track-payload='{"source":"hero_demo"}'
-                            target="_blank"
-                            rel="noopener"
-                            aria-label="Agendar demonstração via WhatsApp"
+                            aria-label="Ir para o dashboard do Empresário Prime"
                         >
-                            Agendar Demonstração
+                            Ir para o Dashboard do Empresário Prime
                         </a>
                     </div>
                     <div class="grid gap-5 sm:grid-cols-3">

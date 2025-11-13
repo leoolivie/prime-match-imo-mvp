@@ -29,7 +29,14 @@ class Subscription extends Model
         return $this->belongsTo(User::class);
     }
 
+
     public function plan()
+    {
+        return $this->belongsTo(SubscriptionPlan::class, 'subscription_plan_id');
+    }
+
+    // Compatibilidade: alguns testes esperam subscriptionPlan()
+    public function subscriptionPlan()
     {
         return $this->belongsTo(SubscriptionPlan::class, 'subscription_plan_id');
     }

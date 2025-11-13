@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('telemetry_metrics', function (Blueprint $table) {
             $table->id();
-            $table->string('event_name');
+            $table->string('event_name', 100);
             $table->date('event_date');
             $table->foreignId('property_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('user_type')->nullable();
-            $table->string('context')->nullable();
-            $table->string('source')->nullable();
+            $table->string('user_type', 50)->nullable();
+            $table->string('context', 100)->nullable();
+            $table->string('source', 100)->nullable();
             $table->string('metadata_hash', 64)->nullable();
             $table->json('metadata')->nullable();
             $table->unsignedBigInteger('count')->default(0);
