@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         $redirect = $request->input('redirect');
 
-        if ($redirect && Str::startsWith($redirect, '/')) {
+        if ($redirect && Str::startsWith($redirect, '/') && !Str::contains($redirect, '://') && !Str::contains($redirect, '//')) {
             $request->session()->put('url.intended', $redirect);
         }
 
