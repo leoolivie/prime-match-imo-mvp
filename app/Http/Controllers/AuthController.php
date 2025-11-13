@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function showLogin()
+    public function showLogin(Request $request)
     {
+        $redirect = $request->input('redirect');
+
+        if ($redirect && Str::startsWith($redirect, '/')) {
+            $request->session()->put('url.intended', $redirect);
+        }
+
         return view('auth.login');
     }
 

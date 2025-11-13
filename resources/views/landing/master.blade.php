@@ -3,6 +3,10 @@
 @section('title', 'Master - Prime Match Imo')
 
 @section('content')
+    @php
+        $isMasterAuthenticated = auth()->check() && auth()->user()->isMaster();
+    @endphp
+
     <section class="lux-hero">
         <div class="lux-container py-20">
             <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
@@ -15,7 +19,7 @@
                         Administre a operação prime com governança, métricas em tempo real e atalhos "ver como" para assumir qualquer persona instantaneamente, mantendo branding e compliance impecáveis.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="{{ auth()->check() ? route('master.dashboard') : route('login') }}" class="lux-gold-button text-sm uppercase tracking-[0.25em]">
+                        <a href="{{ $isMasterAuthenticated ? route('master.dashboard') : route('login', ['redirect' => route('master.dashboard', [], false)]) }}" class="lux-gold-button text-sm uppercase tracking-[0.25em]">
                             Entrar no dashboard master
                         </a>
                         <a href="{{ route('register') }}" class="lux-outline-button text-sm uppercase tracking-[0.25em]">
@@ -70,9 +74,9 @@
                         </div>
                     </div>
                     <div class="flex flex-wrap gap-3">
-                        <a href="{{ route('master.users') }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Gerenciar usuários</a>
-                        <a href="{{ route('master.properties') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Supervisionar imóveis</a>
-                        <a href="{{ route('master.partners') }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Curadoria de parceiros</a>
+                        <a href="{{ $isMasterAuthenticated ? route('master.users') : route('login', ['redirect' => route('master.users', [], false)]) }}" class="lux-gold-button text-xs uppercase tracking-[0.25em]">Gerenciar usuários</a>
+                        <a href="{{ $isMasterAuthenticated ? route('master.properties') : route('login', ['redirect' => route('master.properties', [], false)]) }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Supervisionar imóveis</a>
+                        <a href="{{ $isMasterAuthenticated ? route('master.partners') : route('login', ['redirect' => route('master.partners', [], false)]) }}" class="lux-outline-button text-xs uppercase tracking-[0.25em]">Curadoria de parceiros</a>
                     </div>
                 </div>
             </div>
