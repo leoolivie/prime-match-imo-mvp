@@ -7,7 +7,6 @@ use App\Models\Property;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use App\Models\TelemetryMetric;
-use App\Services\TelemetryRecorder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +18,6 @@ class BusinessmanDashboardController extends Controller
         
         $properties = Property::where('user_id', $user->id)
             ->with('primaryImage')
-            ->orderByDesc('highlighted')
             ->latest()
             ->paginate(6);
 
@@ -99,7 +97,6 @@ class BusinessmanDashboardController extends Controller
         $user = Auth::user();
         $properties = Property::where('user_id', $user->id)
             ->with('primaryImage')
-            ->orderByDesc('highlighted')
             ->latest()
             ->paginate(12);
 
@@ -156,7 +153,6 @@ class BusinessmanDashboardController extends Controller
             'registration_number' => 'nullable|string',
             'parking' => 'nullable|integer|min:0',
             'year_built' => 'nullable|integer|min:1800|max:' . now()->year,
-            'highlighted' => 'sometimes|boolean',
         ]);
 
         $action = $request->input('action', 'save');
@@ -176,7 +172,7 @@ class BusinessmanDashboardController extends Controller
             'bathrooms' => $data['bathrooms'] ?? null,
             'area' => $data['area'] ?? null,
             'registration_number' => $data['registration_number'] ?? null,
-            'highlighted' => $request->boolean('highlighted'),
+            'highlighted' => false,
             'features' => $this->buildFeatures($request),
             'status' => 'available',
             'active' => $action === 'publish',
@@ -201,16 +197,6 @@ class BusinessmanDashboardController extends Controller
             $video = $request->file('video');
             $vpath = $video->store('properties/videos/' . $property->id, 'public');
             $property->update(['video_url' => $vpath]);
-        }
-
-        if ($property->highlighted) {
-            app(TelemetryRecorder::class)->record('highlight_toggle', [
-                'property_id' => $property->id,
-                'user_type' => 'empresario',
-                'context' => 'cadastro',
-            ], [
-                'highlighted' => true,
-            ]);
         }
 
         if ($action === 'preview') {
@@ -248,20 +234,17 @@ class BusinessmanDashboardController extends Controller
             'area' => 'nullable|numeric|min:0',
             'parking' => 'nullable|integer|min:0',
             'year_built' => 'nullable|integer|min:1800|max:' . now()->year,
-            'highlighted' => 'sometimes|boolean',
             'status' => 'nullable|in:available,reserved,sold,rented',
             'active' => 'sometimes|boolean',
         ]);
 
         $action = $request->input('action', 'save');
-        $originalHighlight = $property->highlighted;
-
         $property->update(array_merge($data, [
             'registration_number' => $request->registration_number,
-            'highlighted' => $request->boolean('highlighted', $property->highlighted),
             'features' => $this->buildFeatures($request),
             'active' => $action === 'publish' ? true : ($request->has('active') ? $request->boolean('active') : $property->active),
             'status' => $data['status'] ?? $property->status,
+            'highlighted' => false,
         ]));
 
         // Handle new images (append, limit to 6)
@@ -285,16 +268,6 @@ class BusinessmanDashboardController extends Controller
             $video = $request->file('video');
             $vpath = $video->store('properties/videos/' . $property->id, 'public');
             $property->update(['video_url' => $vpath]);
-        }
-
-        if ($originalHighlight !== $property->highlighted) {
-            app(TelemetryRecorder::class)->record('highlight_toggle', [
-                'property_id' => $property->id,
-                'user_type' => 'empresario',
-                'context' => 'painel',
-            ], [
-                'highlighted' => $property->highlighted,
-            ]);
         }
 
         if ($action === 'preview') {

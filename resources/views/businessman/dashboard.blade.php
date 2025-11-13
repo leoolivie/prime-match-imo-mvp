@@ -75,7 +75,7 @@
                     </div>
                 @else
                     <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-white/70">
-                        <p class="text-sm">Você ainda não possui assinatura ativa. Escolha um plano para liberar destaques premium e suporte concierge dedicado.</p>
+                        <p class="text-sm">Você ainda não possui assinatura ativa. Escolha um plano para liberar suporte concierge dedicado e ferramentas avançadas de performance.</p>
                         <a href="{{ route('businessman.plans') }}" class="mt-4 inline-flex items-center justify-center rounded-full bg-lux-gold px-6 py-3 text-sm font-semibold text-lux-black shadow-lux-glow">Conhecer planos</a>
                     </div>
                 @endif
@@ -93,7 +93,7 @@
                     <h3 class="text-lg font-semibold text-white">Dicas rápidas</h3>
                     <ul class="mt-4 space-y-3 text-sm text-white/60">
                         <li>• Atualize descrições com resultados financeiros para elevar o interesse.</li>
-                        <li>• Use o destaque premium em ativos com maior aderência.</li>
+                        <li>• Publique com riqueza de detalhes: imóveis consistentes podem ser convidados para a vitrine prime pelo Master.</li>
                         <li>• Registre vídeos curtos; o concierge envia ao investidor com contexto.</li>
                     </ul>
                 </div>

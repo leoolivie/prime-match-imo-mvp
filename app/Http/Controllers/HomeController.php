@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FeaturedProperty;
 use App\Models\Partner;
-use App\Models\Property;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $featured = Property::with(['primaryImage'])
-            ->where('active', true)
-            ->where('status', 'available')
-            ->orderByDesc('highlighted')
-            ->orderByDesc('highlighted_until')
-            ->latest()
-            ->take(6)
+        $featured = FeaturedProperty::where('status', 'available')
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
+            ->take(16)
             ->get();
 
         return view('home', compact('featured'));
@@ -24,7 +21,13 @@ class HomeController extends Controller
 
     public function investor()
     {
-        return view('landing.investor');
+        $featured = FeaturedProperty::where('status', 'available')
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
+            ->take(16)
+            ->get();
+
+        return view('landing.investor', compact('featured'));
     }
 
     public function businessman()

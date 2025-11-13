@@ -90,11 +90,6 @@
                     <article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#2A2A2A] bg-[#111111] shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
                         <div class="relative overflow-hidden">
                             <img src="{{ $image }}" alt="Prévia do imóvel {{ $property->title }}" class="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                            @if($property->highlighted)
-                                <span class="absolute left-4 top-4 inline-flex items-center rounded-full border border-[#CBA135]/40 bg-[#0B0B0B]/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#CBA135]">
-                                    Curadoria concierge
-                                </span>
-                            @endif
                         </div>
                         <div class="flex flex-1 flex-col space-y-5 p-6">
                             <div class="space-y-2">

@@ -39,8 +39,8 @@ class PropertySeeder extends Seeder
                 'registration_number' => '12345-SP',
                 'features' => ['piscina', 'academia', 'salão de festas', 'segurança 24h'],
                 'status' => 'available',
-                'highlighted' => true,
-                'highlighted_until' => now()->addMonth(),
+                'highlighted' => false,
+                'highlighted_until' => null,
                 'active' => true,
             ],
             [

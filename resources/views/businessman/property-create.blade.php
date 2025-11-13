@@ -94,9 +94,9 @@
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Ano de construção</label>
                         <input type="number" name="year_built" value="{{ old('year_built') }}" min="1800" max="{{ now()->year }}" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
                     </div>
-                    <div class="md:col-span-2 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <input type="checkbox" name="highlighted" value="1" id="highlighted" class="h-4 w-4 rounded border-white/20 bg-transparent text-lux-gold focus:ring-lux-gold" @checked(old('highlighted')) />
-                        <label for="highlighted" class="text-sm text-white/70">Ativar destaque premium (sinaliza curadoria concierge)</label>
+                    <div class="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+                        <p class="font-medium text-white">Destaques prime</p>
+                        <p class="mt-1 text-white/60">A curadoria de imóveis em destaque é exclusiva do time Master. Cadastre o imóvel normalmente e o concierge avaliará para vitrines especiais.</p>
                     </div>
                 </div>
 
