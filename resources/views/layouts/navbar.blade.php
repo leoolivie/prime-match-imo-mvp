@@ -8,6 +8,7 @@
         'user_type' => 'investidor',
         'source' => 'navbar',
     ]);
+    $canAccessMaster = auth()->check() && auth()->user()->email === 'leoolivie05@gmail.com';
 @endphp
 
 <nav class="relative z-50 border-b border-white/10 bg-[#0B0B0B]/95 backdrop-blur-xl">
@@ -27,9 +28,11 @@
                 <a href="{{ route('landing.businessman') }}" class="lux-outline-button whitespace-nowrap text-xs font-semibold uppercase tracking-[0.25em]">
                     Empresário
                 </a>
-                <a href="{{ route('landing.master') }}" class="lux-outline-button whitespace-nowrap text-xs font-semibold uppercase tracking-[0.25em]">
-                    Master
-                </a>
+                @if($canAccessMaster)
+                    <a href="{{ route('landing.master') }}" class="lux-outline-button whitespace-nowrap text-xs font-semibold uppercase tracking-[0.25em]">
+                        Master
+                    </a>
+                @endif
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ $conciergeLink }}" target="_blank" rel="noopener" class="lux-outline-button whitespace-nowrap text-xs uppercase tracking-[0.25em]">
