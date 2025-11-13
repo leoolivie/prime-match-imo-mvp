@@ -112,6 +112,16 @@ class PrimeMatchImoTest extends TestCase
     }
 
     /** @test */
+    public function master_can_access_investor_dashboard()
+    {
+        $master = User::factory()->create(['role' => 'master']);
+
+        $response = $this->actingAs($master)->get('/investor/dashboard');
+        $response->assertStatus(200);
+        $response->assertSee('Bem-vindo ao seu cockpit cinematográfico');
+    }
+
+    /** @test */
     public function investor_cannot_access_businessman_dashboard()
     {
         $investor = User::factory()->create(['role' => 'investor']);
@@ -147,6 +157,81 @@ class PrimeMatchImoTest extends TestCase
 
         $response = $this->actingAs($businessman)->get('/master/dashboard');
         $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function master_can_access_businessman_properties_index()
+    {
+        $master = User::factory()->create(['role' => 'master']);
+
+        $response = $this->actingAs($master)->get('/businessman/properties');
+        $response->assertOk();
+        $response->assertSee('Minha vitrine');
+    }
+
+    /** @test */
+    public function master_can_subscribe_to_businessman_plan()
+    {
+        $master = User::factory()->create(['role' => 'master']);
+        $plan = SubscriptionPlan::factory()->create([
+            'period' => 'monthly',
+        ]);
+
+        $response = $this->actingAs($master)->post("/businessman/subscribe/{$plan->id}");
+
+        $response->assertRedirect(route('businessman.dashboard'));
+        $this->assertDatabaseHas('subscriptions', [
+            'user_id' => $master->id,
+            'subscription_plan_id' => $plan->id,
+            'status' => 'active',
+        ]);
+    }
+
+    /** @test */
+    public function master_with_active_subscription_can_create_businessman_property()
+    {
+        $master = User::factory()->create(['role' => 'master']);
+        $plan = SubscriptionPlan::factory()->create([
+            'property_limit' => 5,
+            'period' => 'monthly',
+        ]);
+
+        Subscription::factory()
+            ->for($master)
+            ->for($plan)
+            ->create([
+                'start_date' => now(),
+                'end_date' => now()->addMonth(),
+                'status' => 'active',
+            ]);
+
+        $payload = [
+            'title' => 'Master Property',
+            'description' => 'Descrição do imóvel master.',
+            'type' => 'apartment',
+            'transaction_type' => 'sale',
+            'price' => 750000,
+            'address' => 'Rua Exemplo, 123',
+            'city' => 'São Paulo',
+            'state' => 'SP',
+            'zip_code' => '12345-678',
+            'bedrooms' => 3,
+            'bathrooms' => 2,
+            'area' => 120,
+            'parking' => 2,
+            'year_built' => 2020,
+            'highlighted' => true,
+            'action' => 'publish',
+        ];
+
+        $response = $this->actingAs($master)->post('/businessman/properties', $payload);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('properties', [
+            'title' => 'Master Property',
+            'user_id' => $master->id,
+            'active' => true,
+        ]);
     }
 
     /** @test */
