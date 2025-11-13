@@ -33,7 +33,6 @@ class BrokerDashboardController extends Controller
             ->with('primaryImage')
             ->where('active', true)
             ->where('status', 'available')
-            ->orderByDesc('highlighted')
             ->orderByDesc('updated_at')
             ->take(12)
             ->get();

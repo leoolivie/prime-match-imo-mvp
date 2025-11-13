@@ -23,6 +23,7 @@
 @endphp
 
 @section('content')
+    <span class="sr-only">Experiência prime para empresários</span>
     <header class="lux-hero">
         <div class="lux-container relative py-24 pb-40 sm:py-28 sm:pb-36 lg:pb-28">
             <div class="grid gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">

@@ -8,6 +8,12 @@
     use App\Support\Format;
 @endphp
 
+@include('components.prime-featured-section', [
+    'featured' => $featured,
+    'title' => 'Imóveis Prime em destaque',
+    'subtitle' => 'Seleção fixa do Master exibida antes de qualquer outro ativo no catálogo.',
+])
+
 <div class="py-12">
     <div class="lux-container space-y-12">
         <header class="lux-card-dark">
@@ -138,9 +144,6 @@
                                     <h3 class="text-xl font-semibold text-white">{{ $property->title }}</h3>
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
                                 </div>
-                                @if($property->highlighted)
-                                    <span class="lux-badge-gold">Curadoria concierge</span>
-                                @endif
                             </div>
                             <div class="flex flex-wrap gap-3 text-sm text-white/70">
                                 <span class="badge-outline">{{ Format::currency($property->price) }}</span>
@@ -282,9 +285,6 @@
                                                             <h4 class="text-lg font-semibold text-white" x-text="property.title"></h4>
                                                             <p class="text-xs uppercase tracking-[0.3em] text-white/50" x-text="property.city + ' • ' + property.state"></p>
                                                         </div>
-                                                        <template x-if="property.highlighted">
-                                                            <span class="lux-badge-gold">Curadoria concierge</span>
-                                                        </template>
                                                     </div>
                                                     <div class="flex flex-wrap gap-2 text-sm text-white/70">
                                                         <span class="badge-outline" x-text="property.price_formatted"></span>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Broker\BrokerDashboardController;
 use App\Http\Controllers\ConciergeRedirectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Investor\InvestorDashboardController;
+use App\Http\Controllers\Master\FeaturedPropertyController;
 use App\Http\Controllers\Master\MasterDashboardController;
 use App\Http\Controllers\PropertyCatalogController;
 
@@ -80,6 +81,9 @@ Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->g
     
     // Properties
     Route::get('/properties', [MasterDashboardController::class, 'properties'])->name('properties');
+
+    // Featured properties
+    Route::resource('featured-properties', FeaturedPropertyController::class)->except(['show']);
     
     // Partners
     Route::get('/partners', [MasterDashboardController::class, 'partners'])->name('partners');

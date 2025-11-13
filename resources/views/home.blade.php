@@ -8,6 +8,12 @@
     use App\Support\Format;
 @endphp
 
+@include('components.prime-featured-section', [
+    'featured' => $featured,
+    'title' => 'Imóveis em Destaque Prime',
+    'subtitle' => 'Coleção selecionada manualmente pelo Master para abrir sua experiência com ativos exclusivos.',
+])
+
 <section class="lux-hero">
     <div class="lux-container py-20 lg:py-28">
         <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
@@ -131,86 +137,4 @@
     </div>
 </section>
 
-<section class="lux-section">
-    <div class="lux-container space-y-10">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <span class="lux-badge-outline">Imóveis em destaque</span>
-                <h2 class="mt-4 font-poppins text-3xl font-semibold text-white">Curadoria concierge com prioridade de negociação</h2>
-            </div>
-            <a href="{{ route('investor.catalog') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ver vitrine completa</a>
-        </div>
-        <div x-data="{
-                active: 0,
-                autoplay: null,
-                init() {
-                    this.autoplay = setInterval(() => {
-                        if (this.total > 0) {
-                            this.active = (this.active + 1) % this.total;
-                        }
-                    }, 6000);
-                },
-                get total() {
-                    return this.$refs?.slides?.children?.length ?? 0;
-                }
-            }" x-cloak class="space-y-8">
-            <div class="relative overflow-hidden">
-                <div class="grid gap-6 md:grid-cols-2" x-ref="slides">
-                    @forelse($featured as $index => $property)
-                        @php
-                            $image = optional($property->primaryImage)->path
-                                ? asset('storage/' . $property->primaryImage->path)
-                                : asset('images/placeholders/luxury-property.svg');
-                            $amenities = collect($property->features ?? [])->filter()->take(3);
-                        @endphp
-                        <article x-cloak x-show="active === {{ $index }}" x-transition.opacity.duration.500ms class="lux-card-dark grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
-                            <div class="space-y-6">
-                                <div class="space-y-2">
-                                    <span class="lux-badge-gold">{{ $property->highlighted ? 'Formato destaque premium' : 'Disponível' }}</span>
-                                    <h3 class="text-2xl font-semibold text-white">{{ $property->title }}</h3>
-                                    <p class="text-sm uppercase tracking-[0.3em] text-white/60">{{ $property->city }} • {{ $property->state }}</p>
-                                </div>
-                                <div class="flex flex-wrap gap-3 text-sm text-white/70">
-                                    <span class="badge-outline">{{ Format::currency($property->price) }}</span>
-                                    @if($property->area)
-                                        <span class="badge-outline">{{ Format::area($property->area) }}</span>
-                                    @endif
-                                    @if($property->bedrooms)
-                                        <span class="badge-outline">{{ $property->bedrooms }} quartos</span>
-                                    @endif
-                                </div>
-                                <div class="flex flex-wrap gap-2">
-                                    @forelse($amenities as $amenity)
-                                        <span class="lux-badge-outline">{{ $amenity }}</span>
-                                    @empty
-                                        <span class="lux-badge-outline">Amenidades sob consulta</span>
-                                    @endforelse
-                                </div>
-                                <div class="flex flex-wrap gap-3">
-                                    <a href="{{ route('properties.show', $property) }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ver imóvel</a>
-                                    <a href="{{ ConciergeLink::forInvestorCard($property) }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Falar com o concierge</a>
-                                </div>
-                            </div>
-                            <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B0B0B]">
-                                <img src="{{ $image }}" alt="{{ $property->title }}" class="h-full w-full object-cover" loading="lazy" />
-                            </div>
-                        </article>
-                    @empty
-                        <article x-cloak class="lux-card-dark">
-                            <h3 class="text-xl font-semibold text-white">Curadoria em preparação</h3>
-                            <p class="mt-3 text-sm text-white/60">Cadastre imóveis premium ou explore a vitrine para liberar destaques acompanhados pelo concierge.</p>
-                        </article>
-                    @endforelse
-                </div>
-            </div>
-            @if($featured->count() > 1)
-                <div class="flex justify-center gap-2">
-                    @foreach($featured as $index => $_)
-                        <button type="button" class="h-2 w-10 rounded-full transition" :class="active === {{ $index }} ? 'bg-lux-gold shadow-[0_0_25px_rgba(255,215,0,0.4)]' : 'bg-white/10 hover:bg-white/30'" @click="active = {{ $index }}"></button>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-    </div>
-</section>
 @endsection

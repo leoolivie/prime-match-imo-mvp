@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Investor;
 
 use App\Http\Controllers\Controller;
+use App\Models\FeaturedProperty;
 use App\Models\Property;
 use App\Models\PrimeSearch;
 use App\Models\Lead;
@@ -31,13 +32,10 @@ class InvestorDashboardController extends Controller
 
         $searches = $searchQuery->take(6)->get();
 
-        $featuredProperties = Property::with(['primaryImage', 'owner'])
-            ->where('active', true)
-            ->where('status', 'available')
-            ->orderByDesc('highlighted')
-            ->orderByDesc('highlighted_until')
-            ->latest()
-            ->take(6)
+        $featuredProperties = FeaturedProperty::where('status', 'available')
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
+            ->take(16)
             ->get();
 
         $propertyFilters = Property::query()
@@ -78,7 +76,6 @@ class InvestorDashboardController extends Controller
         }
 
         $properties = $propertiesQuery
-            ->orderByDesc('highlighted')
             ->latest()
             ->paginate(9)
             ->withQueryString();
