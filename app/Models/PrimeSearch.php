@@ -9,6 +9,11 @@ class PrimeSearch extends Model
 {
     use HasFactory;
 
+    /**
+     * The database connection used by the model.
+     */
+    protected $connection = 'mysql';
+
     protected $fillable = [
         'user_id',
         'property_type',
