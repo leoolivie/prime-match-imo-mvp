@@ -4,6 +4,12 @@ use Illuminate\Support\Str;
 
 $testingSqlite = filter_var(env('TESTING_SQLITE', false), FILTER_VALIDATE_BOOLEAN);
 
+if ($testingSqlite && ! extension_loaded('pdo_sqlite')) {
+    throw new RuntimeException('The "pdo_sqlite" PHP extension is required when TESTING_SQLITE=true.');
+}
+
+$defaultConnection = $testingSqlite ? 'sqlite' : env('DB_CONNECTION', 'mysql');
+
 return [
 
     /*
@@ -17,7 +23,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => $defaultConnection,
 
     /*
     |--------------------------------------------------------------------------
