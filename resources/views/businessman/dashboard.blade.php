@@ -6,6 +6,8 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
+
+    $canManageProperties = $user->hasApprovedPropertyAccess();
 @endphp
 
 <div class="py-12">
@@ -19,10 +21,23 @@
                         <p class="max-w-2xl text-white/70">Cadastre imóveis, monitore visitas e cliques no WhatsApp e peça ajuda ao concierge único sempre que precisar destacar um ativo.</p>
                     </div>
                     <div class="flex flex-wrap gap-3">
-                        <a href="{{ route('businessman.property.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Cadastrar imóvel</a>
+                        @if($canManageProperties)
+                            <a href="{{ route('businessman.property.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Cadastrar imóvel</a>
+                        @else
+                            <span class="lux-outline-button text-xs uppercase tracking-[0.3em] text-white/60">Aguardando liberação master</span>
+                        @endif
                         <a href="{{ route('businessman.properties') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Minha vitrine</a>
                         <a href="{{ ConciergeLink::forBusinessmanSupport() }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Falar com concierge</a>
                     </div>
+                    @if(!$canManageProperties)
+                        <div class="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-5 text-sm text-amber-100">
+                            <p class="font-semibold text-amber-50">Estamos validando seu CRECI.</p>
+                            <p class="mt-2 text-amber-100/80">
+                                Assim que o Master confirmar o registro <strong>{{ $user->creci ?? 'não informado' }}</strong> (CPF/CNPJ <strong>{{ $user->cpf_cnpj ?? 'não informado' }}</strong>, UF <strong>{{ $user->businessman_state ?? '--' }}</strong>) você poderá cadastrar imóveis.
+                                Nosso time já foi notificado — acompanhe seu e-mail para a liberação.
+                            </p>
+                        </div>
+                    @endif
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div class="lux-stat-bubble">
@@ -104,7 +119,11 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <h2 class="text-2xl font-semibold text-white">Minha vitrine</h2>
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('businessman.property.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">+ Imóvel</a>
+                    @if($canManageProperties)
+                        <a href="{{ route('businessman.property.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">+ Imóvel</a>
+                    @else
+                        <span class="lux-outline-button text-xs uppercase tracking-[0.3em] text-white/60">Liberação pendente</span>
+                    @endif
                     <a href="{{ ConciergeLink::forBusinessmanSupport() }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Preciso de ajuda</a>
                 </div>
             </div>

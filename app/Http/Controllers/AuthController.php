@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Notifications\BusinessmanAwaitingApproval;
 
 class AuthController extends Controller
 {
@@ -54,9 +56,12 @@ class AuthController extends Controller
             'phone' => 'nullable|string|max:20',
             'whatsapp' => 'nullable|string|max:20',
             'terms' => 'required|accepted',
+            'creci' => 'required_if:role,businessman|string|max:64',
+            'cpf_cnpj' => 'required_if:role,businessman|string|max:20',
+            'businessman_state' => 'required_if:role,businessman|string|size:2',
         ]);
 
-        $user = User::create([
+        $attributes = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -65,9 +70,28 @@ class AuthController extends Controller
             'whatsapp' => $request->whatsapp,
             'terms_accepted' => true,
             'terms_accepted_at' => now(),
-        ]);
+        ];
+
+        if ($request->role === 'businessman') {
+            $attributes['creci'] = $request->creci;
+            $attributes['cpf_cnpj'] = $request->cpf_cnpj;
+            $attributes['businessman_state'] = $request->businessman_state;
+            $attributes['property_access_requested_at'] = now();
+            $attributes['can_manage_properties'] = false;
+            $attributes['property_access_granted_at'] = null;
+        }
+
+        $user = User::create($attributes);
 
         Auth::login($user);
+
+        if ($user->isBusinessman()) {
+            $masters = User::where('role', 'master')->get();
+
+            if ($masters->isNotEmpty()) {
+                Notification::send($masters, new BusinessmanAwaitingApproval($user));
+            }
+        }
 
         return redirect($this->getRedirectPath());
     }

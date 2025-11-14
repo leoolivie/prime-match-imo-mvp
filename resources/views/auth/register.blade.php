@@ -34,7 +34,7 @@
                     <h2 class="mt-2 text-3xl font-semibold text-white">Criar conta Prime Match</h2>
                 </div>
 
-                <form method="POST" action="{{ route('register') }}" class="space-y-5">
+                <form method="POST" action="{{ route('register') }}" class="space-y-5" x-data="{ role: '{{ old('role') }}' }">
                     @csrf
 
                     <div class="space-y-2">
@@ -99,6 +99,7 @@
                             id="role"
                             name="role"
                             required
+                            x-model="role"
                             class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none focus:ring-0 @error('role') border-red-500 @enderror"
                         >
                             <option value="" disabled selected>Selecione...</option>
@@ -108,6 +109,55 @@
                         @error('role')
                             <p class="text-xs text-red-400">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    <div x-show="role === 'businessman'" x-cloak class="space-y-4 rounded-3xl border border-white/10 bg-white/5 p-5">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.3em] text-white/60">Validação CRECI</p>
+                            <p class="mt-1 text-sm text-white/60">Preencha os dados abaixo para que o Master libere o cadastro de imóveis. Validaremos o CRECI antes da primeira publicação.</p>
+                        </div>
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div class="sm:col-span-2 space-y-2">
+                                <label for="creci" class="text-xs uppercase tracking-[0.3em] text-white/60">CRECI</label>
+                                <input
+                                    id="creci"
+                                    name="creci"
+                                    type="text"
+                                    value="{{ old('creci') }}"
+                                    class="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none focus:ring-0 @error('creci') border-red-500 @enderror"
+                                >
+                                @error('creci')
+                                    <p class="text-xs text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="space-y-2">
+                                <label for="cpf_cnpj" class="text-xs uppercase tracking-[0.3em] text-white/60">CPF ou CNPJ</label>
+                                <input
+                                    id="cpf_cnpj"
+                                    name="cpf_cnpj"
+                                    type="text"
+                                    value="{{ old('cpf_cnpj') }}"
+                                    class="w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none focus:ring-0 @error('cpf_cnpj') border-red-500 @enderror"
+                                >
+                                @error('cpf_cnpj')
+                                    <p class="text-xs text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="space-y-2">
+                                <label for="businessman_state" class="text-xs uppercase tracking-[0.3em] text-white/60">UF</label>
+                                <input
+                                    id="businessman_state"
+                                    name="businessman_state"
+                                    type="text"
+                                    maxlength="2"
+                                    value="{{ old('businessman_state') }}"
+                                    class="w-full uppercase rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none focus:ring-0 @error('businessman_state') border-red-500 @enderror"
+                                >
+                                @error('businessman_state')
+                                    <p class="text-xs text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="space-y-2">

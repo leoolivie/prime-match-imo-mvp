@@ -6,6 +6,8 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
+
+    $canManageProperties = $user->hasApprovedPropertyAccess();
 @endphp
 
 <div class="py-12">
@@ -17,10 +19,21 @@
                 <p class="text-sm text-white/60">Atualize informações, acompanhe métricas e acione o concierge único para impulsionar cada ativo.</p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ route('businessman.property.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">+ Novo imóvel</a>
+                @if($canManageProperties)
+                    <a href="{{ route('businessman.property.create') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">+ Novo imóvel</a>
+                @else
+                    <span class="lux-outline-button text-xs uppercase tracking-[0.3em] text-white/60">Liberação pendente</span>
+                @endif
                 <a href="{{ route('businessman.dashboard') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Voltar</a>
             </div>
         </div>
+
+        @if(!$canManageProperties)
+            <div class="rounded-2xl border border-amber-400/30 bg-amber-500/10 p-5 text-sm text-amber-100">
+                <p class="font-semibold text-amber-50">Cadastro aguardando validação do Master.</p>
+                <p class="mt-2 text-amber-100/80">Assim que o CRECI {{ $user->creci ?? 'não informado' }} for confirmado você poderá registrar novos imóveis.</p>
+            </div>
+        @endif
 
         @if($properties->count())
             <div class="lux-grid-cards">
