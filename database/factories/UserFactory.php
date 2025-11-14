@@ -34,6 +34,12 @@ class UserFactory extends Factory
             'terms_accepted' => true,
             'terms_accepted_at' => now(),
             'active' => true,
+            'creci' => null,
+            'cpf_cnpj' => null,
+            'businessman_state' => null,
+            'property_access_requested_at' => now(),
+            'property_access_granted_at' => now(),
+            'can_manage_properties' => true,
             'remember_token' => Str::random(10),
         ];
     }

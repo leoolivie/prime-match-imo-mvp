@@ -78,6 +78,7 @@ Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->g
     Route::get('/users/{user}/edit', [MasterDashboardController::class, 'editUser'])->name('users.edit');
     Route::put('/users/{user}', [MasterDashboardController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [MasterDashboardController::class, 'destroyUser'])->name('users.destroy');
+    Route::post('/users/{user}/property-access', [MasterDashboardController::class, 'updateBusinessmanPropertyAccess'])->name('users.property-access');
     
     // Properties
     Route::get('/properties', [MasterDashboardController::class, 'properties'])->name('properties');

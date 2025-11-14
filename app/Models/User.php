@@ -28,6 +28,12 @@ class User extends Authenticatable
         'terms_accepted',
         'terms_accepted_at',
         'active',
+        'creci',
+        'cpf_cnpj',
+        'businessman_state',
+        'property_access_requested_at',
+        'property_access_granted_at',
+        'can_manage_properties',
     ];
 
     /**
@@ -51,7 +57,20 @@ class User extends Authenticatable
         'terms_accepted' => 'boolean',
         'terms_accepted_at' => 'datetime',
         'active' => 'boolean',
+        'property_access_requested_at' => 'datetime',
+        'property_access_granted_at' => 'datetime',
+        'can_manage_properties' => 'boolean',
     ];
+
+    public function setBusinessmanStateAttribute(?string $value): void
+    {
+        $this->attributes['businessman_state'] = $value ? strtoupper($value) : null;
+    }
+
+    public function setCpfCnpjAttribute(?string $value): void
+    {
+        $this->attributes['cpf_cnpj'] = $value ? preg_replace('/\D+/', '', $value) : null;
+    }
 
     // Role checks
     public function isInvestor(): bool
@@ -72,6 +91,18 @@ class User extends Authenticatable
     public function isMaster(): bool
     {
         return $this->role === 'master';
+    }
+
+    public function hasApprovedPropertyAccess(): bool
+    {
+        return (bool) $this->can_manage_properties;
+    }
+
+    public function hasPendingPropertyAccessRequest(): bool
+    {
+        return $this->isBusinessman()
+            && !$this->hasApprovedPropertyAccess()
+            && !is_null($this->property_access_requested_at);
     }
 
     // Relationships

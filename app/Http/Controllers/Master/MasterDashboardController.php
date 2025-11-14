@@ -56,9 +56,21 @@ class MasterDashboardController extends Controller
             'role' => 'required|in:investor,businessman,prime_broker,master',
             'phone' => 'nullable|string|max:20',
             'active' => 'boolean',
+            'creci' => 'nullable|string|max:64',
+            'cpf_cnpj' => 'nullable|string|max:20',
+            'businessman_state' => 'nullable|string|size:2',
+            'can_manage_properties' => 'boolean',
         ]);
 
-        User::create([
+        if ($request->role === 'businessman' && $request->boolean('can_manage_properties', false)) {
+            $request->validate([
+                'creci' => 'required|string|max:64',
+                'cpf_cnpj' => 'required|string|max:20',
+                'businessman_state' => 'required|string|size:2',
+            ]);
+        }
+
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -67,7 +79,18 @@ class MasterDashboardController extends Controller
             'active' => $request->boolean('active', true),
             'terms_accepted' => true,
             'terms_accepted_at' => now(),
-        ]);
+        ];
+
+        if ($request->role === 'businessman') {
+            $data['creci'] = $request->creci;
+            $data['cpf_cnpj'] = $request->cpf_cnpj;
+            $data['businessman_state'] = $request->businessman_state;
+            $data['property_access_requested_at'] = ($request->filled('creci') || $request->filled('cpf_cnpj') || $request->filled('businessman_state')) ? now() : null;
+            $data['can_manage_properties'] = $request->boolean('can_manage_properties', false);
+            $data['property_access_granted_at'] = $request->boolean('can_manage_properties', false) ? now() : null;
+        }
+
+        User::create($data);
 
         return redirect()->route('master.users')->with('success', 'Usuário criado com sucesso!');
     }
@@ -85,10 +108,24 @@ class MasterDashboardController extends Controller
             'role' => 'required|in:investor,businessman,prime_broker,master',
             'phone' => 'nullable|string|max:20',
             'active' => 'boolean',
+            'creci' => 'nullable|string|max:64',
+            'cpf_cnpj' => 'nullable|string|max:20',
+            'businessman_state' => 'nullable|string|size:2',
         ]);
 
-        $data = $request->only(['name', 'email', 'role', 'phone']);
+        $data = $request->only(['name', 'email', 'role', 'phone', 'creci', 'cpf_cnpj', 'businessman_state']);
         $data['active'] = $request->boolean('active', true);
+
+        if ($data['role'] !== 'businessman') {
+            $data['creci'] = null;
+            $data['cpf_cnpj'] = null;
+            $data['businessman_state'] = null;
+            $data['can_manage_properties'] = false;
+            $data['property_access_requested_at'] = null;
+            $data['property_access_granted_at'] = null;
+        } elseif (!$user->property_access_requested_at && ($request->filled('creci') || $request->filled('cpf_cnpj') || $request->filled('businessman_state'))) {
+            $data['property_access_requested_at'] = now();
+        }
 
         if ($request->filled('password')) {
             $request->validate(['password' => 'string|min:8|confirmed']);
@@ -147,5 +184,39 @@ class MasterDashboardController extends Controller
     {
         $subscriptions = Subscription::with(['user', 'plan'])->paginate(20);
         return view('master.subscriptions.index', compact('subscriptions'));
+    }
+
+    public function updateBusinessmanPropertyAccess(Request $request, User $user)
+    {
+        if (!$user->isBusinessman()) {
+            return back()->with('error', 'A ação de liberação de imóveis é exclusiva para perfis de empresário.');
+        }
+
+        $action = $request->input('action');
+
+        if ($action === 'approve') {
+            if (!$user->creci || !$user->cpf_cnpj || !$user->businessman_state) {
+                return back()->with('error', 'Informe CRECI, CPF/CNPJ e UF antes de liberar o cadastro de imóveis.');
+            }
+
+            $user->update([
+                'can_manage_properties' => true,
+                'property_access_granted_at' => now(),
+                'property_access_requested_at' => $user->property_access_requested_at ?? now(),
+            ]);
+
+            return back()->with('success', 'Empresário liberado para cadastrar imóveis.');
+        }
+
+        if ($action === 'revoke') {
+            $user->update([
+                'can_manage_properties' => false,
+                'property_access_granted_at' => null,
+            ]);
+
+            return back()->with('success', 'Liberação de imóveis revogada.');
+        }
+
+        return back()->with('error', 'Ação inválida.');
     }
 }

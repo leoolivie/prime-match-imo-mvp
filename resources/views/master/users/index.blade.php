@@ -57,6 +57,45 @@
                         </div>
                     </div>
 
+                    @if($user->isBusinessman())
+                        @php
+                            $approvalStatus = $user->hasApprovedPropertyAccess();
+                            $requestedAt = optional($user->property_access_requested_at);
+                            $grantedAt = optional($user->property_access_granted_at);
+                        @endphp
+                        <div class="rounded-2xl border border-amber-400/25 bg-amber-500/10 p-5 text-sm text-white/80">
+                            <div class="flex flex-wrap items-start justify-between gap-4">
+                                <div class="space-y-2">
+                                    <p class="text-xs uppercase tracking-[0.3em] text-amber-200/80">Liberação de imóveis</p>
+                                    <p class="text-lg font-semibold text-white">{{ $approvalStatus ? 'Liberado para publicar' : 'Em validação master' }}</p>
+                                    <p>CRECI: <span class="font-medium text-white">{{ $user->creci ?? 'não informado' }}</span></p>
+                                    <p>CPF/CNPJ: <span class="font-medium text-white">{{ $user->cpf_cnpj ?? 'não informado' }}</span> • UF: <span class="font-medium text-white">{{ $user->businessman_state ?? '--' }}</span></p>
+                                    <p class="text-xs text-white/60">
+                                        Solicitação: {{ $requestedAt ? $requestedAt->format('d/m/Y H:i') : '—' }}
+                                        @if($approvalStatus)
+                                            • Liberação: {{ $grantedAt ? $grantedAt->format('d/m/Y H:i') : '—' }}
+                                        @endif
+                                    </p>
+                                </div>
+                                <div class="flex flex-col gap-2 sm:flex-row">
+                                    @if($approvalStatus)
+                                        <form action="{{ route('master.users.property-access', $user) }}" method="POST" onsubmit="return confirm('Revogar a liberação deste empresário?');">
+                                            @csrf
+                                            <input type="hidden" name="action" value="revoke">
+                                            <button type="submit" class="lux-outline-button text-xs uppercase tracking-[0.3em] text-amber-100">Revogar liberação</button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('master.users.property-access', $user) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="action" value="approve">
+                                            <button type="submit" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Liberar cadastro de imóveis</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="flex flex-wrap gap-3">
                         <a href="mailto:{{ $user->email }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">E-mail direto</a>
                         @if($user->phone)

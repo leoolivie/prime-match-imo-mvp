@@ -51,7 +51,12 @@ class BusinessmanDashboardController extends Controller
         ];
         $stats['conversion'] = $stats['visits_30'] > 0 ? round(($stats['clicks_30'] / $stats['visits_30']) * 100, 1) : 0;
 
-        return view('businessman.dashboard', compact('properties', 'subscription', 'stats'));
+        return view('businessman.dashboard', [
+            'properties' => $properties,
+            'subscription' => $subscription,
+            'stats' => $stats,
+            'user' => $user,
+        ]);
     }
 
     public function plans()
@@ -116,11 +121,18 @@ class BusinessmanDashboardController extends Controller
             return $property;
         });
 
-        return view('businessman.properties', compact('properties'));
+        return view('businessman.properties', [
+            'properties' => $properties,
+            'user' => $user,
+        ]);
     }
 
     public function createProperty()
     {
+        if ($response = $this->ensureBusinessmanIsApproved()) {
+            return $response;
+        }
+
         $user = Auth::user();
         $subscription = $user->activeSubscription;
 
@@ -137,6 +149,10 @@ class BusinessmanDashboardController extends Controller
 
     public function storeProperty(Request $request)
     {
+        if ($response = $this->ensureBusinessmanIsApproved()) {
+            return $response;
+        }
+
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -293,5 +309,17 @@ class BusinessmanDashboardController extends Controller
             'vagas' => $request->input('parking'),
             'ano' => $request->input('year_built'),
         ], fn ($value) => !is_null($value) && $value !== '');
+    }
+
+    protected function ensureBusinessmanIsApproved()
+    {
+        $user = Auth::user();
+
+        if ($user->isBusinessman() && !$user->hasApprovedPropertyAccess()) {
+            return redirect()->route('businessman.dashboard')
+                ->with('error', 'Seu cadastro de CRECI está em validação pelo Master. Assim que for liberado você poderá cadastrar imóveis.');
+        }
+
+        return null;
     }
 }
