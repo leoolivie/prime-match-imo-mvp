@@ -10,6 +10,11 @@ class Property extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The database connection used by the model.
+     */
+    protected $connection = 'mysql';
+
     protected $fillable = [
         'user_id',
         'title',

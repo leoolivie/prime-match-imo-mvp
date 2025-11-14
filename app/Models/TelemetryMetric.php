@@ -11,6 +11,11 @@ class TelemetryMetric extends Model
 {
     use HasFactory;
 
+    /**
+     * The database connection used by the model.
+     */
+    protected $connection = 'mysql';
+
     protected $fillable = [
         'event_name',
         'event_date',
