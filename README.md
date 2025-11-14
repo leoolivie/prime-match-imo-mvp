@@ -1,6 +1,7 @@
 # Prime Match Imo - Sistema SaaS Imobiliário
 
 Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 10, Docker, e Tailwind CSS.
+Pode ser executado tanto via Docker quanto em hospedagens compartilhadas com PHP 8.2+ (cPanel).
 
 ## 🚀 Tecnologias
 
@@ -15,7 +16,7 @@ Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 
 
 ## 📋 Pré-requisitos
 
--   Docker & Docker Compose instalados
+-   Docker & Docker Compose instalados *(para execução containerizada)*
 -   Git
 -   Make (opcional, mas recomendado)
 
@@ -80,6 +81,68 @@ docker compose exec php-fpm php artisan db:seed
 ### 7. Acesse a aplicação
 
 Abra seu navegador e acesse: [http://localhost:8082](http://localhost:8082)
+
+## 🌐 Implantação em hospedagem compartilhada (cPanel)
+
+> Utilize esta abordagem quando não for possível executar Docker no provedor.
+
+1. **Requisitos do plano**
+   - PHP 8.2 ou superior, com extensões `pdo_mysql`, `mbstring`, `openssl`, `json`, `tokenizer`, `xml` e `fileinfo` habilitadas.
+   - MySQL 5.7+ ou MariaDB 10.4+ (crie o banco e usuário no painel cPanel).
+   - Acesso SSH habilitado para executar comandos Artisan/Composer.
+
+2. **Preparação local**
+   - Clone o projeto e copie o arquivo `.env.example` para `.env`.
+   - Ajuste as variáveis do `.env` para o ambiente da hospedagem:
+     ```ini
+     APP_ENV=production
+     APP_DEBUG=false
+     APP_URL=https://seu-dominio.com
+
+     DB_HOST=localhost
+     DB_PORT=3306
+     DB_DATABASE=nome_do_banco
+     DB_USERNAME=usuario_do_banco
+     DB_PASSWORD=senha_do_banco
+
+     CACHE_DRIVER=file
+     QUEUE_CONNECTION=sync
+     SESSION_DRIVER=file
+     FILESYSTEM_DISK=public
+     ```
+   - Caso a hospedagem ofereça Redis, basta alterar as variáveis `CACHE_DRIVER`, `QUEUE_CONNECTION` e `SESSION_DRIVER` para `redis` e preencher `REDIS_HOST`.
+
+3. **Instalação das dependências**
+   - No seu ambiente local (ou via SSH, se o plano permitir Composer):
+     ```bash
+     composer install --no-dev --optimize-autoloader
+     npm install
+     npm run build
+     ```
+   - O comando `npm run build` gera os assets em `public/build`. Faça upload dessa pasta para o servidor.
+
+4. **Upload dos arquivos**
+   - Envie todos os arquivos do projeto para o servidor, exceto `node_modules/`, `vendor/` (se for instalar via SSH) e diretórios de desenvolvimento (`docker/`).
+   - Caso o plano **não** permita rodar `composer install` via SSH, gere a pasta `vendor/` localmente e faça upload.
+
+5. **Configuração no servidor**
+   - Defina o diretório raiz do domínio/subdomínio para apontar para a pasta `public/`.
+   - Via SSH, execute:
+     ```bash
+     php artisan key:generate
+     php artisan migrate --force
+     php artisan storage:link
+     php artisan optimize
+     ```
+   - Ajuste permissões das pastas `storage/` e `bootstrap/cache/` para escrita (por exemplo, `chmod -R 775 storage bootstrap/cache`).
+
+6. **Crons e tarefas agendadas**
+   - No cPanel, crie um cron a cada minuto para `php /caminho/para/sua/aplicacao/artisan schedule:run` se o projeto utilizar agendamentos.
+   - Para filas, mantendo `QUEUE_CONNECTION=sync` dispensa workers adicionais. Se mudar para `database`, crie um cron adicional para `php artisan queue:work --once`.
+
+7. **Configurações extras**
+   - Atualize as variáveis de e-mail (`MAIL_HOST`, `MAIL_PORT`, etc.) com os dados SMTP da HostGator.
+   - Ative HTTPS (Let's Encrypt) e verifique os logs em `storage/logs/` após o deploy.
 
 ## 👥 Usuários de Teste
 
