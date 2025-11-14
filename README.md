@@ -16,7 +16,8 @@ Projetado para rodar diretamente via PHP local (php artisan serve) ou em hospeda
 
 ## Pré-requisitos
 
--   PHP 8.3 com extensões pdo_mysql, mbstring, openssl, json, 	okenizer, xml, ileinfo
+-   PHP 8.3 com extensões pdo_mysql, mbstring, openssl, json, tokenizer, xml, fileinfo e **pdo_sqlite** (necessária para executar a suíte de testes)
+ileinfo
 -   Composer
 -   Node.js 20+ e npm
 -   MySQL 8 / MariaDB 10.4+
@@ -78,6 +79,23 @@ make install
 ### 4. Gere a chave da aplicação
 
 `ash
+
+### 8. Execute os testes automatizados
+
+Garanta que a extensão `pdo_sqlite` está habilitada antes de rodar a suíte. Em distribuições baseadas em Debian/Ubuntu:
+
+```bash
+sudo apt-get update
+sudo apt-get install php8.3-sqlite3
+```
+
+Com as dependências instaladas e o banco configurado, execute:
+
+```bash
+php artisan test
+```
+
+O arquivo `phpunit.xml` já exporta as variáveis necessárias para usar SQLite em memória durante os testes.
 make key
 `
 
