@@ -1,99 +1,121 @@
-# Prime Match Imo - Sistema SaaS Imobiliário
+﻿# Prime Match Imo - Sistema SaaS Imobiliário
 
-Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 10, Docker, e Tailwind CSS.
-Pode ser executado tanto via Docker quanto em hospedagens compartilhadas com PHP 8.2+ (cPanel).
+Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 11, PHP 8.3, Vite e Tailwind CSS.
+Projetado para rodar diretamente via PHP local (php artisan serve) ou em hospedagens compartilhadas com PHP 8.3+.
 
-## 🚀 Tecnologias
+## Tecnologias
 
--   **Laravel 12** - Framework PHP
--   **PHP 8.3** - Linguagem de programação
--   **MySQL 8** - Banco de dados
--   **Redis** - Cache e filas
--   **Nginx** - Servidor web
--   **Docker & Docker Compose** - Containerização
+-   **Laravel 11** - Framework PHP
+-   **PHP 8.3** - Linguagem e runtime
+-   **MySQL 8** - Banco de dados relacional
+-   **Redis** - Cache e filas (opcional)
+-   **Nginx** - Servidor web (produção)
+-   **Node.js + Vite** - Pipeline de frontend
 -   **Tailwind CSS** - Framework CSS
--   **Alpine.js** - JavaScript reativo
+-   **Alpine.js** - Comportamento reativo leve
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
--   Docker & Docker Compose instalados *(para execução containerizada)*
+-   PHP 8.3 com extensões pdo_mysql, mbstring, openssl, json, 	okenizer, xml, ileinfo
+-   Composer
+-   Node.js 20+ e npm
+-   MySQL 8 / MariaDB 10.4+
+-   Redis (opcional)
 -   Git
--   Make (opcional, mas recomendado)
+-   Make (opcional)
 
-## 🔧 Instalação e Configuração
+## Instalação e Configuração Local
 
 ### 1. Clone o repositório
 
-```bash
+`ash
 git clone https://github.com/leoolivie/prime-match-imo-mvp.git
 cd prime-match-imo-mvp
-```
+`
 
 ### 2. Configure o ambiente
 
-```bash
+`ash
 cp .env.example .env
-```
+`
 
-### 3. Construa e inicie os containers Docker
+Ajuste .env para apontar para o seu banco local e SMTP:
 
-```bash
-# Usando Make (recomendado)
-make build
-make up
+`ini
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
 
-# Ou usando Docker Compose diretamente
-docker compose build
-docker compose up -d
-```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=primematch
+DB_USERNAME=root
+DB_PASSWORD=
 
-### 4. Instale as dependências do Laravel
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
 
-```bash
-# Usando Make
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="noreply@primematch.com"
+MAIL_FROM_NAME="${APP_NAME}"
+`
+
+> Para capturar e-mails localmente, instale o Mailpit (https://mailpit.dev) e mantenha as portas 8025/1025.
+
+### 3. Instale as dependências
+
+`ash
 make install
+`
 
-# Ou usando Docker Compose
-docker compose exec php-fpm composer install
-```
+### 4. Gere a chave da aplicação
 
-### 5. Gere a chave da aplicação
+`ash
+make key
+`
 
-```bash
-docker compose exec php-fpm php artisan key:generate
-```
+### 5. Execute migrations e seeders
 
-### 6. Execute as migrations e seeders
-
-```bash
-# Usando Make
+`ash
 make migrate
 make seed
+`
 
-# Ou para fazer tudo de uma vez (fresh install)
-make fresh
+Para recriar o banco e popular novamente, execute make fresh.
 
-# Ou usando Docker Compose
-docker compose exec php-fpm php artisan migrate
-docker compose exec php-fpm php artisan db:seed
-```
+### 6. Compile os assets
 
-### 7. Acesse a aplicação
+`ash
+make dev    # ativa o watcher Vite
+make build  # build otimizado para produção
+`
 
-Abra seu navegador e acesse: [http://localhost:8082](http://localhost:8082)
+### 7. Execute o servidor
 
-## 🌐 Implantação em hospedagem compartilhada (cPanel)
+`ash
+make serve
+`
 
-> Utilize esta abordagem quando não for possível executar Docker no provedor.
+Após isso, abra http://127.0.0.1:8000 no navegador. Use make help para ver os atalhos disponíveis.
+## ðŸŒ ImplantaÃ§Ã£o em hospedagem compartilhada (cPanel)
+
+> Este passo a passo serve para hospedagens compartilhadas sem acesso root; ajuste conforme as ferramentas fornecidas.
 
 1. **Requisitos do plano**
-   - PHP 8.2 ou superior, com extensões `pdo_mysql`, `mbstring`, `openssl`, `json`, `tokenizer`, `xml` e `fileinfo` habilitadas.
-   - MySQL 5.7+ ou MariaDB 10.4+ (crie o banco e usuário no painel cPanel).
+   - PHP 8.2 ou superior, com extensÃµes `pdo_mysql`, `mbstring`, `openssl`, `json`, `tokenizer`, `xml` e `fileinfo` habilitadas.
+   - MySQL 5.7+ ou MariaDB 10.4+ (crie o banco e usuÃ¡rio no painel cPanel).
    - Acesso SSH habilitado para executar comandos Artisan/Composer.
 
-2. **Preparação local**
+2. **PreparaÃ§Ã£o local**
    - Clone o projeto e copie o arquivo `.env.example` para `.env`.
-   - Ajuste as variáveis do `.env` para o ambiente da hospedagem:
+   - Ajuste as variÃ¡veis do `.env` para o ambiente da hospedagem:
      ```ini
      APP_ENV=production
      APP_DEBUG=false
@@ -110,23 +132,23 @@ Abra seu navegador e acesse: [http://localhost:8082](http://localhost:8082)
      SESSION_DRIVER=file
      FILESYSTEM_DISK=public
      ```
-   - Caso a hospedagem ofereça Redis, basta alterar as variáveis `CACHE_DRIVER`, `QUEUE_CONNECTION` e `SESSION_DRIVER` para `redis` e preencher `REDIS_HOST`.
+   - Caso a hospedagem ofereÃ§a Redis, basta alterar as variÃ¡veis `CACHE_DRIVER`, `QUEUE_CONNECTION` e `SESSION_DRIVER` para `redis` e preencher `REDIS_HOST`.
 
-3. **Instalação das dependências**
+3. **InstalaÃ§Ã£o das dependÃªncias**
    - No seu ambiente local (ou via SSH, se o plano permitir Composer):
      ```bash
      composer install --no-dev --optimize-autoloader
      npm install
      npm run build
      ```
-   - O comando `npm run build` gera os assets em `public/build`. Faça upload dessa pasta para o servidor.
+   - O comando `npm run build` gera os assets em `public/build`. FaÃ§a upload dessa pasta para o servidor.
 
 4. **Upload dos arquivos**
-   - Envie todos os arquivos do projeto para o servidor, exceto `node_modules/`, `vendor/` (se for instalar via SSH) e diretórios de desenvolvimento (`docker/`).
-   - Caso o plano **não** permita rodar `composer install` via SSH, gere a pasta `vendor/` localmente e faça upload.
+   - Envie todos os arquivos do projeto para o servidor, exceto `node_modules/` e `vendor/` (se for instalar via SSH); mantenha arquivos de build locais fora do upload.
+   - Caso o plano **nÃ£o** permita rodar `composer install` via SSH, gere a pasta `vendor/` localmente e faÃ§a upload.
 
-5. **Configuração no servidor**
-   - Defina o diretório raiz do domínio/subdomínio para apontar para a pasta `public/`.
+5. **ConfiguraÃ§Ã£o no servidor**
+   - Defina o diretÃ³rio raiz do domÃ­nio/subdomÃ­nio para apontar para a pasta `public/`.
    - Via SSH, execute:
      ```bash
      php artisan key:generate
@@ -134,146 +156,136 @@ Abra seu navegador e acesse: [http://localhost:8082](http://localhost:8082)
      php artisan storage:link
      php artisan optimize
      ```
-   - Ajuste permissões das pastas `storage/` e `bootstrap/cache/` para escrita (por exemplo, `chmod -R 775 storage bootstrap/cache`).
+   - Ajuste permissÃµes das pastas `storage/` e `bootstrap/cache/` para escrita (por exemplo, `chmod -R 775 storage bootstrap/cache`).
 
 6. **Crons e tarefas agendadas**
    - No cPanel, crie um cron a cada minuto para `php /caminho/para/sua/aplicacao/artisan schedule:run` se o projeto utilizar agendamentos.
    - Para filas, mantendo `QUEUE_CONNECTION=sync` dispensa workers adicionais. Se mudar para `database`, crie um cron adicional para `php artisan queue:work --once`.
 
-7. **Configurações extras**
-   - Atualize as variáveis de e-mail (`MAIL_HOST`, `MAIL_PORT`, etc.) com os dados SMTP da HostGator.
-   - Ative HTTPS (Let's Encrypt) e verifique os logs em `storage/logs/` após o deploy.
+7. **ConfiguraÃ§Ãµes extras**
+   - Atualize as variÃ¡veis de e-mail (`MAIL_HOST`, `MAIL_PORT`, etc.) com os dados SMTP da HostGator.
+   - Ative HTTPS (Let's Encrypt) e verifique os logs em `storage/logs/` apÃ³s o deploy.
 
-## 👥 Usuários de Teste
+## ðŸ‘¥ UsuÃ¡rios de Teste
 
-Após executar os seeders, você terá acesso aos seguintes usuários de teste:
+ApÃ³s executar os seeders, vocÃª terÃ¡ acesso aos seguintes usuÃ¡rios de teste:
 
-| Papel          | E-mail                     | Senha    | Descrição                         |
+| Papel          | E-mail                     | Senha    | DescriÃ§Ã£o                         |
 | -------------- | -------------------------- | -------- | --------------------------------- |
 | Master (Admin) | master@primematch.com      | password | Administrador do sistema          |
-| Corretor Prime | broker@primematch.com      | password | Corretor de imóveis               |
-| Empresário     | businessman@primematch.com | password | Proprietário com assinatura ativa |
-| Investidor     | investor@primematch.com    | password | Investidor buscando imóveis       |
+| Corretor Prime | broker@primematch.com      | password | Corretor de imÃ³veis               |
+| EmpresÃ¡rio     | businessman@primematch.com | password | ProprietÃ¡rio com assinatura ativa |
+| Investidor     | investor@primematch.com    | password | Investidor buscando imÃ³veis       |
 
-## 🏗️ Estrutura do Projeto
+## ðŸ—ï¸ Estrutura do Projeto
 
 ```
 prime-match-imo-mvp/
-├── app/
-│   ├── Http/Controllers/
-│   │   ├── AuthController.php
-│   │   ├── Investor/
-│   │   ├── Businessman/
-│   │   ├── Broker/
-│   │   └── Master/
-│   └── Models/
-│       ├── User.php
-│       ├── Property.php
-│       ├── Subscription.php
-│       ├── SubscriptionPlan.php
-│       ├── Lead.php
-│       ├── PrimeSearch.php
-│       └── Partner.php
-├── database/
-│   ├── migrations/
-│   └── seeders/
-├── docker/
-│   └── nginx/
-├── resources/
-│   └── views/
-├── docker-compose.yml
-├── Dockerfile
-└── Makefile
+â”œâ”€â”€ app/
+â”‚   â”œâ”€â”€ Http/Controllers/
+â”‚   â”‚   â”œâ”€â”€ AuthController.php
+â”‚   â”‚   â”œâ”€â”€ Investor/
+â”‚   â”‚   â”œâ”€â”€ Businessman/
+â”‚   â”‚   â”œâ”€â”€ Broker/
+â”‚   â”‚   â””â”€â”€ Master/
+â”‚   â””â”€â”€ Models/
+â”‚       â”œâ”€â”€ User.php
+â”‚       â”œâ”€â”€ Property.php
+â”‚       â”œâ”€â”€ Subscription.php
+â”‚       â”œâ”€â”€ SubscriptionPlan.php
+â”‚       â”œâ”€â”€ Lead.php
+â”‚       â”œâ”€â”€ PrimeSearch.php
+â”‚       â””â”€â”€ Partner.php
+â”œâ”€â”€ database/
+â”‚   â”œâ”€â”€ migrations/
+â”‚   â””â”€â”€ seeders/
+â””â”€â”€ Makefile
 ```
 
-## 🎯 Funcionalidades
+## ðŸŽ¯ Funcionalidades
 
 ### Landing Page
 
--   Apresentação do sistema
--   Informações sobre planos e recursos
--   Formulário de cadastro
+-   ApresentaÃ§Ã£o do sistema
+-   InformaÃ§Ãµes sobre planos e recursos
+-   FormulÃ¡rio de cadastro
 
 ### Para Investidores
 
--   **Busca Prime**: Busca avançada de imóveis com filtros
--   **Alertas**: Criação de alertas personalizados
--   **Leads**: Registro de interesse em imóveis
--   **Dashboard**: Visualização de buscas e leads
+-   **Busca Prime**: Busca avanÃ§ada de imÃ³veis com filtros
+-   **Alertas**: CriaÃ§Ã£o de alertas personalizados
+-   **Leads**: Registro de interesse em imÃ³veis
+-   **Dashboard**: VisualizaÃ§Ã£o de buscas e leads
 
-### Para Empresários
+### Para EmpresÃ¡rios
 
--   **Gestão de Imóveis**: CRUD completo de imóveis
+-   **GestÃ£o de ImÃ³veis**: CRUD completo de imÃ³veis
 -   **Planos de Assinatura**:
-    -   **Prime Mensal** (R$ 350/mês): Até 5 imóveis
-    -   **Prime Trimestral** (R$ 250/mês): Até 15 imóveis
-    -   **Prime Anual** (R$ 200/mês): Imóveis ilimitados + 1 destaque/mês
--   **Leads**: Visualização de interessados
--   **Métricas**: Dashboard com estatísticas
+    -   **Prime Mensal** (R$ 350/mÃªs): AtÃ© 5 imÃ³veis
+    -   **Prime Trimestral** (R$ 250/mÃªs): AtÃ© 15 imÃ³veis
+    -   **Prime Anual** (R$ 200/mÃªs): ImÃ³veis ilimitados + 1 destaque/mÃªs
+-   **Leads**: VisualizaÃ§Ã£o de interessados
+-   **MÃ©tricas**: Dashboard com estatÃ­sticas
 
 ### Para Corretores Prime
 
--   **Gestão de Leads**: Atribuição e acompanhamento
+-   **GestÃ£o de Leads**: AtribuiÃ§Ã£o e acompanhamento
 -   **WhatsApp**: Contato direto com investidores
 -   **CRM**: Sistema de acompanhamento de leads
--   **Métricas**: Performance e conversões
+-   **MÃ©tricas**: Performance e conversÃµes
 
 ### Para Master (Admin)
 
--   **CRUD de Usuários**: Gestão completa de usuários
--   **Gestão de Imóveis**: Visualização e moderação
+-   **CRUD de UsuÃ¡rios**: GestÃ£o completa de usuÃ¡rios
+-   **GestÃ£o de ImÃ³veis**: VisualizaÃ§Ã£o e moderaÃ§Ã£o
 -   **Parceiros**: Cadastro de parceiros do sistema
--   **Assinaturas**: Gestão de planos e pagamentos
--   **Relatórios**: Dashboards com métricas do sistema
+-   **Assinaturas**: GestÃ£o de planos e pagamentos
+-   **RelatÃ³rios**: Dashboards com mÃ©tricas do sistema
 
-## 📊 Planos de Assinatura
+## ðŸ“Š Planos de Assinatura
 
-| Plano            | Valor/mês | Limite de Imóveis | Benefícios                                  |
+| Plano            | Valor/mÃªs | Limite de ImÃ³veis | BenefÃ­cios                                  |
 | ---------------- | --------- | ----------------- | ------------------------------------------- |
 | Prime Mensal     | R$ 350    | 5                 | Corretor prime, suporte, consultoria        |
-| Prime Trimestral | R$ 250    | 15                | Corretor prime, suporte avançado, parceiros |
-| Prime Anual      | R$ 200    | Ilimitado         | 1 destaque/mês + todos os benefícios        |
+| Prime Trimestral | R$ 250    | 15                | Corretor prime, suporte avanÃ§ado, parceiros |
+| Prime Anual      | R$ 200    | Ilimitado         | 1 destaque/mÃªs + todos os benefÃ­cios        |
 
-## 🔐 Segurança e Privacidade
+## ðŸ” SeguranÃ§a e Privacidade
 
--   **Matrícula de Imóvel**: Campo privado, visível apenas para proprietário e master
--   **Autenticação**: Sistema seguro com hash de senhas
--   **Autorização**: Controle de acesso baseado em papéis (RBAC)
--   **Termos de Uso**: Consentimento obrigatório no cadastro
+-   **MatrÃ­cula de ImÃ³vel**: Campo privado, visÃ­vel apenas para proprietÃ¡rio e master
+-   **AutenticaÃ§Ã£o**: Sistema seguro com hash de senhas
+-   **AutorizaÃ§Ã£o**: Controle de acesso baseado em papÃ©is (RBAC)
+-   **Termos de Uso**: Consentimento obrigatÃ³rio no cadastro
 
-## 🛠️ Comandos Make Disponíveis
+## Comandos Make Disponíveis
 
 ```bash
-make up              # Inicia os containers
-make down            # Para os containers
-make restart         # Reinicia os containers
-make logs            # Visualiza logs em tempo real
-make bash            # Acessa o container PHP
-make migrate         # Executa migrations
-make seed            # Executa seeders
-make fresh           # Recria banco de dados com seeders
-make install         # Instala dependências do Composer
-make test            # Executa testes
-make build           # Constrói as imagens Docker
-make rebuild         # Reconstrói as imagens do zero
+make install        # Composer + npm install
+make composer-install # Composer install only
+make migrate        # Executa migrations
+make seed           # Executa seeders
+make fresh          # migrate:fresh --seed
+make test           # Phpunit / Pest
+make queue          # queue:work local
+make dev            # npm run dev (watcher)
+make build          # npm run build (production assets)
+make serve          # php artisan serve --host=127.0.0.1 --port=8000
+make key            # php artisan key:generate
+make help           # Lista os comandos disponíveis
 ```
 
-## 🐳 Serviços Docker
+## Infraestrutura Local Recomendada
 
-| Serviço | Função                | Porta                             |
-| ------- | --------------------- | --------------------------------- |
-| nginx   | Servidor web          | 8082:80                           |
-| php-fpm | Aplicação Laravel     | (interno)                         |
-| mysql   | Banco de dados        | 3306:3306                         |
-| redis   | Cache e filas         | 6379:6379                         |
-| mailpit | SMTP fake para testes | 8025:8025 (web), 1025:1025 (smtp) |
+| Serviço | Função | Porta local |
+| ------- | ------ | ----------- |
+| MySQL 8 | Banco de dados principal | 3306 |
+| Redis (opcional) | Cache e filas | 6379 |
+| Mailpit / Mailhog (opcional) | SMTP fake para testes | 8025 (web) / 1025 (SMTP) |
 
-### Mailpit
+Instale esses serviços localmente ou utilize equivalentes gerenciados; ajuste `.env` para apontar para os hosts e portas corretas.
 
-Para visualizar os e-mails enviados pela aplicação em ambiente de desenvolvimento, acesse:
-[http://localhost:8025](http://localhost:8025)
 
-## 🧪 Testes
+## ðŸ§ª Testes
 
 Para executar os testes:
 
@@ -281,68 +293,73 @@ Para executar os testes:
 make test
 
 # Ou
-docker compose exec php-fpm php artisan test
+php artisan test
 ```
 
-## 📝 Arquitetura
+## ðŸ“ Arquitetura
 
-O sistema segue os princípios:
+O sistema segue os princÃ­pios:
 
 -   **MVC** (Model-View-Controller)
 -   **SOLID**
 -   **Clean Code**
--   **Repository Pattern** (preparado para implementação)
--   **Service Layer** (preparado para implementação)
+-   **Repository Pattern** (preparado para implementaÃ§Ã£o)
+-   **Service Layer** (preparado para implementaÃ§Ã£o)
 
-### Camadas da Aplicação
+### Camadas da AplicaÃ§Ã£o
 
 ```
-Controllers → Services → Repositories → Models
-     ↓
+Controllers â†’ Services â†’ Repositories â†’ Models
+     â†“
   Policies
-     ↓
-   Events → Listeners → Jobs
+     â†“
+   Events â†’ Listeners â†’ Jobs
 ```
 
-## 🔄 Fluxo de Trabalho
+## ðŸ”„ Fluxo de Trabalho
 
 ### Busca Prime (Investidor)
 
-1. Investidor preenche formulário de busca
-2. Sistema filtra imóveis disponíveis
-3. Opção de criar alerta para novas correspondências
+1. Investidor preenche formulÃ¡rio de busca
+2. Sistema filtra imÃ³veis disponÃ­veis
+3. OpÃ§Ã£o de criar alerta para novas correspondÃªncias
 4. Investidor registra interesse (cria lead)
-5. Lead atribuído a corretor prime
+5. Lead atribuÃ­do a corretor prime
 6. Corretor entra em contato via WhatsApp
 
-### Cadastro de Imóvel (Empresário)
+### Cadastro de ImÃ³vel (EmpresÃ¡rio)
 
-1. Empresário verifica plano ativo e limite
-2. Preenche dados do imóvel
-3. Matrícula mantida privada
-4. Imóvel aparece nas buscas
-5. Leads são gerados automaticamente
+1. EmpresÃ¡rio verifica plano ativo e limite
+2. Preenche dados do imÃ³vel
+3. MatrÃ­cula mantida privada
+4. ImÃ³vel aparece nas buscas
+5. Leads sÃ£o gerados automaticamente
 
-## 🚀 Próximas Implementações
+## ðŸš€ PrÃ³ximas ImplementaÃ§Ãµes
 
--   [ ] Upload de imagens de imóveis
--   [ ] Integração com WhatsApp Business API
+-   [ ] Upload de imagens de imÃ³veis
+-   [ ] IntegraÃ§Ã£o com WhatsApp Business API
 -   [ ] Sistema de pagamentos (Stripe/PagSeguro)
--   [ ] Notificações por e-mail
+-   [ ] NotificaÃ§Ãµes por e-mail
 -   [ ] Sistema de reviews
 -   [ ] API RESTful
 -   [ ] App mobile (React Native)
 -   [ ] Testes automatizados completos
 -   [ ] CI/CD pipeline
 
-## 📄 Licença
+## ðŸ“„ LicenÃ§a
 
-Este projeto é proprietário e confidencial.
+Este projeto Ã© proprietÃ¡rio e confidencial.
 
-## 👨‍💻 Desenvolvido por
+## ðŸ‘¨â€ðŸ’» Desenvolvido por
 
 Prime Match Imo Team
 
 ---
 
-**Nota**: Este é um MVP (Minimum Viable Product). Funcionalidades adicionais serão implementadas nas próximas iterações.
+**Nota**: Este Ã© um MVP (Minimum Viable Product). Funcionalidades adicionais serÃ£o implementadas nas prÃ³ximas iteraÃ§Ãµes.
+
+
+
+
+

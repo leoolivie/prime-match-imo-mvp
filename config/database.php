@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Str;
 
+$testingSqlite = filter_var(env('TESTING_SQLITE', false), FILTER_VALIDATE_BOOLEAN);
+
 return [
 
     /*
@@ -43,7 +45,13 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'mysql' => [
+        'mysql' => $testingSqlite ? [
+            'driver' => 'sqlite',
+            'url' => env('DATABASE_URL'),
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ] : [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),

@@ -1,134 +1,51 @@
-DOCKER := $(shell command -v docker >/dev/null 2>&1 && echo 1 || echo 0)
-COMPOSE := docker compose
-ARTISAN := php artisan
+# Makefile for a local PHP 8.3 + Composer + Node workflow.
+ARTISAN=php artisan
+NPM=npm
+PHP=php
 
-.PHONY: up down restart logs bash migrate seed queue install composer-install fresh test build rebuild
-
-up:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) up -d
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
-
-down:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) down
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
-
-restart:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) down
-	$(COMPOSE) up -d
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
-
-logs:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) logs -f
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
-
-bash:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm bash
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
-
-migrate:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm $(ARTISAN) migrate
-else
-	@echo "Executando migrations localmente."
-	@if [ ! -f vendor/autoload.php ]; then \
-		echo "Dependências PHP ausentes. Execute 'composer install' antes de continuar."; \
-		exit 1; \
-	fi
-	$(ARTISAN) migrate
-endif
-
-seed:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm $(ARTISAN) db:seed
-else
-	@echo "Executando seeders localmente."
-	@if [ ! -f vendor/autoload.php ]; then \
-		echo "Dependências PHP ausentes. Execute 'composer install' antes de continuar."; \
-		exit 1; \
-	fi
-	$(ARTISAN) db:seed
-endif
-
-queue:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm $(ARTISAN) queue:work
-else
-	@echo "Executando queue:work localmente."
-	@if [ ! -f vendor/autoload.php ]; then \
-		echo "Dependências PHP ausentes. Execute 'composer install' antes de continuar."; \
-		exit 1; \
-	fi
-	$(ARTISAN) queue:work
-endif
+.PHONY: install composer-install migrate seed fresh test queue serve dev build key help
 
 install:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm composer install
-else
-	@echo "Executando composer install localmente."
-	composer install
-endif
+\t@echo "Installing PHP and frontend dependencies..."
+\tcomposer install
+\tnpm install
 
-composer-install: install
+composer-install:
+\tcomposer install
+
+migrate:
+\t$(ARTISAN) migrate
+
+seed:
+\t$(ARTISAN) db:seed
 
 fresh:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm $(ARTISAN) migrate:fresh --seed
-else
-	@echo "Executando migrate:fresh --seed localmente."
-	@if [ ! -f vendor/autoload.php ]; then \
-		echo "Dependências PHP ausentes. Execute 'composer install' antes de continuar."; \
-		exit 1; \
-	fi
-	$(ARTISAN) migrate:fresh --seed
-endif
+\t$(ARTISAN) migrate:fresh --seed
 
 test:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) exec php-fpm $(ARTISAN) test
-else
-	@echo "Executando testes localmente."
-	@if [ ! -f vendor/autoload.php ]; then \
-		echo "Dependências PHP ausentes. Execute 'composer install' antes de continuar."; \
-		exit 1; \
-	fi
-	$(ARTISAN) test
-endif
+\t$(ARTISAN) test
+
+queue:
+\t$(ARTISAN) queue:work
+
+serve:
+\t$(PHP) artisan serve --host=127.0.0.1 --port=8000
+
+dev:
+\t$(NPM) run dev
 
 build:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) build
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
+\t$(NPM) run build
 
-rebuild:
-ifeq ($(DOCKER),1)
-	$(COMPOSE) down
-	$(COMPOSE) build --no-cache
-	$(COMPOSE) up -d
-else
-	@echo "Docker não está disponível neste ambiente."
-	@exit 1
-endif
+key:
+\t$(ARTISAN) key:generate
+
+help:
+\t@echo "make install        # composer + npm install"
+\t@echo "make migrate        # run migrations"
+\t@echo "make seed           # run database seeders"
+\t@echo "make fresh          # migrate:fresh --seed"
+\t@echo "make test           # run phpunit tests"
+\t@echo "make serve          # php artisan serve (127.0.0.1:8000)"
+\t@echo "make dev            # npm run dev"
+\t@echo "make build          # npm run build"

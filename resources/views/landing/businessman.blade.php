@@ -35,7 +35,7 @@
                         </span>
                     </div>
                     <h1 class="max-w-2xl font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
-                        Apresentação da Plataforma Exclusiva para o Empresário Prime
+                        Apresentação de Plataforma Exclusiva para Empresários
                     </h1>
                     <p class="max-w-2xl text-base text-white/70 sm:text-lg">
                         Solução inovadora para o empresário do setor imobiliário de alto padrão. Cadastre até 50 imóveis sem custo inicial, conecte-se a investidores qualificados e conte com concierge único para acelerar negociações.
@@ -509,7 +509,7 @@
                     </div>
                     <div class="space-y-4 text-sm text-white/75">
                         <p><strong class="text-white">WhatsApp:</strong> <a class="text-lux-gold underline-offset-4 hover:underline" href="{{ $heroUrl }}" target="_blank" rel="noopener" data-track-event="contact_footer_cta" data-track-payload='{"source":"contact_whatsapp"}'>+55 (14) 99684-5854</a></p>
-                        <p><strong class="text-white">E-mail:</strong> <a class="text-lux-gold underline-offset-4 hover:underline" href="mailto:primematchimo@gmail.com">primematchimo@gmail.com</a></p>
+                        <p><strong class="text-white">E-mail:</strong> <a class="text-lux-gold underline-offset-4 hover:underline" href="mailto:master@primematch.com">master@primematch.com</a></p>
                         <p><strong class="text-white">Site:</strong> <span>www.primematchimo.com</span></p>
                         <div class="flex flex-wrap gap-4 text-xs uppercase tracking-[0.3em] text-white/40">
                             <a href="#" class="hover:text-white">Política de privacidade</a>
