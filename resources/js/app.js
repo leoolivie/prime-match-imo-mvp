@@ -39,8 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.nextControls = Array.from(root.querySelectorAll('[data-carousel-nav="next"]'));
             this.interval = Number(root.dataset.carouselInterval) || 40000;
             this.isStatic = root.dataset.carouselStatic === 'true' || this.slides.length <= 1;
+            this.hoverPauseEnabled = root.dataset.carouselHoverPause === 'true';
             this.currentIndex = 0;
-            this.intervalId = null;
+            this.autoAdvanceId = null;
 
             this.init();
         }
@@ -68,8 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            this.root.addEventListener('pointerenter', () => this.stopAutoAdvance());
-            this.root.addEventListener('pointerleave', () => this.startAutoAdvance());
+            if (this.hoverPauseEnabled) {
+                this.root.addEventListener('pointerenter', () => this.stopAutoAdvance());
+                this.root.addEventListener('pointerleave', () => this.startAutoAdvance());
+            }
 
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
@@ -108,19 +111,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         startAutoAdvance() {
-            if (this.isStatic || this.intervalId) {
+            if (this.isStatic || this.autoAdvanceId) {
                 return;
             }
 
-            this.intervalId = window.setInterval(() => {
+            this.autoAdvanceId = window.setTimeout(() => {
                 this.goToSlide(this.currentIndex + 1);
+                this.autoAdvanceId = null;
+                this.startAutoAdvance();
             }, this.interval);
         }
 
         stopAutoAdvance() {
-            if (this.intervalId) {
-                window.clearInterval(this.intervalId);
-                this.intervalId = null;
+            if (this.autoAdvanceId) {
+                window.clearTimeout(this.autoAdvanceId);
+                this.autoAdvanceId = null;
             }
         }
 
