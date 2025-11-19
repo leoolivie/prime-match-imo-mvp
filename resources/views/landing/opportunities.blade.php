@@ -20,6 +20,82 @@
 @endphp
 
 @section('content')
+    @if(!empty(data_get($hero, 'title')))
+        <header class="lux-hero">
+            <div class="lux-container relative py-24 sm:py-28">
+                <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+                    <div class="space-y-8">
+                        <span class="lux-badge-gold">{{ data_get($hero, 'badge') }}</span>
+                        <div>
+                            <h1 class="font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
+                                {{ data_get($hero, 'title') }}
+                            </h1>
+                            <p class="mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
+                                {{ data_get($hero, 'description') }}
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <a
+                                href="#oportunidades"
+                                class="lux-gold-button text-xs uppercase tracking-[0.35em]"
+                                data-scroll-target
+                                data-filter-type="corporativo"
+                            >
+                                {{ data_get($hero, 'businessman_cta_label') }}
+                            </a>
+                            <a
+                                href="#oportunidades"
+                                class="lux-outline-button text-xs uppercase tracking-[0.35em]"
+                                data-scroll-target
+                                data-filter-type="residencial"
+                            >
+                                {{ data_get($hero, 'investor_cta_label') }}
+                            </a>
+                        </div>
+                        <p class="max-w-2xl text-sm text-white/60">
+                            {{ data_get($hero, 'support_text') }}
+                        </p>
+                        @if(!empty($heroMetrics))
+                            <div class="grid gap-4 sm:grid-cols-3">
+                                @foreach ($heroMetrics as $metric)
+                                    <div class="rounded-2xl border border-white/10 bg-white/5 p-5 text-white/80 shadow-[0_20px_65px_rgba(0,0,0,0.55)]">
+                                        <p class="text-xs uppercase tracking-[0.35em] text-white/50">{{ data_get($metric, 'label') }}</p>
+                                        <p class="mt-3 text-2xl font-semibold text-white">{{ data_get($metric, 'value') }}</p>
+                                        <p class="mt-2 text-sm text-white/65">{{ data_get($metric, 'description') }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                    @if(!empty(data_get($ctaCard, 'title')))
+                        <div class="relative">
+                            <div class="rounded-[32px] border border-lux-gold/30 bg-black/70 p-8 shadow-[0_45px_120px_rgba(203,161,53,0.2)] backdrop-blur-xl">
+                                <p class="text-xs uppercase tracking-[0.35em] text-white/50">{{ data_get($ctaCard, 'badge') }}</p>
+                                <h2 class="mt-4 text-2xl font-semibold text-white">{{ data_get($ctaCard, 'title') }}</h2>
+                                <p class="mt-3 text-sm text-white/70">
+                                    {{ data_get($ctaCard, 'description') }}
+                                </p>
+                                @if(!empty(data_get($ctaCard, 'steps')))
+                                    <ul class="mt-6 space-y-4 text-sm text-white/70">
+                                        @foreach (data_get($ctaCard, 'steps', []) as $index => $step)
+                                            <li class="flex items-start gap-3">
+                                                <span class="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-lux-gold/20 text-[13px] text-lux-gold">{{ $index + 1 }}</span>
+                                                <span>{{ is_array($step) ? data_get($step, 'label') : $step }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                <div class="mt-6 space-y-2 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/70">
+                                    <p class="font-semibold uppercase tracking-[0.35em] text-white">{{ data_get($ctaCard, 'vip_title') }}</p>
+                                    <p class="mt-2">{{ data_get($ctaCard, 'vip_description') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </header>
+    @endif
     <main class="relative bg-[#0B0B0B]">
         <section id="mentores" class="lux-section">
             <div class="lux-container">
