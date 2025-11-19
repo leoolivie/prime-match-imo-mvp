@@ -5,8 +5,20 @@
     $priceInputValue = '';
 
     if ($rawPrice !== null && $rawPrice !== '') {
-        $digitsOnly = preg_replace('/\D+/', '', (string) $rawPrice);
-        $priceInputValue = $digitsOnly !== '' ? number_format((float) $digitsOnly, 0, '', '.') : '';
+        $rawPriceString = (string) $rawPrice;
+        $sanitized = preg_replace('/[^\d,.]/', '', $rawPriceString);
+
+        if ($sanitized !== '') {
+            if (str_contains($sanitized, ',')) {
+                $normalized = str_replace(['.', ','], ['', '.'], $sanitized);
+            } else {
+                $normalized = str_replace(',', '.', $sanitized);
+            }
+
+            $priceInputValue = is_numeric($normalized)
+                ? number_format((float) $normalized, 2, ',', '.')
+                : '';
+        }
     }
 @endphp
 
@@ -57,7 +69,7 @@
                         name="price"
                         id="price"
                         inputmode="numeric"
-                        pattern="[0-9\.]*"
+                        pattern="[0-9\.,]*"
                         class="lux-input"
                         value="{{ $priceInputValue }}"
                         data-price-input
