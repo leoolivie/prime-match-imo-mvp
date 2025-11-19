@@ -10,6 +10,7 @@ use App\Support\ConciergeLink;
 use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class PropertyCatalogController extends Controller
 {
@@ -180,8 +181,9 @@ class PropertyCatalogController extends Controller
             ->take(5)
             ->get()
             ->map(function (Property $property) {
-                $image = optional($property->primaryImage)->path
-                    ? asset('storage/' . $property->primaryImage->path)
+                $imagePath = optional($property->primaryImage)->path;
+                $image = $imagePath
+                    ? Storage::disk('public')->url($imagePath)
                     : asset('images/placeholders/luxury-property.svg');
 
                 return [

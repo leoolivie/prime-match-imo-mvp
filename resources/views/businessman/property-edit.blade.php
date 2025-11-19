@@ -5,6 +5,7 @@
 @section('content')
 @php
     use App\Support\ConciergeLink;
+    use Illuminate\Support\Facades\Storage;
 @endphp
 
 <div class="py-12">
@@ -32,6 +33,14 @@
             <form action="{{ route('businessman.property.update', $property) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
+                @php
+                    $rawPriceValue = old('price', $property->price);
+                    $priceInputValue = '';
+                    if ($rawPriceValue !== null && $rawPriceValue !== '') {
+                        $digits = preg_replace('/\D/', '', (string) $rawPriceValue);
+                        $priceInputValue = $digits !== '' ? number_format((int) $digits, 0, '', '.') : '';
+                    }
+                @endphp
                 <div class="grid gap-4 md:grid-cols-2">
                     <div class="md:col-span-2">
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Título</label>
@@ -55,7 +64,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Tipo</label>
-                        <select name="type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none">
+                        <select name="type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-black focus:border-lux-gold focus:outline-none">
                             @foreach(['apartment' => 'Apartamento', 'house' => 'Casa', 'commercial' => 'Comercial', 'land' => 'Terreno', 'other' => 'Outro'] as $value => $label)
                                 <option value="{{ $value }}" @selected(old('type', $property->type) === $value)>{{ $label }}</option>
                             @endforeach
@@ -63,7 +72,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Transação</label>
-                        <select name="transaction_type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none">
+                        <select name="transaction_type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-black focus:border-lux-gold focus:outline-none">
                             <option value="sale" @selected(old('transaction_type', $property->transaction_type) === 'sale')>Venda</option>
                             <option value="rent" @selected(old('transaction_type', $property->transaction_type) === 'rent')>Locação</option>
                             <option value="both" @selected(old('transaction_type', $property->transaction_type) === 'both')>Venda ou locação</option>
@@ -71,7 +80,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</label>
-                        <input type="number" name="price" value="{{ old('price', $property->price) }}" required min="0" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
+                        <input type="text" name="price" value="{{ $priceInputValue }}" required inputmode="numeric" pattern="[0-9\.]*" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="200.000.000" data-price-input />
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Metragem (m²)</label>
@@ -123,7 +132,7 @@
                         @if($property->images->count())
                             <div class="mt-3 grid grid-cols-3 gap-2">
                                 @foreach($property->images as $img)
-                                    <img src="{{ asset('storage/' . $img->path) }}" alt="Foto atual" class="h-24 w-full rounded-xl object-cover" />
+                                    <img src="{{ '/public/' . ltrim($property->primaryImage->path, '/') }}" alt="Foto atual" class="h-24 w-full rounded-xl object-cover" />
                                 @endforeach
                             </div>
                         @endif

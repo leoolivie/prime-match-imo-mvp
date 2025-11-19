@@ -6,9 +6,11 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
+    use Illuminate\Support\Facades\Storage;
+
     $whatsappUrl = ConciergeLink::forInvestorDetail($property);
     $galleryImages = $gallery->map(function ($image) {
-        return asset('storage/' . $image->path);
+         return '/public/' . ltrim($image->path, '/');
     });
 @endphp
 

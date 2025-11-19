@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0B0B" />
+      <stop offset="100%" stop-color="#1A1A1A" />
+    </linearGradient>
+    <linearGradient id="highlight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#CBA135" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#8A6A24" stop-opacity="0.65" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="540" fill="url(#bg)" />
+  <g fill="#111">
+    <rect x="100" y="160" width="160" height="260" rx="18" />
+    <rect x="280" y="120" width="200" height="300" rx="22" />
+    <rect x="500" y="200" width="200" height="220" rx="20" />
+  </g>
+  <rect x="120" y="240" width="120" height="60" fill="url(#highlight)" opacity="0.8" />
+  <rect x="320" y="180" width="160" height="80" fill="url(#highlight)" opacity="0.8" />
+  <rect x="540" y="260" width="140" height="60" fill="url(#highlight)" opacity="0.8" />
+  <rect x="0" y="400" width="800" height="140" fill="#0E0E0E" />
+  <g stroke="#CBA135" stroke-width="4" opacity="0.35">
+    <rect x="70" y="150" width="220" height="280" rx="24" fill="none" />
+    <rect x="260" y="90" width="240" height="340" rx="28" fill="none" />
+    <rect x="480" y="180" width="240" height="260" rx="28" fill="none" />
+  </g>
+  <text x="50%" y="82%" text-anchor="middle" fill="#D4AF37" font-family="'Inter', sans-serif" font-size="42" font-weight="600">
+    Prime Match Imóveis
+  </text>
+  <text x="50%" y="88%" text-anchor="middle" fill="#F3F3F3" font-family="'Inter', sans-serif" font-size="20" font-weight="400">
+    Curadoria concierge · Disponível sob consulta
+  </text>
+</svg>

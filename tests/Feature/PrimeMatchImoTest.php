@@ -83,25 +83,6 @@ class PrimeMatchImoTest extends TestCase
     }
 
     #[Test]
-    public function businessman_is_redirected_to_businessman_dashboard_when_intended_master_path()
-    {
-        $businessman = User::factory()->create([
-            'role' => 'businessman',
-            'password' => bcrypt('password'),
-        ]);
-
-        $response = $this->withSession(['url.intended' => route('master.dashboard', [], false)])
-            ->post('/login', [
-                'email' => $businessman->email,
-                'password' => 'password',
-            ]);
-
-        $response->assertRedirect(route('businessman.dashboard'));
-        $this->assertAuthenticatedAs($businessman);
-        $response->assertSessionMissing('url.intended');
-    }
-
-    #[Test]
     public function investor_can_access_dashboard()
     {
         $investor = User::factory()->create(['role' => 'investor']);

@@ -32,8 +32,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
             $request->session()->regenerate();
-            $this->forgetUnauthorizedIntended($request);
-
+            
             return redirect()->intended($this->getRedirectPath());
         }
 
@@ -118,54 +117,5 @@ class AuthController extends Controller
             'investor' => '/investor/dashboard',
             default => '/dashboard',
         };
-    }
-
-    protected function forgetUnauthorizedIntended(Request $request): void
-    {
-        $intended = $request->session()->get('url.intended');
-
-        if (!$intended || !Auth::user()) {
-            return;
-        }
-
-        if ($this->canAccessIntended(Auth::user(), $intended)) {
-            return;
-        }
-
-        $request->session()->forget('url.intended');
-    }
-
-    protected function canAccessIntended(User $user, string $intended): bool
-    {
-        $path = parse_url($intended, PHP_URL_PATH);
-
-        if (!$path) {
-            return true;
-        }
-
-        $allowedRoles = $this->rolesAllowedForPath($path);
-
-        return empty($allowedRoles) || in_array($user->role, $allowedRoles, true);
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    protected function rolesAllowedForPath(string $path): array
-    {
-        $mapping = [
-            '/master' => ['master'],
-            '/businessman' => ['businessman', 'master'],
-            '/investor' => ['investor', 'master'],
-            '/broker' => ['prime_broker', 'master'],
-        ];
-
-        foreach ($mapping as $prefix => $roles) {
-            if (Str::startsWith($path, $prefix)) {
-                return $roles;
-            }
-        }
-
-        return [];
     }
 }

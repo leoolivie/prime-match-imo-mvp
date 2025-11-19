@@ -34,7 +34,7 @@
                     <h2 class="mt-2 text-3xl font-semibold text-white">Criar conta Prime Match</h2>
                 </div>
 
-                <form method="POST" action="{{ route('register') }}" class="space-y-5" x-data="{ role: '{{ old('role') }}' }">
+                <form method="POST" action="{{ route('register') }}" class="space-y-5" x-data="{ role: '{{ old('role', 'businessman') }}' }">
                     @csrf
 
                     <div class="space-y-2">
@@ -100,11 +100,9 @@
                             name="role"
                             required
                             x-model="role"
-                            class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none focus:ring-0 @error('role') border-red-500 @enderror"
+                            class="w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-black focus:border-lux-gold focus:outline-none focus:ring-0 @error('role') border-red-500 @enderror"
                         >
-                            <option value="" disabled selected>Selecione...</option>
-                            <option value="investor" {{ old('role') == 'investor' ? 'selected' : '' }}>Investidor</option>
-                            <option value="businessman" {{ old('role') == 'businessman' ? 'selected' : '' }}>Empresário</option>
+                            <option value="businessman" selected>Empresário</option>
                         </select>
                         @error('role')
                             <p class="text-xs text-red-400">{{ $message }}</p>

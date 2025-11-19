@@ -6,6 +6,7 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
+    use Illuminate\Support\Facades\Storage;
 
     $canManageProperties = $user->hasApprovedPropertyAccess();
 @endphp
@@ -13,8 +14,8 @@
 <div class="py-12">
     <div class="lux-container space-y-16">
         <header class="lux-card-dark">
-            <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-                <div class="space-y-5">
+            <div class="flex flex-col gap-10 lg:flex-row lg:flex-wrap lg:items-start lg:justify-between">
+                <div class="space-y-5 lg:flex-1">
                     <span class="lux-badge-gold">Empresário prime</span>
                     <div class="space-y-4">
                         <h1 class="font-poppins text-4xl font-semibold text-white">Gerencie seu portfólio com suporte concierge</h1>
@@ -39,7 +40,7 @@
                         </div>
                     @endif
                 </div>
-                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="grid w-full flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <div class="lux-stat-bubble">
                         <span class="text-white/60">Portfólio</span>
                         <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_properties']) }}</span>
@@ -130,7 +131,8 @@
             <div class="lux-grid-cards">
                 @forelse($properties as $property)
                     @php
-                        $image = optional($property->primaryImage)->path ? asset('storage/' . $property->primaryImage->path) : asset('images/placeholders/luxury-property.svg');
+                        $imagePath = optional($property->primaryImage)->path;
+                        $image = $imagePath ? '/public/' . ltrim($property->primaryImage->path, '/') : asset('images/placeholders/luxury-property.svg');
                         $metrics = $property->dashboard_metrics ?? ['views7' => 0, 'views30' => 0, 'clicks30' => 0, 'conversion' => 0];
                     @endphp
                     <article class="lux-property-card">

@@ -275,6 +275,10 @@
         @apply border-lux-gold/80 bg-white/10 text-white shadow-[0_0_25px_rgba(255,215,0,0.25)];
     }
 
+    .lux-carousel-nav {
+        @apply rounded-[30px] border border-white/20 bg-white/5 px-4 text-white/70 shadow-[0_25px_70px_rgba(0,0,0,0.4)] backdrop-blur-xl transition hover:border-lux-gold hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lux-gold;
+    }
+
     .lux-metric-card {
         @apply flex flex-col gap-2 rounded-3xl border border-white/10 bg-white/5 p-6 text-left shadow-[0_25px_60px_rgba(7,16,45,0.4)] backdrop-blur-xl;
     }

@@ -89,7 +89,7 @@
                     <div class="mt-4 grid gap-4 sm:grid-cols-3">
                         @foreach($featuredProperty->gallery_images as $index => $image)
                             @php
-                                $url = filter_var($image, FILTER_VALIDATE_URL) ? $image : asset('storage/' . $image);
+                                $url = filter_var($image, FILTER_VALIDATE_URL) ? $image : url('/public/' . ltrim($image, '/'));
                             @endphp
                             <label class="relative block overflow-hidden rounded-2xl border border-white/10">
                                 <img src="{{ $url }}" alt="Galeria {{ $index + 1 }}" class="h-32 w-full object-cover">

@@ -6,6 +6,7 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
+    use Illuminate\Support\Facades\Storage;
 @endphp
 
 <div class="bg-[#0B0B0B] py-12">
@@ -83,7 +84,7 @@
                 @forelse($properties as $property)
                     @php
                         $image = optional($property->primaryImage)->path
-                            ? asset('storage/' . $property->primaryImage->path)
+                            ? Storage::disk('public')->url($property->primaryImage->path)
                             : asset('images/placeholders/luxury-property.svg');
                         $analytics = $property->analytics ?? ['views30' => 0, 'conciergeClicks30' => 0, 'conversion' => 0];
                     @endphp

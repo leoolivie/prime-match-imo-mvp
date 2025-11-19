@@ -180,10 +180,10 @@ class BusinessmanDashboardController extends Controller
             'type' => $data['type'],
             'transaction_type' => $data['transaction_type'],
             'price' => $data['price'],
-            'address' => $data['address'] ?? '',
+            'address' => $data['address'] ?? null,
             'city' => $data['city'],
             'state' => $data['state'],
-            'zip_code' => $data['zip_code'] ?? '',
+            'zip_code' => $data['zip_code'] ?? null,
             'bedrooms' => $data['bedrooms'] ?? null,
             'bathrooms' => $data['bathrooms'] ?? null,
             'area' => $data['area'] ?? null,
@@ -199,9 +199,12 @@ class BusinessmanDashboardController extends Controller
             $images = $request->file('images');
             $images = array_slice($images, 0, 6);
             foreach ($images as $i => $img) {
-                $path = $img->store('properties/' . $property->id, 'public');
+                $img->move(public_path('storage/properties/' . $property->id), $img->getClientOriginalName());
+                
+                $relativePath = 'storage/properties/' . $property->id . '/' . $img->getClientOriginalName();
+                
                 $property->images()->create([
-                    'path' => $path,
+                    'path' => $relativePath,
                     'is_primary' => $i === 0,
                     'order' => $i,
                 ]);

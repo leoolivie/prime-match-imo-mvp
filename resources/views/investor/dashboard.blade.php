@@ -20,7 +20,8 @@
                         <p class="max-w-2xl text-white/70">Acompanhe matches IA, negociações e watchlist em um layout premium com filtros inteligentes, concierge instantâneo e métricas em tempo real.</p>
                     </div>
                     <div class="flex flex-wrap gap-3">
-                        <a href="{{ route('investor.search') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Nova busca prime</a>
+                        <button type="button" @click="window.dispatchEvent(new CustomEvent('busca-prime-open'))" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Ativar busca prime</button>
+                        <a href="{{ route('investor.search') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Nova busca manual</a>
                         <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, gostaria de revisar minhas recomendações.') }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Falar com concierge</a>
                     </div>
                 </div>
@@ -228,4 +229,6 @@
         </section>
     </div>
 </div>
+
+@include('investor.partials.busca-prime-modal')
 @endsection

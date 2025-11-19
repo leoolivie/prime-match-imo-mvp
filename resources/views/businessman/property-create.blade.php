@@ -31,6 +31,10 @@
 
             <form action="{{ route('businessman.property.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
+                @php
+                    $oldPrice = old('price');
+                    $priceInputValue = $oldPrice ? number_format((int) preg_replace('/\D/', '', $oldPrice), 0, '', '.') : '';
+                @endphp
                 <div class="grid gap-4 md:grid-cols-2">
                     <div class="md:col-span-2">
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Título</label>
@@ -54,7 +58,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Tipo</label>
-                        <select name="type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none">
+                        <select name="type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-black focus:border-lux-gold focus:outline-none">
                             <option value="apartment" @selected(old('type') === 'apartment')>Apartamento</option>
                             <option value="house" @selected(old('type') === 'house')>Casa</option>
                             <option value="commercial" @selected(old('type') === 'commercial')>Comercial</option>
@@ -64,7 +68,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Transação</label>
-                        <select name="transaction_type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none">
+                        <select name="transaction_type" class="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-black focus:border-lux-gold focus:outline-none">
                             <option value="sale" @selected(old('transaction_type') === 'sale')>Venda</option>
                             <option value="rent" @selected(old('transaction_type') === 'rent')>Locação</option>
                             <option value="both" @selected(old('transaction_type') === 'both')>Venda ou locação</option>
@@ -72,7 +76,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</label>
-                        <input type="number" name="price" value="{{ old('price') }}" required min="0" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="20000000" />
+                        <input type="text" name="price" value="{{ $priceInputValue }}" required inputmode="numeric" pattern="[0-9\.]*" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="200.000.000" data-price-input />
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Metragem (m²)</label>
@@ -127,7 +131,7 @@
                     <button type="submit" name="action" value="publish" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Publicar</button>
                 </div>
             </form>
-        </div>
-    </div>
+</div>
+</div>
 </div>
 @endsection

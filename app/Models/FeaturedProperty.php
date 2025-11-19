@@ -47,9 +47,15 @@ class FeaturedProperty extends Model
     protected function heroImageUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value, array $attributes) => $attributes['hero_image_path']
-                ? asset('storage/' . $attributes['hero_image_path'])
-                : asset('images/placeholders/luxury-property.svg')
+            get: fn (?string $value, array $attributes) => $this->buildPublicAssetUrl($attributes['hero_image_path'] ?? null)
+                ?? asset('images/placeholders/luxury-property.svg')
+        );
+    }
+
+    protected function videoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $this->buildPublicAssetUrl($value)
         );
     }
 
@@ -59,14 +65,22 @@ class FeaturedProperty extends Model
 
         return collect($images)
             ->filter()
-            ->map(function ($path) {
-                if (filter_var($path, FILTER_VALIDATE_URL)) {
-                    return $path;
-                }
-
-                return asset('storage/' . $path);
-            })
+            ->map(fn ($path) => $this->buildPublicAssetUrl($path))
+            ->filter()
             ->values()
             ->all();
+    }
+
+    protected function buildPublicAssetUrl(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+
+        if (filter_var($path, FILTER_VALIDATE_URL)) {
+            return $path;
+        }
+
+        return asset(ltrim($path, '/'));
     }
 }

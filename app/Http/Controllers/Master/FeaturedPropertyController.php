@@ -7,6 +7,7 @@ use App\Models\FeaturedProperty;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -66,8 +67,13 @@ class FeaturedPropertyController extends Controller
 
         if ($request->hasFile('gallery_images')) {
             $existing = $featuredProperty->gallery_images ?? [];
-            $uploaded = $this->handleGalleryUpload($request);
-            $featuredProperty->gallery_images = array_values(array_filter(array_merge($existing, $uploaded)));
+            $remainingSlots = max(0, 6 - count($existing));
+            $uploaded = $this->handleGalleryUpload($request, $remainingSlots);
+
+            if (!empty($uploaded)) {
+                $merged = array_values(array_filter(array_merge($existing, $uploaded)));
+                $featuredProperty->gallery_images = array_slice($merged, 0, 6);
+            }
         }
 
         if ($request->filled('remove_gallery')) {
@@ -130,6 +136,7 @@ class FeaturedPropertyController extends Controller
             'cta_view_url' => 'nullable|url|max:2048',
             'cta_concierge_url' => 'nullable|url|max:2048',
             'hero_image' => 'nullable|image|max:6144',
+            'gallery_images' => 'nullable|array|max:6',
             'gallery_images.*' => 'nullable|image|max:6144',
             'remove_gallery' => 'nullable|array',
             'remove_gallery.*' => 'integer',
@@ -144,20 +151,41 @@ class FeaturedPropertyController extends Controller
             return null;
         }
 
-        return $request->file('hero_image')->store('featured-properties/hero', 'public');
+        $file = $request->file('hero_image');
+        $directory = public_path('storage/featured-properties/hero');
+
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+
+        $filename = uniqid('hero_') . '_' . $file->getClientOriginalName();
+        $file->move($directory, $filename);
+
+        return 'storage/featured-properties/hero/' . $filename;
     }
 
-    protected function handleGalleryUpload(Request $request): array
+    protected function handleGalleryUpload(Request $request, int $limit = 6): array
     {
-        if (!$request->hasFile('gallery_images')) {
+        if (!$request->hasFile('gallery_images') || $limit <= 0) {
             return [];
         }
 
         $paths = [];
+        $files = array_filter($request->file('gallery_images'));
+        $files = array_slice($files, 0, $limit);
 
-        foreach ($request->file('gallery_images') as $file) {
+        foreach ($files as $file) {
             if ($file) {
-                $paths[] = $file->store('featured-properties/gallery', 'public');
+                $directory = public_path('storage/featured-properties/gallery');
+
+                if (!File::exists($directory)) {
+                    File::makeDirectory($directory, 0755, true);
+                }
+
+                $filename = uniqid('gallery_') . '_' . $file->getClientOriginalName();
+                $file->move($directory, $filename);
+
+                $paths[] = 'storage/featured-properties/gallery/' . $filename;
             }
         }
 
@@ -168,6 +196,22 @@ class FeaturedPropertyController extends Controller
     {
         if (!$path || filter_var($path, FILTER_VALIDATE_URL)) {
             return;
+        }
+
+        $fullPath = public_path($path);
+
+        if (File::exists($fullPath)) {
+            File::delete($fullPath);
+            return;
+        }
+
+        if (!str_starts_with($path, 'storage/')) {
+            $legacyPath = public_path('storage/' . ltrim($path, '/'));
+
+            if (File::exists($legacyPath)) {
+                File::delete($legacyPath);
+                return;
+            }
         }
 
         if (Storage::disk('public')->exists($path)) {

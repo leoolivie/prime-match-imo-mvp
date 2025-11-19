@@ -18,7 +18,7 @@
 
     @stack('head')
 </head>
-<body class="font-inter antialiased bg-lux-black text-lux-ice">
+<body x-data="{}" class="font-inter antialiased bg-lux-black text-lux-ice">
     @include('layouts.navbar')
 
     <main class="min-h-screen">

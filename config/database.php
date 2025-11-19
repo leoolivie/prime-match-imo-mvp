@@ -2,14 +2,6 @@
 
 use Illuminate\Support\Str;
 
-$testingSqlite = filter_var(env('TESTING_SQLITE', false), FILTER_VALIDATE_BOOLEAN);
-
-if ($testingSqlite && ! extension_loaded('pdo_sqlite')) {
-    throw new RuntimeException('The "pdo_sqlite" PHP extension is required when TESTING_SQLITE=true.');
-}
-
-$defaultConnection = $testingSqlite ? 'sqlite' : env('DB_CONNECTION', 'mysql');
-
 return [
 
     /*
@@ -23,7 +15,7 @@ return [
     |
     */
 
-    'default' => $defaultConnection,
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,13 +43,7 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'mysql' => $testingSqlite ? [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ] : [
+        'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -135,7 +121,7 @@ return [
 
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', extension_loaded('redis') ? 'phpredis' : 'predis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),

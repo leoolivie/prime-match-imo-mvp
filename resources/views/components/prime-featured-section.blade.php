@@ -6,6 +6,8 @@
 
 @php
     use App\Support\Format;
+
+    $featuredCount = $featured->count();
 @endphp
 
 <section class="relative overflow-hidden bg-[#040404] py-16 sm:py-20">
@@ -32,55 +34,118 @@
                 A curadoria prime está em preparação. Novos imóveis selecionados serão exibidos aqui em breve.
             </div>
         @else
-            <div class="-mx-4 overflow-x-auto px-4">
-                <div class="flex snap-x snap-mandatory justify-center gap-6 pb-6 md:grid md:grid-cols-1 md:justify-center md:gap-8 md:pb-0">
-                    @foreach($featured as $property)
-                        <article class="group relative mx-auto w-full max-w-3xl shrink-0 snap-start overflow-hidden rounded-[36px] border border-white/10 bg-[#050505]/95 text-left shadow-[0_40px_120px_rgba(0,0,0,0.55)] backdrop-blur-sm transition duration-500 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:border-lux-gold hover:shadow-[0_35px_120px_rgba(203,161,53,0.45)] motion-safe:animate-fade-in-up sm:w-[90%] md:max-w-4xl lg:w-[70%] lg:max-w-none lg:mx-auto xl:w-[60%]">
-                            <span class="absolute left-1/2 top-0 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#f2d57b] via-[#f8e6a7] to-[#cba135] px-5 py-1 text-[11px] font-semibold uppercase tracking-[0.4em] text-[#1d1200] shadow-[0_12px_35px_rgba(203,161,53,0.45)]">
-                                Imóvel Prime
-                            </span>
-                            <div class="relative h-80 overflow-hidden">
-                                <img src="{{ $property->hero_image_url }}" alt="{{ $property->title }}" class="h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy">
-                                <div class="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/85"></div>
-                                <div class="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-white">
-                                    <span>{{ strtoupper($property->status ?? 'disponível') }}</span>
-                                </div>
-                                <div class="absolute bottom-6 left-6 right-6">
-                                    <h3 class="font-poppins text-2xl font-semibold text-white">{{ $property->title }}</h3>
-                                    <p class="mt-1 text-xs uppercase tracking-[0.35em] text-white/70">{{ $property->city }} • {{ $property->state }}</p>
-                                </div>
-                            </div>
-                            <div class="space-y-7 p-8">
-                                <div class="flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-white/65">
-                                    <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white">{{ Format::currency($property->price) }}</span>
-                                    @if($property->area_m2)
-                                        <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">{{ Format::area($property->area_m2) }}</span>
+            <div
+                class="space-y-8"
+                data-featured-carousel
+                data-carousel-interval="40000"
+                @if($featuredCount <= 1) data-carousel-static="true" @endif
+            >
+                <div class="relative">
+                    <div data-featured-track>
+                        @foreach($featured as $property)
+                            @php
+                                $isActive = $loop->first;
+                            @endphp
+                            <article
+                                data-featured-slide
+                                @class([
+                                    'group relative mx-auto w-full max-w-3xl overflow-hidden rounded-[36px] border border-white/10 bg-[#050505]/95 text-left shadow-[0_40px_120px_rgba(0,0,0,0.55)] backdrop-blur-sm transition duration-500 ease-out motion-safe:animate-fade-in-up sm:w-[90%] md:max-w-4xl lg:mx-auto lg:w-[70%] lg:max-w-none xl:w-[60%]',
+                                    'hover:-translate-y-2 hover:scale-[1.01] hover:border-lux-gold hover:shadow-[0_35px_120px_rgba(203,161,53,0.45)]' => $featuredCount > 1,
+                                    'hidden opacity-0 pointer-events-none' => !$isActive,
+                                ])
+                                aria-hidden="{{ $isActive ? 'false' : 'true' }}"
+                            >
+                                <span class="absolute left-1/2 top-0 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#f2d57b] via-[#f8e6a7] to-[#cba135] px-5 py-1 text-[11px] font-semibold uppercase tracking-[0.4em] text-[#1d1200] shadow-[0_12px_35px_rgba(203,161,53,0.45)]">
+                                    Imóvel Prime
+                                </span>
+                                <div class="relative h-80 overflow-hidden" data-featured-media-container>
+                                    @if($property->video_url)
+                                        <video
+                                            data-featured-media
+                                            class="h-full w-full object-cover"
+                                            playsinline
+                                            muted
+                                            loop
+                                            preload="metadata"
+                                            @if($isActive) autoplay @endif
+                                        >
+                                            <source src="{{ $property->video_url }}" type="video/mp4">
+                                        </video>
+                                    @else
+                                        <img
+                                            data-featured-media
+                                            src="{{ $property->hero_image_url }}"
+                                            alt="{{ $property->title }}"
+                                            class="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                                            loading="lazy"
+                                        >
                                     @endif
-                                    @if($property->bedrooms)
-                                        <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">{{ $property->bedrooms }} quartos</span>
-                                    @endif
-                                    @if($property->parking_spaces)
-                                        <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">{{ $property->parking_spaces }} vagas</span>
-                                    @endif
+                                    <div class="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/85"></div>
+                                    <div class="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-white">
+                                        <span>{{ strtoupper($property->status ?? 'disponível') }}</span>
+                                    </div>
+                                    <div class="absolute bottom-6 left-6 right-6">
+                                        <h3 class="font-poppins text-2xl font-semibold text-white">{{ $property->title }}</h3>
+                                        <p class="mt-1 text-xs uppercase tracking-[0.35em] text-white/70">{{ $property->city }} • {{ $property->state }}</p>
+                                    </div>
                                 </div>
-                                <p class="text-sm text-white/70">{{ $property->short_description ?? 'Experiência prime com concierge dedicado e documentação completa sob demanda.' }}</p>
-                                <div class="space-y-4 rounded-2xl border border-[#cba135]/30 bg-[#0b0b0b]/80 p-5 text-sm text-[#f5e7c2] shadow-[0_25px_80px_rgba(203,161,53,0.15)]">
-                                    <p class="font-semibold uppercase tracking-[0.3em] text-[#f5d67c]">Concierge Prime</p>
-                                    <p class="text-[13px] leading-relaxed text-[#f6edd5]">
-                                        Investidor Prime tem atendimento e benefícios exclusivos nos Imóveis Prime.
-                                        Fale com o Concierge Prime e invista no melhor do alto padrão com segurança, discrição e curadoria personalizada.
-                                    </p>
+                                <div class="space-y-7 p-8">
+                                    <div class="flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-white/65">
+                                        <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white">{{ Format::currency($property->price) }}</span>
+                                        @if($property->area_m2)
+                                            <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">{{ Format::area($property->area_m2) }}</span>
+                                        @endif
+                                        @if($property->bedrooms)
+                                            <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">{{ $property->bedrooms }} quartos</span>
+                                        @endif
+                                        @if($property->parking_spaces)
+                                            <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">{{ $property->parking_spaces }} vagas</span>
+                                        @endif
+                                    </div>
+                                    <p class="text-sm text-white/70">{{ $property->short_description ?? 'Experiência prime com concierge dedicado e documentação completa sob demanda.' }}</p>
+                                    <div class="space-y-4 rounded-2xl border border-[#cba135]/30 bg-[#0b0b0b]/80 p-5 text-sm text-[#f5e7c2] shadow-[0_25px_80px_rgba(203,161,53,0.15)]">
+                                        <p class="font-semibold uppercase tracking-[0.3em] text-[#f5d67c]">Concierge Prime</p>
+                                        <p class="text-[13px] leading-relaxed text-[#f6edd5]">
+                                            Investidor Prime tem atendimento e benefícios exclusivos nos Imóveis Prime.
+                                            Fale com o Concierge Prime e invista no melhor do alto padrão com segurança, discrição e curadoria personalizada.
+                                        </p>
+                                    </div>
+                                    <div class="grid gap-3 text-center sm:grid-cols-2">
+                                        <a href="{{ $property->cta_view_url ?? route('investor.catalog') }}" class="flex items-center justify-center rounded-full border border-[#cba135]/40 bg-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition duration-300 hover:border-[#f0d27a] hover:bg-[#0f0f0f]/80 hover:text-white/95">Ver imóvel</a>
+                                        <a href="{{ $property->cta_concierge_url ?? route('concierge.redirect') }}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-4 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]">
+                                            <span class="text-base">✶</span>
+                                            Falar com o Concierge Prime
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="grid gap-3 text-center sm:grid-cols-2">
-                                    <a href="{{ $property->cta_view_url ?? route('investor.catalog') }}" class="flex items-center justify-center rounded-full border border-[#cba135]/40 bg-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition duration-300 hover:border-[#f0d27a] hover:bg-[#0f0f0f]/80 hover:text-white/95">Ver imóvel</a>
-                                    <a href="{{ $property->cta_concierge_url ?? route('concierge.redirect') }}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-4 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]">
-                                        <span class="text-base">✶</span>
-                                        Falar com o Concierge Prime
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    @endforeach
+                            </article>
+                        @endforeach
+                    </div>
+
+                    @if($featuredCount > 1)
+                        <div class="pointer-events-none absolute inset-x-0 top-0 z-20 flex h-80 items-center justify-between px-2 sm:px-6">
+                            <button
+                                type="button"
+                                data-carousel-nav="prev"
+                                class="pointer-events-auto group flex h-full w-[28%] sm:w-[22%] items-center justify-start lux-carousel-nav"
+                                aria-label="Imóvel anterior"
+                            >
+                                <span class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl font-semibold text-white/80 transition group-hover:border-lux-gold group-hover:text-lux-gold">
+                                    &larr;
+                                </span>
+                            </button>
+                            <button
+                                type="button"
+                                data-carousel-nav="next"
+                                class="pointer-events-auto group flex h-full w-[28%] sm:w-[22%] items-center justify-end lux-carousel-nav"
+                                aria-label="Próximo imóvel"
+                            >
+                                <span class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl font-semibold text-white/80 transition group-hover:border-lux-gold group-hover:text-lux-gold">
+                                    &rarr;
+                                </span>
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif
