@@ -293,4 +293,91 @@ class PrimeMatchImoTest extends TestCase
 
         $this->assertTrue($unlimitedPlan->isUnlimited());
     }
+
+    #[Test]
+    public function master_can_update_prime_opportunity_content()
+    {
+        $master = User::factory()->create(['role' => 'master']);
+
+        $metrics = [
+            ['label' => 'Novas oportunidades', 'value' => '12', 'description' => 'Disponíveis esta semana.'],
+        ];
+        $steps = [
+            ['label' => 'Validar desconto com mentores.'],
+        ];
+        $mentors = [
+            [
+                'name' => 'Mentor Teste',
+                'role' => 'Especialista Prime',
+                'description' => 'Conteúdo atualizado.',
+                'youtube_url' => 'https://example.com/video',
+                'avatar_url' => 'https://example.com/avatar.png',
+            ],
+        ];
+        $partners = [
+            [
+                'name' => 'Parceiro Teste',
+                'category' => 'Crédito',
+                'description' => 'Descrição do parceiro.',
+                'logo' => 'https://example.com/logo.png',
+            ],
+        ];
+        $opportunities = [
+            [
+                'slug' => 'teste-oportunidade',
+                'title' => 'Oportunidade configurável',
+                'location' => 'São Paulo · Centro',
+                'city' => 'São Paulo',
+                'value_range' => '5m-8m',
+                'value_range_label' => 'R$ 5M — R$ 8M',
+                'asset_type' => 'residencial',
+                'asset_label' => 'Residencial',
+                'profile_focus' => 'investor',
+                'image' => 'https://example.com/imagem.jpg',
+                'asking_price' => 'R$ 6.200.000',
+                'market_price' => 'R$ 7.000.000',
+                'discount_percentage' => 12,
+                'description' => 'Descrição dinâmica do imóvel.',
+                'visit_date' => '10 de julho · 9h',
+                'slots_total' => 8,
+                'slots_taken' => 2,
+                'vip_only' => false,
+                'premium' => true,
+                'partner_highlight' => 'Estruturação com Parceiro Teste',
+            ],
+        ];
+        $insights = [
+            [
+                'title' => 'Novo insight Prime',
+                'summary' => 'Resumo atualizado.',
+                'url' => 'https://example.com/insight',
+            ],
+        ];
+
+        $response = $this->actingAs($master)->put(route('master.opportunities.update'), [
+            'hero_badge' => 'Badge Master',
+            'hero_title' => 'Título configurado pelo master',
+            'hero_description' => 'Descrição dinâmica criada no painel.',
+            'hero_support_text' => 'Texto de apoio atualizado.',
+            'hero_businessman_cta_label' => 'Sou empresário custom',
+            'hero_investor_cta_label' => 'Sou investidor custom',
+            'cta_card_badge' => 'Badge CTA',
+            'cta_card_title' => 'Card configurável',
+            'cta_card_description' => 'Descrição do card lateral.',
+            'cta_card_steps' => json_encode($steps),
+            'cta_card_vip_title' => 'VIP configurado',
+            'cta_card_vip_description' => 'Descrição VIP atualizada.',
+            'hero_metrics' => json_encode($metrics),
+            'mentors' => json_encode($mentors),
+            'partners' => json_encode($partners),
+            'opportunities' => json_encode($opportunities),
+            'insights' => json_encode($insights),
+        ]);
+
+        $response->assertRedirect(route('master.opportunities.edit'));
+
+        $landing = $this->get('/oportunidades-prime');
+        $landing->assertSee('Título configurado pelo master');
+        $landing->assertSee('Oportunidade configurável');
+    }
 }
