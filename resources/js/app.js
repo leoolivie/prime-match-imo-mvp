@@ -1,7 +1,10 @@
 import './bootstrap';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const formatter = new Intl.NumberFormat('pt-BR');
+    const formatter = new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
 
     document.querySelectorAll('[data-price-input]').forEach((input) => {
         const formatValue = () => {
@@ -12,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            input.value = formatter.format(Number(digits));
+            const number = Number(digits) / 100;
+            input.value = formatter.format(number);
         };
 
         formatValue();
@@ -27,7 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         input.form?.addEventListener('submit', () => {
-            input.value = input.value.replace(/\D/g, '');
+            const digits = input.value.replace(/\D/g, '');
+
+            if (!digits) {
+                input.value = '';
+                return;
+            }
+
+            const normalized = (Number(digits) / 100).toFixed(2);
+            input.value = normalized;
         });
     });
 
