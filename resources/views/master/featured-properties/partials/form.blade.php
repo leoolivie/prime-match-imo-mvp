@@ -1,9 +1,25 @@
 @csrf
 
-<div class="grid gap-10 lg:grid-cols-[1fr_0.9fr]">
-    <div class="space-y-8">
-        <div class="space-y-4">
-            <div class="grid gap-4 sm:grid-cols-2">
+@php
+    $rawPrice = old('price', $featuredProperty->price);
+    $priceInputValue = '';
+
+    if ($rawPrice !== null && $rawPrice !== '') {
+        $digitsOnly = preg_replace('/\D+/', '', (string) $rawPrice);
+        $priceInputValue = $digitsOnly !== '' ? number_format((float) $digitsOnly, 0, '', '.') : '';
+    }
+@endphp
+
+<div class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+    <section class="rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
+        <div class="flex flex-col gap-2 border-b border-white/10 pb-6">
+            <span class="text-xs uppercase tracking-[0.4em] text-white/50">Ficha principal</span>
+            <h2 class="font-poppins text-2xl font-semibold text-white">Identidade do imóvel</h2>
+            <p class="text-sm text-white/60">Dados exibidos em destaque no carrossel público e nas fichas enviadas ao investidor.</p>
+        </div>
+
+        <div class="mt-6 space-y-8">
+            <div class="grid gap-6 sm:grid-cols-2">
                 <div>
                     <label class="lux-form-label" for="title">Título</label>
                     <input type="text" name="title" id="title" class="lux-input" value="{{ old('title', $featuredProperty->title) }}" required>
@@ -13,7 +29,8 @@
                     <input type="number" name="display_order" id="display_order" class="lux-input" value="{{ old('display_order', $featuredProperty->display_order ?? 0) }}" min="0" max="255" required>
                 </div>
             </div>
-            <div class="grid gap-4 sm:grid-cols-3">
+
+            <div class="grid gap-6 sm:grid-cols-3">
                 <div>
                     <label class="lux-form-label" for="city">Cidade</label>
                     <input type="text" name="city" id="city" class="lux-input" value="{{ old('city', $featuredProperty->city) }}" required>
@@ -31,10 +48,20 @@
                     </select>
                 </div>
             </div>
-            <div class="grid gap-4 sm:grid-cols-3">
+
+            <div class="grid gap-6 sm:grid-cols-3">
                 <div>
                     <label class="lux-form-label" for="price">Preço</label>
-                    <input type="number" step="0.01" min="0" name="price" id="price" class="lux-input" value="{{ old('price', $featuredProperty->price) }}">
+                    <input
+                        type="text"
+                        name="price"
+                        id="price"
+                        inputmode="numeric"
+                        pattern="[0-9\.]*"
+                        class="lux-input"
+                        value="{{ $priceInputValue }}"
+                        data-price-input
+                    >
                 </div>
                 <div>
                     <label class="lux-form-label" for="area_m2">Área (m²)</label>
@@ -45,7 +72,8 @@
                     <input type="number" min="0" name="bedrooms" id="bedrooms" class="lux-input" value="{{ old('bedrooms', $featuredProperty->bedrooms) }}">
                 </div>
             </div>
-            <div class="grid gap-4 sm:grid-cols-2">
+
+            <div class="grid gap-6 sm:grid-cols-2">
                 <div>
                     <label class="lux-form-label" for="parking_spaces">Vagas</label>
                     <input type="number" min="0" name="parking_spaces" id="parking_spaces" class="lux-input" value="{{ old('parking_spaces', $featuredProperty->parking_spaces) }}">
@@ -55,21 +83,32 @@
                     <input type="number" min="1800" max="{{ now()->year }}" name="year_built" id="year_built" class="lux-input" value="{{ old('year_built', $featuredProperty->year_built) }}">
                 </div>
             </div>
-            <div>
-                <label class="lux-form-label" for="short_description">Descrição curta</label>
-                <input type="text" name="short_description" id="short_description" class="lux-input" value="{{ old('short_description', $featuredProperty->short_description) }}" maxlength="255">
-            </div>
-            <div>
-                <label class="lux-form-label" for="description">Descrição completa</label>
-                <textarea name="description" id="description" rows="6" class="lux-input">{{ old('description', $featuredProperty->description) }}</textarea>
+
+            <div class="grid gap-6 lg:grid-cols-2">
+                <div>
+                    <label class="lux-form-label" for="short_description">Descrição curta</label>
+                    <input type="text" name="short_description" id="short_description" class="lux-input" value="{{ old('short_description', $featuredProperty->short_description) }}" maxlength="255">
+                </div>
+                <div class="lg:col-span-2">
+                    <label class="lux-form-label" for="description">Descrição completa</label>
+                    <textarea name="description" id="description" rows="6" class="lux-input">{{ old('description', $featuredProperty->description) }}</textarea>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="space-y-6">
+    <section class="rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_30px_90px_rgba(0,0,0,0.35)]">
+        <div class="flex flex-col gap-2 border-b border-white/10 pb-6">
+            <span class="text-xs uppercase tracking-[0.4em] text-white/50">Mídia e CTAs</span>
+            <h2 class="font-poppins text-2xl font-semibold text-white">Materiais de impacto</h2>
+            <p class="text-sm text-white/60">Hero, galeria e links que serão usados pela conciergerie no WhatsApp.</p>
+        </div>
+
+        <div class="mt-6 space-y-8">
             <div>
                 <label class="lux-form-label" for="hero_image">Imagem hero (principal)</label>
                 <input type="file" name="hero_image" id="hero_image" class="lux-input" accept="image/*">
-                <p class="mt-2 text-xs text-white/50">Imagens em alta resolução realçam o impacto da seção prime.</p>
+                <p class="mt-2 text-xs text-white/50">Recomendamos proporção 16:9 ou 4:3 com contraste elevado.</p>
                 @if($featuredProperty->hero_image_path)
                     <div class="mt-4 space-y-3">
                         <img src="{{ $featuredProperty->hero_image_url }}" alt="Hero" class="h-48 w-full rounded-2xl object-cover">
@@ -84,7 +123,7 @@
             <div>
                 <label class="lux-form-label" for="gallery_images">Galeria (até 6 imagens)</label>
                 <input type="file" name="gallery_images[]" id="gallery_images" class="lux-input" accept="image/*" multiple>
-                <p class="mt-2 text-xs text-white/50">Você pode anexar imagens adicionais para carrosséis e destaques secundários.</p>
+                <p class="mt-2 text-xs text-white/50">Use fotos complementares para reforçar vista, áreas comuns e lifestyle.</p>
                 @if($featuredProperty->gallery_images)
                     <div class="mt-4 grid gap-4 sm:grid-cols-3">
                         @foreach($featuredProperty->gallery_images as $index => $image)
@@ -104,25 +143,25 @@
                 @endif
             </div>
 
-            <div class="space-y-4">
+            <div class="grid gap-6">
                 <div>
                     <label class="lux-form-label" for="video_url">URL de vídeo (opcional)</label>
-                    <input type="url" name="video_url" id="video_url" class="lux-input" value="{{ old('video_url', $featuredProperty->video_url) }}">
+                    <input type="url" name="video_url" id="video_url" class="lux-input" value="{{ old('video_url', $featuredProperty->video_url) }}" placeholder="https://player.vimeo.com/...">
                 </div>
                 <div>
                     <label class="lux-form-label" for="cta_view_url">Link "Ver imóvel"</label>
-                    <input type="url" name="cta_view_url" id="cta_view_url" class="lux-input" value="{{ old('cta_view_url', $featuredProperty->cta_view_url) }}">
+                    <input type="url" name="cta_view_url" id="cta_view_url" class="lux-input" value="{{ old('cta_view_url', $featuredProperty->cta_view_url) }}" placeholder="https://prime-match-imo.com/imoveis/...">
                 </div>
                 <div>
                     <label class="lux-form-label" for="cta_concierge_url">Link "Falar com o concierge"</label>
-                    <input type="url" name="cta_concierge_url" id="cta_concierge_url" class="lux-input" value="{{ old('cta_concierge_url', $featuredProperty->cta_concierge_url) }}">
+                    <input type="url" name="cta_concierge_url" id="cta_concierge_url" class="lux-input" value="{{ old('cta_concierge_url', $featuredProperty->cta_concierge_url) }}" placeholder="https://wa.me/...">
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+</div>
 
-    <div class="flex flex-wrap justify-end gap-3 border-t border-white/10 pt-6">
-        <a href="{{ route('master.featured-properties.index') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Cancelar</a>
-        <button type="submit" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Salvar imóvel em destaque</button>
-    </div>
+<div class="flex flex-wrap justify-end gap-3 border-t border-white/10 pt-6">
+    <a href="{{ route('master.featured-properties.index') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Cancelar</a>
+    <button type="submit" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Salvar imóvel em destaque</button>
 </div>

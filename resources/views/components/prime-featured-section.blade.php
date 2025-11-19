@@ -123,24 +123,26 @@
                     </div>
 
                     @if($featuredCount > 1)
-                        <div class="pointer-events-none absolute inset-x-0 top-0 z-20 flex h-80 items-center justify-between px-2 sm:px-6">
+                        <div class="pointer-events-none absolute inset-y-0 left-0 right-0 z-20 flex items-center justify-between px-3 sm:px-8">
                             <button
                                 type="button"
                                 data-carousel-nav="prev"
-                                class="pointer-events-auto group flex h-full w-[28%] sm:w-[22%] items-center justify-start lux-carousel-nav"
+                                class="pointer-events-auto group flex items-center gap-3 rounded-full border border-white/15 bg-black/55 px-4 py-3 text-left text-white/70 shadow-[0_15px_45px_rgba(0,0,0,0.45)] backdrop-blur-sm transition hover:border-lux-gold/70 hover:text-white"
                                 aria-label="Imóvel anterior"
                             >
-                                <span class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl font-semibold text-white/80 transition group-hover:border-lux-gold group-hover:text-lux-gold">
+                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-white/15 via-white/10 to-transparent text-xl font-semibold text-white transition group-hover:border-lux-gold group-hover:text-lux-gold">
                                     &larr;
                                 </span>
+                                <span class="hidden text-[10px] uppercase tracking-[0.45em] text-white/60 sm:inline-block">Anterior</span>
                             </button>
                             <button
                                 type="button"
                                 data-carousel-nav="next"
-                                class="pointer-events-auto group flex h-full w-[28%] sm:w-[22%] items-center justify-end lux-carousel-nav"
+                                class="pointer-events-auto group flex items-center gap-3 rounded-full border border-white/15 bg-black/55 px-4 py-3 text-right text-white/70 shadow-[0_15px_45px_rgba(0,0,0,0.45)] backdrop-blur-sm transition hover:border-lux-gold/70 hover:text-white"
                                 aria-label="Próximo imóvel"
                             >
-                                <span class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl font-semibold text-white/80 transition group-hover:border-lux-gold group-hover:text-lux-gold">
+                                <span class="hidden text-[10px] uppercase tracking-[0.45em] text-white/60 sm:inline-block">Próximo</span>
+                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-white/15 via-white/10 to-transparent text-xl font-semibold text-white transition group-hover:border-lux-gold group-hover:text-lux-gold">
                                     &rarr;
                                 </span>
                             </button>
