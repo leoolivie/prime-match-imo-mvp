@@ -1,13 +1,4 @@
 @php
-    use App\Support\ConciergeLink;
-    $conciergeLink = ConciergeLink::build('investidor_card', [
-        'city' => 'Curadoria concierge',
-        'type' => 'matching prime',
-        'budget_min' => 5000000,
-    ], [
-        'user_type' => 'investidor',
-        'source' => 'navbar',
-    ]);
     $canAccessMaster = auth()->check() && auth()->user()->email === 'leoolivie05@gmail.com';
 @endphp
 
@@ -35,8 +26,8 @@
                 @endif
             </div>
             <div class="flex items-center gap-3">
-                <a href="{{ $conciergeLink }}" target="_blank" rel="noopener" class="lux-outline-button whitespace-nowrap text-xs uppercase tracking-[0.25em]">
-                    Falar com o concierge
+                <a href="{{ route('landing.opportunities') }}" class="lux-outline-button whitespace-nowrap text-xs uppercase tracking-[0.25em]">
+                    Oportunidades Prime
                 </a>
                 @auth
                     <span class="hidden sm:inline-flex items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/60">
