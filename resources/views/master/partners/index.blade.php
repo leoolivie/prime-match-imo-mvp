@@ -17,6 +17,7 @@
             </div>
         </div>
 
+        @php use Illuminate\Support\Str; @endphp
         <div class="lux-grid-cards">
             @forelse($partners as $partner)
                 <article class="lux-card-dark space-y-4">
@@ -31,11 +32,14 @@
                         <p class="text-sm text-white/60">{{ \Illuminate\Support\Str::limit($partner->description, 160) }}</p>
                     @endif
 
-                    <div class="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-3">
+                    <div class="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
                         <div>
                             <p class="text-xs uppercase tracking-[0.3em] text-white/50">Site</p>
                             @if($partner->website)
-                                <a href="{{ $partner->website }}" target="_blank" rel="noopener" class="text-sm text-lux-gold hover:underline break-all">{{ $partner->website }}</a>
+                                @php
+                                    $websiteLabel = Str::before($partner->website, '?') ?: $partner->website;
+                                @endphp
+                                <a href="{{ $partner->website }}" target="_blank" rel="noopener" class="text-sm text-lux-gold hover:underline break-all" title="{{ $partner->website }}">{{ $websiteLabel }}</a>
                             @else
                                 <p class="text-sm text-white/40">Não informado</p>
                             @endif
@@ -56,6 +60,9 @@
                                 <p class="text-sm text-white/40">Não informado</p>
                             @endif
                         </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="{{ route('master.partners.edit', $partner) }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Editar</a>
                     </div>
                 </article>
             @empty

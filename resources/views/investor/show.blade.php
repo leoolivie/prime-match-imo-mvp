@@ -9,9 +9,12 @@
     use Illuminate\Support\Facades\Storage;
 
     $whatsappUrl = ConciergeLink::forInvestorDetail($property);
-    $galleryImages = $gallery->map(function ($image) {
-         return '/public/' . ltrim($image->path, '/');
-    });
+    $galleryImages = $gallery
+        ->map(function ($image) {
+            return $image->path ? Storage::disk('public')->url($image->path) : null;
+        })
+        ->filter()
+        ->values();
 @endphp
 
 <div class="pb-24 pt-10">
@@ -123,7 +126,7 @@
                     <ul class="space-y-2 text-sm text-white/60">
                         <li>Tipo: {{ ucfirst($property->type) }}</li>
                         <li>Transação: {{ $property->transaction_type === 'sale' ? 'Venda' : ($property->transaction_type === 'rent' ? 'Locação' : 'Venda ou locação') }}</li>
-                        <li>Status: {{ ucfirst($property->status) }}</li>
+                        <li>Status: {{ $property->status_label }}</li>
                     </ul>
                 </div>
                 <div class="lux-card-dark space-y-3">

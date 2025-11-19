@@ -5,6 +5,7 @@
 ])
 
 @php
+    use App\Support\ConciergeLink;
     use App\Support\Format;
 
     $featuredCount = $featured->count();
@@ -45,6 +46,14 @@
                         @foreach($featured as $property)
                             @php
                                 $isActive = $loop->first;
+                                $statusLabels = [
+                                    'available' => 'Disponível',
+                                    'reserved' => 'Reservado',
+                                    'unavailable' => 'Indisponível',
+                                ];
+                                $statusLabel = $statusLabels[$property->status ?? 'available'] ?? 'Disponível';
+                                $userType = auth()->check() && auth()->user()->isBusinessman() ? 'empresario' : 'investidor';
+                                $conciergeUrl = ConciergeLink::forFeaturedProperty($property, $userType);
                             @endphp
                             <article
                                 data-featured-slide
@@ -55,7 +64,7 @@
                                 ])
                                 aria-hidden="{{ $isActive ? 'false' : 'true' }}"
                             >
-                                <span class="absolute left-1/2 top-0 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#f2d57b] via-[#f8e6a7] to-[#cba135] px-5 py-1 text-[11px] font-semibold uppercase tracking-[0.4em] text-[#1d1200] shadow-[0_12px_35px_rgba(203,161,53,0.45)]">
+                                <span class="absolute left-1/2 top-6 z-10 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#f2d57b] via-[#f8e6a7] to-[#cba135] px-5 py-1 text-[11px] font-semibold uppercase tracking-[0.4em] text-[#1d1200] shadow-[0_12px_35px_rgba(203,161,53,0.45)]">
                                     Imóvel Prime
                                 </span>
                                 <div class="relative h-80 overflow-hidden" data-featured-media-container>
@@ -81,9 +90,9 @@
                                         >
                                     @endif
                                     <div class="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/85"></div>
-                                    <div class="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-white">
-                                        <span>{{ strtoupper($property->status ?? 'disponível') }}</span>
-                                    </div>
+                                        <div class="absolute left-6 top-6 flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-white">
+                                            <span>{{ strtoupper($statusLabel) }}</span>
+                                        </div>
                                     <div class="absolute bottom-6 left-6 right-6">
                                         <h3 class="font-poppins text-2xl font-semibold text-white">{{ $property->title }}</h3>
                                         <p class="mt-1 text-xs uppercase tracking-[0.35em] text-white/70">{{ $property->city }} • {{ $property->state }}</p>
@@ -110,13 +119,13 @@
                                             Fale com o Concierge Prime e invista no melhor do alto padrão com segurança, discrição e curadoria personalizada.
                                         </p>
                                     </div>
-                                    <div class="grid gap-3 text-center sm:grid-cols-2">
-                                        <a href="{{ $property->cta_view_url ?? route('investor.catalog') }}" class="flex items-center justify-center rounded-full border border-[#cba135]/40 bg-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition duration-300 hover:border-[#f0d27a] hover:bg-[#0f0f0f]/80 hover:text-white/95">Ver imóvel</a>
-                                        <a href="{{ $property->cta_concierge_url ?? route('concierge.redirect') }}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-4 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]">
-                                            <span class="text-base">✶</span>
-                                            Falar com o Concierge Prime
-                                        </a>
-                                    </div>
+                                        <div class="grid gap-3 text-center sm:grid-cols-2">
+                                            <a href="{{ $property->cta_view_url ?? route('investor.catalog') }}" class="flex items-center justify-center rounded-full border border-[#cba135]/40 bg-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition duration-300 hover:border-[#f0d27a] hover:bg-[#0f0f0f]/80 hover:text-white/95">Ver imóvel</a>
+                                            <a href="{{ $conciergeUrl }}" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-4 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]">
+                                                <span class="text-base">✶</span>
+                                                Falar com o Concierge Prime
+                                            </a>
+                                        </div>
                                 </div>
                             </article>
                         @endforeach

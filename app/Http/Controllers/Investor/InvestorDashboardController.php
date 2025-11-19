@@ -76,8 +76,8 @@ class InvestorDashboardController extends Controller
         }
 
         $properties = $propertiesQuery
-            ->latest()
-            ->paginate(9)
+            ->orderByDesc('price')
+            ->paginate(20)
             ->withQueryString();
 
         return view('investor.dashboard', compact(

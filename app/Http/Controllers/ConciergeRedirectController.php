@@ -17,6 +17,7 @@ class ConciergeRedirectController extends Controller
         $context = $request->query('context', 'investidor_card');
         $payload = json_decode(base64_decode($request->query('payload', '')), true) ?? [];
         $propertyId = $request->query('property_id');
+        $featuredPropertyId = $request->query('featured_property_id');
         $userType = $request->query('user_type');
         $source = $request->query('source');
 
@@ -36,6 +37,10 @@ class ConciergeRedirectController extends Controller
 
         if ($propertyId) {
             $metadata['property_id'] = $propertyId;
+        }
+
+        if ($featuredPropertyId) {
+            $metadata['featured_property_id'] = $featuredPropertyId;
         }
 
         $telemetry->record('click_whatsapp_concierge', [

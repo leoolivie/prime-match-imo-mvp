@@ -68,8 +68,8 @@
         <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div class="lux-card-dark space-y-6">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-2xl font-semibold text-white">Assinatura prime</h2>
-                    <a href="{{ route('businessman.plans') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Planos</a>
+                    <h2 class="text-2xl font-semibold text-white">Imóvel destaque Prime</h2>
+                    <a href="{{ route('businessman.plans') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Destaque Prime</a>
                 </div>
                 @if($subscription)
                     <div class="grid gap-4 rounded-2xl border border-lux-gold/40 bg-lux-gold/10 p-6 text-white shadow-lux-glow sm:grid-cols-2">
@@ -90,9 +90,21 @@
                         </div>
                     </div>
                 @else
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-white/70">
-                        <p class="text-sm">Você ainda não possui assinatura ativa. Escolha um plano para liberar suporte concierge dedicado e ferramentas avançadas de performance.</p>
-                        <a href="{{ route('businessman.plans') }}" class="mt-4 inline-flex items-center justify-center rounded-full bg-lux-gold px-6 py-3 text-sm font-semibold text-lux-black shadow-lux-glow">Conhecer planos</a>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-6 text-white/70 space-y-4">
+                        <div class="rounded-2xl border border-lux-gold/40 bg-gradient-to-br from-[#161616] to-[#0a0a0a] p-4 text-sm text-white/70 shadow-[0_15px_45px_rgba(203,161,53,0.25)]">
+                            <p class="text-xs uppercase tracking-[0.35em] text-white/50">Imóvel Prêmio</p>
+                            <h3 class="text-lg font-semibold text-white">Destaque Prime</h3>
+                            <p class="mt-2 text-sm text-white/70">Acenda o brilho dourado no seu anúncio: o investimento em destaque ativa campanhas de visibilidade, aumenta cliques e coloca o seu imóvel em prioridade para investidores com matching pronto.</p>
+                            <ul class="mt-3 space-y-2 text-xs text-white/60">
+                                <li>• Mais visibilidade na vitrine Prime e push direto para o concierge.</li>
+                                <li>• Campanhas pagas alimentadas pelos recursos do Master.</li>
+                                <li>• Antena concierge acionada com alertas VIP para investidores selecionados.</li>
+                            </ul>
+                            <p class="mt-3 text-[11px] text-white/50">Combine o plano com o concierge para montar a campanha, scripts e agenda perfeita.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="{{ ConciergeLink::forBusinessmanSupport() }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Falar com concierge</a>
+                        </div>
                     </div>
                 @endif
             </div>
@@ -132,7 +144,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? '/public/' . ltrim($property->primaryImage->path, '/') : asset('images/placeholders/luxury-property.svg');
+                        $image = $imagePath ? Storage::disk('public')->url($imagePath) : asset('images/placeholders/luxury-property.svg');
                         $metrics = $property->dashboard_metrics ?? ['views7' => 0, 'views30' => 0, 'clicks30' => 0, 'conversion' => 0];
                     @endphp
                     <article class="lux-property-card">
@@ -145,9 +157,9 @@
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
                                     <h3 class="mt-2 text-xl font-semibold text-white">{{ $property->title }}</h3>
                                 </div>
-                                <span class="lux-property-status text-white/70">{{ ucfirst($property->status) }}</span>
+                                <span class="lux-property-status text-white/70">{{ $property->status_label }}</span>
                             </div>
-                            <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-4">
+                            <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-[1.6fr_1fr_1fr]">
                                 <div>
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</p>
                                     <p class="mt-1 text-lg font-semibold text-white">{{ Format::currency($property->price) }}</p>
@@ -159,10 +171,6 @@
                                 <div>
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">Cliques (30d)</p>
                                     <p class="mt-1 text-lg font-semibold text-white">{{ $metrics['clicks30'] }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Conversão</p>
-                                    <p class="mt-1 text-lg font-semibold text-white">{{ $metrics['conversion'] }}%</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">

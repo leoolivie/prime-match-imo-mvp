@@ -54,9 +54,9 @@
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
                                     <h2 class="mt-2 text-xl font-semibold text-white">{{ $property->title }}</h2>
                                 </div>
-                                <span class="lux-property-status text-white/70">{{ ucfirst($property->status) }}</span>
+                                <span class="lux-property-status text-white/70">{{ $property->status_label }}</span>
                             </div>
-                            <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-4">
+                            <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-[1.6fr_1fr_1fr]">
                                 <div>
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">Valor</p>
                                     <p class="mt-1 text-lg font-semibold text-white">{{ Format::currency($property->price) }}</p>
@@ -68,10 +68,6 @@
                                 <div>
                                     <p class="text-xs uppercase tracking-[0.3em] text-white/50">Cliques (30d)</p>
                                     <p class="mt-1 text-lg font-semibold text-white">{{ $metrics['clicks30'] }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">Conversão</p>
-                                    <p class="mt-1 text-lg font-semibold text-white">{{ $metrics['conversion'] }}%</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-3">

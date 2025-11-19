@@ -46,7 +46,7 @@
                                 <td class="px-6 py-4">{{ $property->city }} • {{ $property->state }}</td>
                                 <td class="px-6 py-4">{{ $property->price ? \App\Support\Format::currency($property->price) : 'Sob consulta' }}</td>
                                 <td class="px-6 py-4">
-                                    <span class="lux-badge-outline">{{ strtoupper($property->status) }}</span>
+                            <span class="lux-badge-outline">{{ strtoupper($property->status_label) }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-white/60">{{ $property->updated_at->diffForHumans() }}</td>
                                 <td class="px-6 py-4">

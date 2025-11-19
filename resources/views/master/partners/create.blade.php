@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Categoria</label>
-                        <select name="category" required class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none">
+                        <select name="category" required class="mt-2 w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90 focus:border-lux-gold focus:outline-none">
                             <option value="legal" @selected(old('category') === 'legal')>Jurídico</option>
                             <option value="financial" @selected(old('category') === 'financial')>Financeiro</option>
                             <option value="construction" @selected(old('category') === 'construction')>Construção</option>

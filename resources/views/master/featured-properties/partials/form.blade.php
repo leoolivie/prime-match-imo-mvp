@@ -1,6 +1,8 @@
 @csrf
 
 @php
+    use Illuminate\Support\Facades\Storage;
+
     $rawPrice = old('price', $featuredProperty->price);
     $priceInputValue = '';
 
@@ -18,22 +20,23 @@
             <p class="text-sm text-white/60">Dados exibidos em destaque no carrossel público e nas fichas enviadas ao investidor.</p>
         </div>
 
-        <div class="mt-6 space-y-8">
-            <div class="grid gap-6 sm:grid-cols-2">
+        <div class="mt-6 space-y-10">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div>
                     <label class="lux-form-label" for="title">Título</label>
-                    <input type="text" name="title" id="title" class="lux-input" value="{{ old('title', $featuredProperty->title) }}" required>
+                    <input type="text" name="title" id="title" placeholder="Cobertura Prime Jardins" class="lux-input" value="{{ old('title', $featuredProperty->title) }}" required>
                 </div>
                 <div>
                     <label class="lux-form-label" for="display_order">Ordem de exibição</label>
                     <input type="number" name="display_order" id="display_order" class="lux-input" value="{{ old('display_order', $featuredProperty->display_order ?? 0) }}" min="0" max="255" required>
+                    <p class="mt-1 text-xs text-white/50">Menor valor = posição mais alta na vitrine.</p>
                 </div>
             </div>
 
-            <div class="grid gap-6 sm:grid-cols-3">
+            <div class="grid gap-6 md:grid-cols-3">
                 <div>
                     <label class="lux-form-label" for="city">Cidade</label>
-                    <input type="text" name="city" id="city" class="lux-input" value="{{ old('city', $featuredProperty->city) }}" required>
+                    <input type="text" name="city" id="city" placeholder="São Paulo" class="lux-input" value="{{ old('city', $featuredProperty->city) }}" required>
                 </div>
                 <div>
                     <label class="lux-form-label" for="state">Estado</label>
@@ -49,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="grid gap-6 sm:grid-cols-3">
+            <div class="grid gap-6 md:grid-cols-3">
                 <div>
                     <label class="lux-form-label" for="price">Preço</label>
                     <input
@@ -61,11 +64,13 @@
                         class="lux-input"
                         value="{{ $priceInputValue }}"
                         data-price-input
+                        placeholder="1.250.000"
                     >
+                    <p class="mt-1 text-xs text-white/50">Digite apenas números; o separador de milhar é aplicado automaticamente.</p>
                 </div>
                 <div>
                     <label class="lux-form-label" for="area_m2">Área (m²)</label>
-                    <input type="number" step="0.01" min="0" name="area_m2" id="area_m2" class="lux-input" value="{{ old('area_m2', $featuredProperty->area_m2) }}">
+                    <input type="number" step="0.01" min="0" name="area_m2" id="area_m2" placeholder="315" class="lux-input" value="{{ old('area_m2', $featuredProperty->area_m2) }}">
                 </div>
                 <div>
                     <label class="lux-form-label" for="bedrooms">Quartos</label>
@@ -73,7 +78,7 @@
                 </div>
             </div>
 
-            <div class="grid gap-6 sm:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2">
                 <div>
                     <label class="lux-form-label" for="parking_spaces">Vagas</label>
                     <input type="number" min="0" name="parking_spaces" id="parking_spaces" class="lux-input" value="{{ old('parking_spaces', $featuredProperty->parking_spaces) }}">
@@ -84,14 +89,14 @@
                 </div>
             </div>
 
-            <div class="grid gap-6 lg:grid-cols-2">
+            <div class="space-y-6">
                 <div>
                     <label class="lux-form-label" for="short_description">Descrição curta</label>
-                    <input type="text" name="short_description" id="short_description" class="lux-input" value="{{ old('short_description', $featuredProperty->short_description) }}" maxlength="255">
+                    <input type="text" name="short_description" id="short_description" class="lux-input" value="{{ old('short_description', $featuredProperty->short_description) }}" maxlength="255" placeholder="Resumo destacado com foco nos investidores.">
                 </div>
-                <div class="lg:col-span-2">
+                <div>
                     <label class="lux-form-label" for="description">Descrição completa</label>
-                    <textarea name="description" id="description" rows="6" class="lux-input">{{ old('description', $featuredProperty->description) }}</textarea>
+                    <textarea name="description" id="description" rows="6" class="lux-input" placeholder="Conte a história do imóvel, detalhes de acabamento e diferenciais.">{{ old('description', $featuredProperty->description) }}</textarea>
                 </div>
             </div>
         </div>
@@ -128,7 +133,9 @@
                     <div class="mt-4 grid gap-4 sm:grid-cols-3">
                         @foreach($featuredProperty->gallery_images as $index => $image)
                             @php
-                                $url = filter_var($image, FILTER_VALIDATE_URL) ? $image : url('/public/' . ltrim($image, '/'));
+                                $url = filter_var($image, FILTER_VALIDATE_URL)
+                                    ? $image
+                                    : (Storage::disk('public')->exists($image) ? Storage::disk('public')->url($image) : asset('images/placeholders/luxury-property.svg'));
                             @endphp
                             <label class="relative block overflow-hidden rounded-2xl border border-white/10">
                                 <img src="{{ $url }}" alt="Galeria {{ $index + 1 }}" class="h-32 w-full object-cover">

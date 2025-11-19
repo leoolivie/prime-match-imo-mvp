@@ -98,6 +98,8 @@ Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->g
     Route::get('/partners', [MasterDashboardController::class, 'partners'])->name('partners');
     Route::get('/partners/create', [MasterDashboardController::class, 'createPartner'])->name('partners.create');
     Route::post('/partners', [MasterDashboardController::class, 'storePartner'])->name('partners.store');
+    Route::get('/partners/{partner}/edit', [MasterDashboardController::class, 'editPartner'])->name('partners.edit');
+    Route::put('/partners/{partner}', [MasterDashboardController::class, 'updatePartner'])->name('partners.update');
     
     // Subscriptions
     Route::get('/subscriptions', [MasterDashboardController::class, 'subscriptions'])->name('subscriptions');

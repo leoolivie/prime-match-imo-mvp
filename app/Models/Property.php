@@ -104,4 +104,15 @@ class Property extends Model
         // Only owner and master can see registration number
         return $user->isMaster() || $this->user_id === $user->id;
     }
+
+    public function getStatusLabelAttribute(): string
+    {
+        $labels = [
+            'available' => 'Disponível',
+            'reserved' => 'Reservado',
+            'unavailable' => 'Indisponível',
+        ];
+
+        return $labels[$this->status] ?? ucfirst($this->status);
+    }
 }

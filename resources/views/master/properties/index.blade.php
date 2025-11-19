@@ -22,7 +22,7 @@
                             <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
                             <h2 class="mt-2 text-xl font-semibold text-white">{{ $property->title }}</h2>
                         </div>
-                        <span class="lux-property-status text-white/70">{{ ucfirst($property->status) }}</span>
+                        <span class="lux-property-status text-white/70">{{ $property->status_label }}</span>
                     </div>
                     <p class="text-sm text-white/60">{{ \Illuminate\Support\Str::limit($property->description, 160) }}</p>
                     <div class="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 sm:grid-cols-4">

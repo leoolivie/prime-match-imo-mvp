@@ -132,7 +132,10 @@
                         @if($property->images->count())
                             <div class="mt-3 grid grid-cols-3 gap-2">
                                 @foreach($property->images as $img)
-                                    <img src="{{ '/public/' . ltrim($property->primaryImage->path, '/') }}" alt="Foto atual" class="h-24 w-full rounded-xl object-cover" />
+                                    @php
+                                        $imageUrl = $img->path ? Storage::disk('public')->url($img->path) : asset('images/placeholders/luxury-property.svg');
+                                    @endphp
+                                    <img src="{{ $imageUrl }}" alt="Foto atual" class="h-24 w-full rounded-xl object-cover" />
                                 @endforeach
                             </div>
                         @endif

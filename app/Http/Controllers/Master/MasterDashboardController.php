@@ -179,6 +179,28 @@ class MasterDashboardController extends Controller
         return redirect()->route('master.partners')->with('success', 'Parceiro criado com sucesso!');
     }
 
+    public function editPartner(Partner $partner)
+    {
+        return view('master.partners.edit', compact('partner'));
+    }
+
+    public function updatePartner(Request $request, Partner $partner)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'website' => 'nullable|url',
+            'contact_email' => 'nullable|email',
+            'contact_phone' => 'nullable|string|max:20',
+            'category' => 'required|in:legal,financial,construction,architecture,other',
+            'active' => 'boolean',
+        ]);
+
+        $partner->update($request->all());
+
+        return redirect()->route('master.partners')->with('success', 'Parceiro atualizado com sucesso!');
+    }
+
     // Subscription Management
     public function subscriptions()
     {

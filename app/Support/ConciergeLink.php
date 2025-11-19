@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\FeaturedProperty;
 use App\Models\Property;
 
 class ConciergeLink
@@ -82,10 +83,35 @@ class ConciergeLink
             'context' => $context,
             'payload' => base64_encode(json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)),
             'property_id' => $attributes['property_id'] ?? null,
+            'featured_property_id' => $attributes['featured_property_id'] ?? null,
             'user_type' => $attributes['user_type'] ?? null,
             'source' => $attributes['source'] ?? null,
         ]);
 
         return route('concierge.redirect', $query);
+    }
+
+    public static function forFeaturedProperty(FeaturedProperty $property, string $userType = 'investidor'): string
+    {
+        $context = $userType === 'empresario' ? 'empresario_duvida' : 'investidor_detalhe';
+
+        $payload = [
+            'title' => $property->title,
+            'city' => $property->city,
+            'state' => $property->state,
+            'price' => $property->price,
+            'url' => $property->cta_view_url ?? route('investor.catalog'),
+            'tags' => ['Prime'],
+        ];
+
+        if ($property->status) {
+            $payload['tags'][] = ucfirst($property->status);
+        }
+
+        return self::build($context, $payload, [
+            'featured_property_id' => $property->id,
+            'user_type' => $userType,
+            'source' => 'destaque_prime',
+        ]);
     }
 }

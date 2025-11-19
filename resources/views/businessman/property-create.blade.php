@@ -126,8 +126,6 @@
 
                 <div class="flex flex-wrap justify-end gap-3">
                     <a href="{{ route('businessman.properties') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Cancelar</a>
-                    <button type="submit" name="action" value="save" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Salvar rascunho</button>
-                    <button type="submit" name="action" value="preview" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Pré-visualizar</button>
                     <button type="submit" name="action" value="publish" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Publicar</button>
                 </div>
             </form>

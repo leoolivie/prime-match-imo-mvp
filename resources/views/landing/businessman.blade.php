@@ -3,9 +3,9 @@
 @section('title', 'Prime Match Imo para Empresários')
 
 @push('head')
-    <meta name="description" content="Prime Match Imo conecta empresários do mercado imobiliário de alto padrão a 40 mil investidores, com destaque opcional e success-fee de 1%." />
+    <meta name="description" content="Prime Match Imo conecta empresários do mercado imobiliário de alto padrão a investidores qualificados, com destaque opcional e success-fee de 1%." />
     <meta property="og:title" content="Prime Match Imo · Plataforma Exclusiva para Empresários" />
-    <meta property="og:description" content="Cadastre até 50 imóveis sem custo, destaque opcional e success-fee de 1% com base de 40 mil investidores." />
+    <meta property="og:description" content="Cadastre até 50 imóveis sem custo, destaque opcional e success-fee de 1% com base  de investidores qualificados." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ url()->current() }}" />
 @endpush
@@ -35,7 +35,7 @@
                         </span>
                     </div>
                     <h1 class="max-w-2xl font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
-                        Apresentação da Plataforma Exclusiva para o Empresário Prime
+                        Apresentação de Plataforma Exclusiva para Empresários
                     </h1>
                     <p class="max-w-2xl text-base text-white/70 sm:text-lg">
                         Solução inovadora para o empresário do setor imobiliário de alto padrão. Cadastre até 50 imóveis sem custo inicial, conecte-se a investidores qualificados e conte com concierge único para acelerar negociações.
@@ -76,7 +76,7 @@
                     <div class="grid gap-5 sm:grid-cols-3">
                         <div class="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/10 p-5 text-white/80 shadow-[0_20px_60px_rgba(0,0,0,0.4)] transition hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(203,161,53,0.25)]">
                             <span class="text-xs uppercase tracking-[0.3em] text-white/60">Investidores</span>
-                            <p class="text-2xl font-semibold text-white">40 mil</p>
+                            <p class="text-2xl font-semibold text-white">Qualificados</p>
                             <p class="text-sm text-white/60">Rede qualificada e segmentada com apetite para alto padrão.</p>
                         </div>
                         <div class="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/10 p-5 text-white/80 shadow-[0_20px_60px_rgba(0,0,0,0.4)] transition hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(203,161,53,0.25)]">

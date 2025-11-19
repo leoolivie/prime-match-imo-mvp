@@ -30,8 +30,16 @@
                     Oportunidades Prime
                 </a>
                 @auth
+                    @php
+                        $roleLabel = match (Auth::user()->role) {
+                            'businessman' => 'Empresário',
+                            'investor' => 'Investidor',
+                            'master' => 'Master',
+                            default => strtoupper(Auth::user()->role),
+                        };
+                    @endphp
                     <span class="hidden sm:inline-flex items-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/60">
-                        {{ strtoupper(Auth::user()->role) }}
+                        {{ strtoupper($roleLabel) }}
                     </span>
                     <form method="POST" action="{{ route('logout') }}" class="hidden sm:inline">
                         @csrf
