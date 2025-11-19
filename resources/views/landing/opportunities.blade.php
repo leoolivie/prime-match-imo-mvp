@@ -24,13 +24,13 @@
         <div class="lux-container relative py-24 pb-40 sm:py-28">
             <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
                 <div class="space-y-8">
-                    <span class="lux-badge-gold">Nova landpage Prime</span>
+                    <span class="lux-badge-gold">{{ data_get($hero, 'badge') }}</span>
                     <div>
                         <h1 class="font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
-                            Oportunidades Prime para Empresários e Investidores
+                            {{ data_get($hero, 'title') }}
                         </h1>
                         <p class="mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
-                            Imóveis abaixo do preço de mercado, curadoria de mentores e parceiros estratégicos para acelerar suas negociações e visitas com até 10 investidores.
+                            {{ data_get($hero, 'description') }}
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-4">
@@ -40,7 +40,7 @@
                             data-scroll-target
                             data-filter-type="corporativo"
                         >
-                            Sou Empresário Prime
+                            {{ data_get($hero, 'businessman_cta_label') }}
                         </a>
                         <a
                             href="#oportunidades"
@@ -48,11 +48,11 @@
                             data-scroll-target
                             data-filter-type="residencial"
                         >
-                            Sou Investidor Prime
+                            {{ data_get($hero, 'investor_cta_label') }}
                         </a>
                     </div>
                     <p class="max-w-2xl text-sm text-white/60">
-                        Conectamos negócios reais com inteligência Prime, visitas exclusivas e suporte especializado em cada etapa da negociação.
+                        {{ data_get($hero, 'support_text') }}
                     </p>
                     <div class="grid gap-4 sm:grid-cols-3">
                         @foreach ($heroMetrics as $metric)
@@ -66,28 +66,22 @@
                 </div>
                 <div class="relative">
                     <div class="rounded-[32px] border border-lux-gold/30 bg-black/70 p-8 shadow-[0_45px_120px_rgba(203,161,53,0.2)] backdrop-blur-xl">
-                        <p class="text-xs uppercase tracking-[0.35em] text-white/50">Agenda limitada</p>
-                        <h2 class="mt-4 text-2xl font-semibold text-white">Visitas exclusivas com até 10 investidores</h2>
+                        <p class="text-xs uppercase tracking-[0.35em] text-white/50">{{ data_get($ctaCard, 'badge') }}</p>
+                        <h2 class="mt-4 text-2xl font-semibold text-white">{{ data_get($ctaCard, 'title') }}</h2>
                         <p class="mt-3 text-sm text-white/70">
-                            Selecione oportunidades com tag Destaque Prime para impulsionar campanhas pagas do empresário e liberar alertas VIP para investidores.
+                            {{ data_get($ctaCard, 'description') }}
                         </p>
                         <ul class="mt-6 space-y-4 text-sm text-white/70">
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-lux-gold/20 text-[13px] text-lux-gold">1</span>
-                                <span>Diagnóstico com mentores Prime para validar desconto real vs. mercado.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-lux-gold/20 text-[13px] text-lux-gold">2</span>
-                                <span>Ativação dos parceiros estratégicos para crédito, seguro e diligência.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-lux-gold/20 text-[13px] text-lux-gold">3</span>
-                                <span>Visita com até 10 investidores e concierge conduzindo a disputa.</span>
-                            </li>
+                            @foreach (data_get($ctaCard, 'steps', []) as $index => $step)
+                                <li class="flex items-start gap-3">
+                                    <span class="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-lux-gold/20 text-[13px] text-lux-gold">{{ $index + 1 }}</span>
+                                    <span>{{ is_array($step) ? data_get($step, 'label') : $step }}</span>
+                                </li>
+                            @endforeach
                         </ul>
                         <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/70">
-                            <p class="font-semibold uppercase tracking-[0.35em] text-white">Lista VIP de investidores</p>
-                            <p class="mt-2">Investidores que optam por alertas relâmpago recebem prioridade nas agendas e podem ser ativados pelo empresário como upgrade pago.</p>
+                            <p class="font-semibold uppercase tracking-[0.35em] text-white">{{ data_get($ctaCard, 'vip_title') }}</p>
+                            <p class="mt-2">{{ data_get($ctaCard, 'vip_description') }}</p>
                         </div>
                     </div>
                 </div>

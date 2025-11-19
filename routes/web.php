@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Investor\InvestorDashboardController;
 use App\Http\Controllers\Master\FeaturedPropertyController;
 use App\Http\Controllers\Master\MasterDashboardController;
+use App\Http\Controllers\Master\PrimeOpportunityController;
 use App\Http\Controllers\PrimeOpportunityLeadController;
 use App\Http\Controllers\PropertyCatalogController;
 
@@ -88,7 +89,11 @@ Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->g
 
     // Featured properties
     Route::resource('featured-properties', FeaturedPropertyController::class)->except(['show']);
-    
+
+    // Oportunidades Prime landing
+    Route::get('/opportunities', [PrimeOpportunityController::class, 'edit'])->name('opportunities.edit');
+    Route::put('/opportunities', [PrimeOpportunityController::class, 'update'])->name('opportunities.update');
+
     // Partners
     Route::get('/partners', [MasterDashboardController::class, 'partners'])->name('partners');
     Route::get('/partners/create', [MasterDashboardController::class, 'createPartner'])->name('partners.create');
