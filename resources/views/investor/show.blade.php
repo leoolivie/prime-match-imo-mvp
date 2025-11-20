@@ -11,7 +11,7 @@
     $whatsappUrl = ConciergeLink::forInvestorDetail($property);
     $galleryImages = $gallery
         ->map(function ($image) {
-            return $image->path ? Storage::disk('public')->url($image->path) : null;
+            return $image->path ? '/public/' . ltrim($image->path, '/') : null;
         })
         ->filter()
         ->values();

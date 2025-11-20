@@ -183,7 +183,7 @@ class PropertyCatalogController extends Controller
             ->map(function (Property $property) {
                 $imagePath = optional($property->primaryImage)->path;
                 $image = $imagePath
-                    ? Storage::disk('public')->url($imagePath)
+                    ? '/public/' . ltrim($imagePath, '/')
                     : asset('images/placeholders/luxury-property.svg');
 
                 return [

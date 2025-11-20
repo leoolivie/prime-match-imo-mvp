@@ -131,7 +131,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? Storage::disk('public')->url($imagePath) : asset('images/placeholders/luxury-property.svg');
+                        $image = $imagePath ? '/public/' . ltrim($imagePath, '/') : asset('images/placeholders/luxury-property.svg');
                         $amenities = collect($property->features ?? [])->filter()->take(2);
                     @endphp
                     <article class="lux-property-card">

@@ -144,7 +144,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? Storage::disk('public')->url($imagePath) : asset('images/placeholders/luxury-property.svg');
+                        $image = $imagePath ? '/public/' . ltrim($imagePath, '/') : asset('images/placeholders/luxury-property.svg');
                         $metrics = $property->dashboard_metrics ?? ['views7' => 0, 'views30' => 0, 'clicks30' => 0, 'conversion' => 0];
                     @endphp
                     <article class="lux-property-card">

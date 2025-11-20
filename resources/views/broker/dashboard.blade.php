@@ -84,7 +84,7 @@
                 @forelse($properties as $property)
                     @php
                         $image = optional($property->primaryImage)->path
-                            ? Storage::disk('public')->url($property->primaryImage->path)
+                            ? '/public/' . ltrim($property->primaryImage->path, '/')
                             : asset('images/placeholders/luxury-property.svg');
                         $analytics = $property->analytics ?? ['views30' => 0, 'conciergeClicks30' => 0, 'conversion' => 0];
                     @endphp
