@@ -24,7 +24,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? '/public/' . ltrim($imagePath, '/') : asset('images/placeholders/luxury-property.svg');
+                        $image = $imagePath ? asset($imagePath) : asset('images/placeholders/luxury-property.svg');
                     @endphp
                     <article class="lux-property-card">
                         <div class="overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0B]">

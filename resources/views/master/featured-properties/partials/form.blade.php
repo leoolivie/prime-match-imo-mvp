@@ -135,7 +135,7 @@
                             @php
                                 $url = filter_var($image, FILTER_VALIDATE_URL)
                                     ? $image
-                                    : (Storage::disk('public')->exists($image) ? '/public/' . ltrim($image, '/') : asset('images/placeholders/luxury-property.svg'));
+                                    : (Storage::disk('public')->exists($image) ? asset($image) : asset('images/placeholders/luxury-property.svg'));
                             @endphp
                             <label class="relative block overflow-hidden rounded-2xl border border-white/10">
                                 <img src="{{ $url }}" alt="Galeria {{ $index + 1 }}" class="h-32 w-full object-cover">

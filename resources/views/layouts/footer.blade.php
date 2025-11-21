@@ -15,7 +15,9 @@
         <div class="grid gap-12 lg:grid-cols-4">
             <div class="space-y-5">
                 <div class="flex items-center gap-4">
-                    <span class="flex h-12 w-12 items-center justify-center rounded-3xl border border-lux-gold/40 bg-white/5 text-lg font-semibold tracking-[0.3em] text-lux-gold shadow-[0_0_35px_rgba(255,215,0,0.35)]">PM</span>
+                    <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-3xl border border-lux-gold/40 bg-white/5 shadow-[0_0_35px_rgba(255,215,0,0.35)]">
+                        <img src="{{ asset('images/logo-monogram.png') }}" alt="Prime Match Imo" class="h-10 w-10 object-contain" loading="lazy">
+                    </span>
                     <div>
                         <p class="text-lg font-semibold text-white">Prime Match Imo</p>
                         <p class="text-[11px] uppercase tracking-[0.35em] text-white/60">Matchmaking imobiliário prime</p>

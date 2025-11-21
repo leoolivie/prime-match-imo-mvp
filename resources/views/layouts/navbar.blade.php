@@ -7,7 +7,9 @@
     <div class="relative lux-container">
         <div class="flex h-20 items-center justify-between gap-6">
             <a href="{{ route('home') }}" class="group flex items-center gap-4 text-white">
-                <span class="flex h-12 w-12 items-center justify-center rounded-3xl border border-white/15 bg-white/5 text-lg font-semibold tracking-wide shadow-[0_0_25px_rgba(255,215,0,0.25)] transition group-hover:border-lux-gold/60 group-hover:text-white">PM</span>
+                <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-3xl border border-white/15 bg-white/5 shadow-[0_0_25px_rgba(255,215,0,0.25)] transition group-hover:border-lux-gold/60">
+                    <img src="{{ asset('images/logo-monogram.png') }}" alt="Prime Match Imo" class="h-10 w-10 object-contain" loading="lazy">
+                </span>
                 <div class="leading-tight">
                     <p class="text-lg font-semibold tracking-wide text-white">Prime Match Imo</p>
                 </div>
