@@ -1,89 +1,79 @@
 # Prime Match Imo - Sistema SaaS Imobiliário
 
-Sistema completo de gestão e matchmaking imobiliário desenvolvido com Laravel 10, Docker, e Tailwind CSS.
+Plataforma SaaS para gestão, divulgação e matchmaking de imóveis, construída em **Laravel 11**, **Tailwind CSS** e **Docker**. O objetivo é conectar investidores, empresários e corretores prime em um fluxo único, com métricas e planos de assinatura claros.
+
+> Esta é a documentação principal do projeto em português. A descrição detalhada das funcionalidades por perfil está em [`docs/funcionalidades.md`](docs/funcionalidades.md).
 
 ## 🚀 Tecnologias
-
--   **Laravel 12** - Framework PHP
--   **PHP 8.3** - Linguagem de programação
--   **MySQL 8** - Banco de dados
--   **Redis** - Cache e filas
--   **Nginx** - Servidor web
--   **Docker & Docker Compose** - Containerização
--   **Tailwind CSS** - Framework CSS
--   **Alpine.js** - JavaScript reativo
+- **PHP 8.3**
+- **Laravel 11**
+- **MySQL 8**
+- **Redis**
+- **Nginx**
+- **Tailwind CSS** e **Alpine.js**
+- **Docker & Docker Compose**
 
 ## 📋 Pré-requisitos
+- Docker & Docker Compose
+- Git
+- Make (opcional, mas recomendado)
 
--   Docker & Docker Compose instalados
--   Git
--   Make (opcional, mas recomendado)
+## 🔧 Instalação e configuração
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/leoolivie/prime-match-imo-mvp.git
+   cd prime-match-imo-mvp
+   ```
 
-## 🔧 Instalação e Configuração
+2. **Configure as variáveis de ambiente**
+   ```bash
+   cp .env.example .env
+   ```
 
-### 1. Clone o repositório
+3. **Construa e suba os containers**
+   ```bash
+   # Usando Make (recomendado)
+   make build
+   make up
 
-```bash
-git clone https://github.com/leoolivie/prime-match-imo-mvp.git
-cd prime-match-imo-mvp
-```
+   # Ou usando Docker Compose
+   docker compose build
+   docker compose up -d
+   ```
 
-### 2. Configure o ambiente
+4. **Instale as dependências PHP**
+   ```bash
+   # Via Make
+   make install
 
-```bash
-cp .env.example .env
-```
+   # Ou diretamente
+   docker compose exec php-fpm composer install
+   ```
 
-### 3. Construa e inicie os containers Docker
+5. **Gere a chave da aplicação**
+   ```bash
+   docker compose exec php-fpm php artisan key:generate
+   ```
 
-```bash
-# Usando Make (recomendado)
-make build
-make up
+6. **Execute migrações e seeders**
+   ```bash
+   # Via Make
+   make migrate
+   make seed
+   # Para recriar o banco do zero
+   make fresh
 
-# Ou usando Docker Compose diretamente
-docker compose build
-docker compose up -d
-```
+   # Ou diretamente
+   docker compose exec php-fpm php artisan migrate
+   docker compose exec php-fpm php artisan db:seed
+   ```
 
-### 4. Instale as dependências do Laravel
+7. **Acesse a aplicação**
+   - Web: [http://localhost:8082](http://localhost:8082)
+   - Mailpit: [http://localhost:8025](http://localhost:8025) (SMTP de desenvolvimento)
 
-```bash
-# Usando Make
-make install
-
-# Ou usando Docker Compose
-docker compose exec php-fpm composer install
-```
-
-### 5. Gere a chave da aplicação
-
-```bash
-docker compose exec php-fpm php artisan key:generate
-```
-
-### 6. Execute as migrations e seeders
-
-```bash
-# Usando Make
-make migrate
-make seed
-
-# Ou para fazer tudo de uma vez (fresh install)
-make fresh
-
-# Ou usando Docker Compose
-docker compose exec php-fpm php artisan migrate
-docker compose exec php-fpm php artisan db:seed
-```
-
-### 7. Acesse a aplicação
-
-Abra seu navegador e acesse: [http://localhost:8082](http://localhost:8082)
-
-## 👥 Usuários de Teste
-
-Após executar os seeders, você terá acesso aos seguintes usuários de teste:
+## 👥 Usuários de teste
+Após executar os seeders, os seguintes usuários ficam disponíveis:
 
 | Papel          | E-mail                     | Senha    | Descrição                         |
 | -------------- | -------------------------- | -------- | --------------------------------- |
@@ -92,25 +82,13 @@ Após executar os seeders, você terá acesso aos seguintes usuários de teste:
 | Empresário     | businessman@primematch.com | password | Proprietário com assinatura ativa |
 | Investidor     | investor@primematch.com    | password | Investidor buscando imóveis       |
 
-## 🏗️ Estrutura do Projeto
-
+## 🏗️ Estrutura do projeto
 ```
 prime-match-imo-mvp/
 ├── app/
 │   ├── Http/Controllers/
-│   │   ├── AuthController.php
-│   │   ├── Investor/
-│   │   ├── Businessman/
-│   │   ├── Broker/
-│   │   └── Master/
-│   └── Models/
-│       ├── User.php
-│       ├── Property.php
-│       ├── Subscription.php
-│       ├── SubscriptionPlan.php
-│       ├── Lead.php
-│       ├── PrimeSearch.php
-│       └── Partner.php
+│   ├── Models/
+│   └── ...
 ├── database/
 │   ├── migrations/
 │   └── seeders/
@@ -118,168 +96,77 @@ prime-match-imo-mvp/
 │   └── nginx/
 ├── resources/
 │   └── views/
+├── routes/
 ├── docker-compose.yml
-├── Dockerfile
-└── Makefile
+├── Makefile
+└── ...
 ```
 
-## 🎯 Funcionalidades
+## 📊 Planos de assinatura (MVP)
+| Plano            | Valor/mês | Limite de imóveis | Benefícios principais                              |
+| ---------------- | --------- | ----------------- | -------------------------------------------------- |
+| Prime Mensal     | R$ 350    | 5                 | Corretor prime, suporte e consultoria              |
+| Prime Trimestral | R$ 250    | 15                | Corretor prime, suporte avançado e rede de parceiros |
+| Prime Anual      | R$ 200    | Ilimitado         | 1 destaque/mês + todos os benefícios               |
 
-### Landing Page
-
--   Apresentação do sistema
--   Informações sobre planos e recursos
--   Formulário de cadastro
-
-### Para Investidores
-
--   **Busca Prime**: Busca avançada de imóveis com filtros
--   **Alertas**: Criação de alertas personalizados
--   **Leads**: Registro de interesse em imóveis
--   **Dashboard**: Visualização de buscas e leads
-
-### Para Empresários
-
--   **Gestão de Imóveis**: CRUD completo de imóveis
--   **Planos de Assinatura**:
-    -   **Prime Mensal** (R$ 350/mês): Até 5 imóveis
-    -   **Prime Trimestral** (R$ 250/mês): Até 15 imóveis
-    -   **Prime Anual** (R$ 200/mês): Imóveis ilimitados + 1 destaque/mês
--   **Leads**: Visualização de interessados
--   **Métricas**: Dashboard com estatísticas
-
-### Para Corretores Prime
-
--   **Gestão de Leads**: Atribuição e acompanhamento
--   **WhatsApp**: Contato direto com investidores
--   **CRM**: Sistema de acompanhamento de leads
--   **Métricas**: Performance e conversões
-
-### Para Master (Admin)
-
--   **CRUD de Usuários**: Gestão completa de usuários
--   **Gestão de Imóveis**: Visualização e moderação
--   **Parceiros**: Cadastro de parceiros do sistema
--   **Assinaturas**: Gestão de planos e pagamentos
--   **Relatórios**: Dashboards com métricas do sistema
-
-## 📊 Planos de Assinatura
-
-| Plano            | Valor/mês | Limite de Imóveis | Benefícios                                  |
-| ---------------- | --------- | ----------------- | ------------------------------------------- |
-| Prime Mensal     | R$ 350    | 5                 | Corretor prime, suporte, consultoria        |
-| Prime Trimestral | R$ 250    | 15                | Corretor prime, suporte avançado, parceiros |
-| Prime Anual      | R$ 200    | Ilimitado         | 1 destaque/mês + todos os benefícios        |
-
-## 🔐 Segurança e Privacidade
-
--   **Matrícula de Imóvel**: Campo privado, visível apenas para proprietário e master
--   **Autenticação**: Sistema seguro com hash de senhas
--   **Autorização**: Controle de acesso baseado em papéis (RBAC)
--   **Termos de Uso**: Consentimento obrigatório no cadastro
-
-## 🛠️ Comandos Make Disponíveis
-
+## 🛠️ Comandos úteis (Make)
 ```bash
-make up              # Inicia os containers
-make down            # Para os containers
-make restart         # Reinicia os containers
-make logs            # Visualiza logs em tempo real
-make bash            # Acessa o container PHP
-make migrate         # Executa migrations
-make seed            # Executa seeders
-make fresh           # Recria banco de dados com seeders
-make install         # Instala dependências do Composer
-make test            # Executa testes
-make build           # Constrói as imagens Docker
-make rebuild         # Reconstrói as imagens do zero
+make up        # Inicia os containers
+make down      # Para os containers
+make restart   # Reinicia os containers
+make logs      # Logs em tempo real
+make bash      # Shell no container PHP
+make migrate   # Executa migrations
+make seed      # Executa seeders
+make fresh     # Recria banco com seeders
+make install   # Instala dependências do Composer
+make test      # Roda testes
+make build     # Constrói imagens Docker
+make rebuild   # Reconstrói imagens do zero
 ```
 
 ## 🐳 Serviços Docker
-
 | Serviço | Função                | Porta                             |
 | ------- | --------------------- | --------------------------------- |
 | nginx   | Servidor web          | 8082:80                           |
 | php-fpm | Aplicação Laravel     | (interno)                         |
 | mysql   | Banco de dados        | 3306:3306                         |
 | redis   | Cache e filas         | 6379:6379                         |
-| mailpit | SMTP fake para testes | 8025:8025 (web), 1025:1025 (smtp) |
-
-### Mailpit
-
-Para visualizar os e-mails enviados pela aplicação em ambiente de desenvolvimento, acesse:
-[http://localhost:8025](http://localhost:8025)
+| mailpit | SMTP fake p/ testes   | 8025:8025 (web), 1025:1025 (smtp) |
 
 ## 🧪 Testes
-
-Para executar os testes:
-
 ```bash
 make test
-
-# Ou
+# ou
 docker compose exec php-fpm php artisan test
 ```
 
 ## 📝 Arquitetura
+- Padrões: **MVC**, **SOLID** e princípios de **Clean Code**
+- Preparado para **Repository Pattern** e **Service Layer**
+- Fluxo típico: `Controllers → Services → Repositories → Models`, com `Policies`, `Events`, `Listeners` e `Jobs` quando necessário
 
-O sistema segue os princípios:
+## 🔒 Segurança e privacidade
+- Matrícula de imóvel armazenada como campo privado (visível apenas para proprietário e master)
+- Autenticação com hash de senhas e controle de acesso por papéis (RBAC)
+- Consentimento de termos de uso obrigatório no cadastro
 
--   **MVC** (Model-View-Controller)
--   **SOLID**
--   **Clean Code**
--   **Repository Pattern** (preparado para implementação)
--   **Service Layer** (preparado para implementação)
-
-### Camadas da Aplicação
-
-```
-Controllers → Services → Repositories → Models
-     ↓
-  Policies
-     ↓
-   Events → Listeners → Jobs
-```
-
-## 🔄 Fluxo de Trabalho
-
-### Busca Prime (Investidor)
-
-1. Investidor preenche formulário de busca
-2. Sistema filtra imóveis disponíveis
-3. Opção de criar alerta para novas correspondências
-4. Investidor registra interesse (cria lead)
-5. Lead atribuído a corretor prime
-6. Corretor entra em contato via WhatsApp
-
-### Cadastro de Imóvel (Empresário)
-
-1. Empresário verifica plano ativo e limite
-2. Preenche dados do imóvel
-3. Matrícula mantida privada
-4. Imóvel aparece nas buscas
-5. Leads são gerados automaticamente
-
-## 🚀 Próximas Implementações
-
--   [ ] Upload de imagens de imóveis
--   [ ] Integração com WhatsApp Business API
--   [ ] Sistema de pagamentos (Stripe/PagSeguro)
--   [ ] Notificações por e-mail
--   [ ] Sistema de reviews
--   [ ] API RESTful
--   [ ] App mobile (React Native)
--   [ ] Testes automatizados completos
--   [ ] CI/CD pipeline
+## 🚀 Roadmap (próximas implementações)
+- Upload de imagens de imóveis
+- Integração com WhatsApp Business API
+- Sistema de pagamentos (Stripe/PagSeguro)
+- Notificações por e-mail
+- Sistema de reviews
+- API RESTful
+- App mobile (React Native)
+- Testes automatizados completos
+- Pipeline de CI/CD
 
 ## 📄 Licença
+Projeto proprietário e confidencial. Uso restrito ao time Prime Match Imo.
 
-Este projeto é proprietário e confidencial.
-
-## 👨‍💻 Desenvolvido por
-
+## 👨‍💻 Time
 Prime Match Imo Team
 
 ---
-
-**Nota**: Este é um MVP (Minimum Viable Product). Funcionalidades adicionais serão implementadas nas próximas iterações.
+**Nota:** Este é um MVP (Minimum Viable Product); funcionalidades adicionais serão entregues em próximas iterações.
