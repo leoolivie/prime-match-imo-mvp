@@ -8,6 +8,7 @@ use App\Http\Controllers\ConciergeRedirectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Investor\InvestorDashboardController;
 use App\Http\Controllers\Master\FeaturedPropertyController;
+use App\Http\Controllers\Master\AiMatchController;
 use App\Http\Controllers\Master\MasterDashboardController;
 use App\Http\Controllers\Master\PrimeOpportunityController;
 use App\Http\Controllers\PrimeOpportunityLeadController;
@@ -93,6 +94,9 @@ Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->g
     // Oportunidades Prime landing
     Route::get('/opportunities', [PrimeOpportunityController::class, 'edit'])->name('opportunities.edit');
     Route::put('/opportunities', [PrimeOpportunityController::class, 'update'])->name('opportunities.update');
+
+    // AI recommendations
+    Route::get('/ai/recommendations', [AiMatchController::class, 'index'])->name('ai.recommendations');
 
     // Partners
     Route::get('/partners', [MasterDashboardController::class, 'partners'])->name('partners');
