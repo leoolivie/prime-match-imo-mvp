@@ -113,6 +113,15 @@
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Fotos (até 6)</label>
                         <input type="file" name="images[]" accept="image/*" multiple class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
+                        <div class="mt-2">
+                            <label class="text-xs uppercase tracking-[0.3em] text-white/50">Imagem de capa</label>
+                            <select name="primary_image_index" class="mt-2 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm text-black focus:border-lux-gold focus:outline-none">
+                                @for($i = 0; $i < 6; $i++)
+                                    <option value="{{ $i }}" @selected(old('primary_image_index', 0) == $i)>Imagem {{ $i + 1 }}</option>
+                                @endfor
+                            </select>
+                            <p class="mt-2 text-[11px] uppercase tracking-[0.25em] text-white/50">A capa segue a ordem dos arquivos enviados.</p>
+                        </div>
                     </div>
                     <div>
                         <label class="text-xs uppercase tracking-[0.3em] text-white/50">Vídeo (opcional)</label>
@@ -133,3 +142,4 @@
 </div>
 </div>
 @endsection
+

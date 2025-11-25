@@ -1,0 +1,116 @@
+[20-Nov-2025 14:09:09 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:09:09 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:09:17 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:09:17 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:12:57 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:12:57 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:12:58 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:12:58 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:13:00 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:13:00 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:35:21 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:35:21 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:35:22 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:35:22 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:35:24 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:35:24 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:43:31 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:43:31 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:45:32 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:45:32 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:45:49 America/Fortaleza] PHP Warning:  require(/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php): Failed to open stream: Permission denied in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:45:49 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/composer/../symfony/deprecation-contracts/function.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php:41
+Stack trace:
+#0 /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php(45): {closure}('6e3fae29631ef28...', '/home2/hg6a7106...')
+#1 /home2/hg6a7106/primematchimo.com.br/vendor/autoload.php(22): ComposerAutoloaderInit21cd94f2dc56e7df168181933e6d0d18::getLoader()
+#2 /home2/hg6a7106/primematchimo.com.br/index.php(34): require('/home2/hg6a7106...')
+#3 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/vendor/composer/autoload_real.php on line 41
+[20-Nov-2025 14:46:15 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34
+[20-Nov-2025 14:47:13 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34
+[20-Nov-2025 14:47:13 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34
+[20-Nov-2025 14:48:15 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34
+[20-Nov-2025 14:48:15 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34
+[20-Nov-2025 14:48:29 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34
+[20-Nov-2025 14:48:34 America/Fortaleza] PHP Fatal error:  Uncaught Error: Failed opening required '/home2/hg6a7106/primematchimo.com.br/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home2/hg6a7106/primematchimo.com.br/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home2/hg6a7106/primematchimo.com.br/index.php on line 34

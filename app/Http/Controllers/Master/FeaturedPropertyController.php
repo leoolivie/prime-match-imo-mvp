@@ -30,18 +30,19 @@ class FeaturedPropertyController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (FeaturedProperty::count() >= 16) {
-            return back()->withInput()->with('error', 'Limite de 16 im贸veis em destaque atingido. Exclua ou desative um destaque antes de cadastrar outro.');
+            return back()->withInput()->with('error', 'Limite de 16 imóveis em destaque atingido. Exclua ou desative um destaque antes de cadastrar outro.');
         }
 
         $data = $this->validateRequest($request);
 
         $featuredProperty = new FeaturedProperty($data);
         $featuredProperty->hero_image_path = $this->handleHeroImageUpload($request);
+        $featuredProperty->video_url = $this->handleHeroVideoUpload($request) ?? $featuredProperty->video_url;
         $featuredProperty->gallery_images = $this->handleGalleryUpload($request);
         $featuredProperty->save();
 
         return redirect()->route('master.featured-properties.index')
-            ->with('success', 'Im贸vel em destaque cadastrado com sucesso!');
+            ->with('success', 'Imóvel em destaque cadastrado com sucesso!');
     }
 
     public function edit(FeaturedProperty $featuredProperty): View
@@ -60,9 +61,19 @@ class FeaturedPropertyController extends Controller
             $featuredProperty->hero_image_path = null;
         }
 
+        if ($request->boolean('remove_video')) {
+            $this->deleteStoredFile($featuredProperty->video_url);
+            $featuredProperty->video_url = null;
+        }
+
         if ($request->hasFile('hero_image')) {
             $this->deleteStoredFile($featuredProperty->hero_image_path);
             $featuredProperty->hero_image_path = $this->handleHeroImageUpload($request);
+        }
+
+        if ($request->hasFile('hero_video')) {
+            $this->deleteStoredFile($featuredProperty->video_url);
+            $featuredProperty->video_url = $this->handleHeroVideoUpload($request);
         }
 
         if ($request->hasFile('gallery_images')) {
@@ -98,7 +109,7 @@ class FeaturedPropertyController extends Controller
         $featuredProperty->save();
 
         return redirect()->route('master.featured-properties.index')
-            ->with('success', 'Im贸vel em destaque atualizado com sucesso!');
+            ->with('success', 'Imóvel em destaque atualizado com sucesso!');
     }
 
     public function destroy(FeaturedProperty $featuredProperty): RedirectResponse
@@ -112,7 +123,7 @@ class FeaturedPropertyController extends Controller
         $featuredProperty->delete();
 
         return redirect()->route('master.featured-properties.index')
-            ->with('success', 'Im贸vel em destaque removido com sucesso!');
+            ->with('success', 'Imóvel em destaque removido com sucesso!');
     }
 
     protected function validateRequest(Request $request, ?int $ignoreId = null): array
@@ -136,13 +147,15 @@ class FeaturedPropertyController extends Controller
             'cta_view_url' => 'nullable|url|max:2048',
             'cta_concierge_url' => 'nullable|url|max:2048',
             'hero_image' => 'nullable|image|max:6144',
+            'hero_video' => 'nullable|mimetypes:video/mp4,video/quicktime,video/webm|max:51200',
             'gallery_images' => 'nullable|array|max:6',
             'gallery_images.*' => 'nullable|image|max:6144',
             'remove_gallery' => 'nullable|array',
             'remove_gallery.*' => 'integer',
+            'remove_video' => 'nullable|boolean',
         ]);
 
-        return Arr::except($validated, ['hero_image', 'gallery_images', 'remove_gallery']);
+        return Arr::except($validated, ['hero_image', 'hero_video', 'gallery_images', 'remove_gallery', 'remove_video']);
     }
 
     protected function handleHeroImageUpload(Request $request): ?string
@@ -159,6 +172,25 @@ class FeaturedPropertyController extends Controller
         }
 
         $filename = uniqid('hero_') . '_' . $file->getClientOriginalName();
+        $file->move($directory, $filename);
+
+        return 'storage/featured-properties/hero/' . $filename;
+    }
+
+    protected function handleHeroVideoUpload(Request $request): ?string
+    {
+        if (!$request->hasFile('hero_video')) {
+            return null;
+        }
+
+        $file = $request->file('hero_video');
+        $directory = public_path('storage/featured-properties/hero');
+
+        if (!File::exists($directory)) {
+            File::makeDirectory($directory, 0755, true);
+        }
+
+        $filename = uniqid('hero_video_') . '.' . $file->getClientOriginalExtension();
         $file->move($directory, $filename);
 
         return 'storage/featured-properties/hero/' . $filename;

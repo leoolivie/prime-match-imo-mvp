@@ -1,21 +1,20 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
-
     RewriteEngine On
 
-    # Protege arquivos sensíveis quando a raiz do domínio aponta para esta pasta
-    RewriteRule ^\.env - [F,L]
-    RewriteRule ^storage/.* - [F,L]
-    RewriteRule ^vendor/.* - [F,L]
+    # --- 1) Se alguém acessar /public direto, redireciona pra / ---
+    RewriteCond %{THE_REQUEST} \s/+public/([^\s?]*) [NC]
+    RewriteRule ^public/?(.*)$ /$1 [R=301,L]
 
-    # Mantém acessíveis arquivos/diretórios reais (ex.: .well-known)
+    # --- 2) Proteções básicas ---
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^storage/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+
+    # --- 3) Libera arquivos/pastas reais (ex.: .well-known) ---
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # Redireciona todas as demais requisições para a pasta /public
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ public/$1 [L,NC]
+    # --- 4) Tudo o que sobrar vai pro Laravel em /public ---
+    RewriteRule ^ public/index.php [L]
 </IfModule>

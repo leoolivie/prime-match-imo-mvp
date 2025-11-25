@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class FeaturedProperty extends Model
 {
@@ -77,10 +78,39 @@ class FeaturedProperty extends Model
             return null;
         }
 
-        if (filter_var($path, FILTER_VALIDATE_URL)) {
+        // If it's an external URL, return as-is
+        if (filter_var($path, FILTER_VALIDATE_URL) && !$this->isAppHost($path)) {
             return $path;
         }
 
-        return asset(ltrim($path, '/'));
+        // Normalize internal URLs/paths and ensure they work when the app runs from the project root (needs /public prefix)
+        $normalizedPath = $this->normalizeStoragePath(parse_url($path, PHP_URL_PATH) ?: $path);
+
+        return asset($normalizedPath);
+    }
+
+    protected function normalizeStoragePath(string $path): string
+    {
+        $normalized = ltrim($path, '/');
+
+        $needsPublicPrefix = !app()->environment(['local', 'testing']) && Str::startsWith($normalized, 'storage/');
+
+        if ($needsPublicPrefix && !Str::startsWith($normalized, 'public/')) {
+            return 'public/' . $normalized;
+        }
+
+        return $normalized;
+    }
+
+    protected function isAppHost(string $url): bool
+    {
+        $targetHost = parse_url($url, PHP_URL_HOST);
+        $appHost = parse_url(config('app.url'), PHP_URL_HOST);
+
+        $normalizeHost = static function (?string $host): ?string {
+            return $host ? preg_replace('/^www\\./', '', strtolower($host)) : null;
+        };
+
+        return $normalizeHost($targetHost) === $normalizeHost($appHost);
     }
 }

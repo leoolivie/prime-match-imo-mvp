@@ -138,4 +138,184 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-featured-carousel]').forEach((carousel) => {
         new FeaturedCarousel(carousel);
     });
+
+    // Modal de destaque (Prime)
+    const modal = document.getElementById('featuredPrimeModal');
+    if (modal) {
+        const els = {
+            title: modal.querySelector('[data-modal-title]'),
+            location: modal.querySelector('[data-modal-location]'),
+            status: modal.querySelector('[data-modal-status]'),
+            price: modal.querySelector('[data-modal-price]'),
+            chips: modal.querySelector('[data-modal-chips]'),
+            description: modal.querySelector('[data-modal-description]'),
+            conciergeBtn: modal.querySelector('[data-modal-concierge-btn]'),
+            conciergeSticky: modal.querySelector('[data-modal-concierge-sticky]'),
+            video: modal.querySelector('#modalVideo'),
+            hero: modal.querySelector('#modalHero'),
+            thumbs: modal.querySelector('#modalThumbs'),
+            thumbPrev: modal.querySelector('[data-thumbs-prev]'),
+            thumbNext: modal.querySelector('[data-thumbs-next]'),
+            closeBtns: modal.querySelectorAll('[data-modal-close]'),
+        };
+
+        let gallery = [];
+        let currentIndex = 0;
+        let hasVideo = false;
+        let videoUrl = '';
+
+        const markActive = (key) => {
+            Array.from(els.thumbs.children || []).forEach((btn) => {
+                btn.classList.remove('ring-2', 'ring-[#cba135]');
+                btn.setAttribute('aria-current', 'false');
+            });
+            const selector = key === 'video' ? '[data-thumb-video]' : `[data-thumb-index="${key}"]`;
+            const target = els.thumbs.querySelector(selector);
+            if (target) {
+                target.classList.add('ring-2', 'ring-[#cba135]');
+                target.setAttribute('aria-current', 'true');
+            }
+        };
+
+        const showImage = (index) => {
+            currentIndex = index;
+            const src = gallery[index];
+            if (!src) return;
+            if (els.video) {
+                els.video.pause();
+                els.video.classList.add('hidden');
+            }
+            if (els.hero) {
+                els.hero.src = src;
+                els.hero.classList.remove('hidden');
+            }
+            markActive(index);
+        };
+
+        const showVideo = () => {
+            if (!hasVideo || !els.video) return;
+            if (els.hero) els.hero.classList.add('hidden');
+            els.video.classList.remove('hidden');
+            els.video.src = videoUrl;
+            els.video.load();
+            els.video.play().catch(() => {});
+            markActive('video');
+        };
+
+        const buildThumbs = () => {
+            if (!els.thumbs) return;
+            els.thumbs.innerHTML = '';
+
+            if (hasVideo) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.thumbVideo = '1';
+                btn.className = 'relative h-20 w-28 flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/60 transition hover:border-[#cba135]/70 focus:outline-none focus:ring-2 focus:ring-[#cba135]';
+                btn.innerHTML = '<div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-black via-[#0b0b0b] to-black"><span class="text-[10px] uppercase tracking-[0.35em] text-white/80">Vídeo</span></div>';
+                btn.addEventListener('click', showVideo);
+                els.thumbs.appendChild(btn);
+            }
+
+            gallery.forEach((src, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.thumbIndex = String(idx);
+                btn.className = 'relative h-20 w-28 flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/40 transition hover:border-[#cba135]/70 focus:outline-none focus:ring-2 focus:ring-[#cba135]';
+                btn.innerHTML = `<img src="${src}" class="h-full w-full object-cover" alt="Foto ${idx + 1}">`;
+                btn.addEventListener('click', () => showImage(idx));
+                els.thumbs.appendChild(btn);
+            });
+        };
+
+        const openModal = (data) => {
+            const galleryData = (() => {
+                try {
+                    return data.gallery ? JSON.parse(data.gallery) : [];
+                } catch (e) {
+                    return [];
+                }
+            })();
+
+            gallery = Array.isArray(galleryData) ? galleryData.filter(Boolean) : [];
+            if (data.hero) {
+                gallery = [data.hero, ...gallery];
+            }
+
+            hasVideo = !!data.video;
+            videoUrl = data.video || '';
+
+            if (els.title) els.title.textContent = data.title || 'Imóvel Prime';
+            if (els.location) els.location.textContent = [data.city, data.state].filter(Boolean).join(' • ');
+            if (els.status) els.status.textContent = data.status || 'DISPONÍVEL';
+            if (els.price) els.price.textContent = data.price || '';
+
+            if (els.chips) {
+                const chips = [];
+                if (data.area) chips.push(data.area);
+                if (data.bedrooms) chips.push(`${data.bedrooms} quartos`);
+                if (data.parking) chips.push(`${data.parking} vagas`);
+                els.chips.innerHTML = chips.map((t) => `<span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-xs uppercase tracking-[0.25em] text-white/90">${t}</span>`).join('');
+            }
+
+            if (els.description) {
+                els.description.textContent = data.description || 'Experiência prime com concierge dedicado e documentação completa sob demanda.';
+            }
+
+            if (els.conciergeBtn) els.conciergeBtn.href = data.concierge || '#';
+            if (els.conciergeSticky) els.conciergeSticky.href = data.concierge || '#';
+
+            buildThumbs();
+            if (hasVideo) {
+                showVideo();
+                if (!gallery.length && els.hero) {
+                    els.hero.classList.add('hidden');
+                } else if (gallery.length) {
+                    els.hero.src = gallery[0];
+                }
+            } else {
+                showImage(0);
+            }
+
+            modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            document.documentElement.classList.add('overflow-hidden');
+        };
+
+        const closeModal = () => {
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            document.documentElement.classList.remove('overflow-hidden');
+            if (els.video) {
+                els.video.pause();
+                els.video.removeAttribute('src');
+            }
+        };
+
+        document.querySelectorAll('[data-featured-open-modal]').forEach((btn) => {
+            btn.addEventListener('click', () => openModal(btn.dataset));
+        });
+
+        els.closeBtns?.forEach((btn) => btn.addEventListener('click', closeModal));
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+                closeModal();
+            }
+        });
+
+        if (els.thumbPrev) {
+            els.thumbPrev.addEventListener('click', () => {
+                if (!gallery.length) return;
+                currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
+                showImage(currentIndex);
+            });
+        }
+
+        if (els.thumbNext) {
+            els.thumbNext.addEventListener('click', () => {
+                if (!gallery.length) return;
+                currentIndex = (currentIndex + 1) % gallery.length;
+                showImage(currentIndex);
+            });
+        }
+    }
 });

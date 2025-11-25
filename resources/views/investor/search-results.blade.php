@@ -6,7 +6,8 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
-    use Illuminate\Support\Facades\Storage;
+
+    $asset = fn(string $path) => app()->environment(['local', 'testing']) ? asset($path) : asset('public/' . ltrim($path, '/'));
 @endphp
 
 <div class="py-12">
@@ -24,7 +25,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? asset($imagePath) : asset('images/placeholders/luxury-property.svg');
+                        $image = $property->mediaUrl($imagePath) ?? $asset('images/placeholders/luxury-property.svg');
                     @endphp
                     <article class="lux-property-card">
                         <div class="overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0B]">

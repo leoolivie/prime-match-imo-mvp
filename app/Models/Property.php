@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
@@ -114,5 +116,63 @@ class Property extends Model
         ];
 
         return $labels[$this->status] ?? ucfirst($this->status);
+    }
+
+    protected function videoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $this->buildPublicAssetUrl($value)
+        );
+    }
+
+    /**
+        * Resolve any stored media path (images/videos) to a public URL.
+        */
+    public function mediaUrl(?string $path): ?string
+    {
+        return $this->buildPublicAssetUrl($path);
+    }
+
+    protected function buildPublicAssetUrl(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+
+        if (filter_var($path, FILTER_VALIDATE_URL) && !$this->isAppHost($path)) {
+            return $path;
+        }
+
+        $normalizedPath = $this->normalizeStoragePath(parse_url($path, PHP_URL_PATH) ?: $path);
+
+        return asset($normalizedPath);
+    }
+
+    protected function normalizeStoragePath(string $path): string
+    {
+        $normalized = ltrim($path, '/');
+
+        // Files saved via Storage::disk('public')->store('properties/...') come as "properties/..."
+        if (Str::startsWith($normalized, 'properties/') && !Str::startsWith($normalized, 'storage/')) {
+            $normalized = 'storage/' . $normalized;
+        }
+
+        if (!app()->environment(['local', 'testing']) && !Str::startsWith($normalized, 'public/')) {
+            $normalized = 'public/' . $normalized;
+        }
+
+        return $normalized;
+    }
+
+    protected function isAppHost(string $url): bool
+    {
+        $targetHost = parse_url($url, PHP_URL_HOST);
+        $appHost = parse_url(config('app.url'), PHP_URL_HOST);
+
+        $normalizeHost = static function (?string $host): ?string {
+            return $host ? preg_replace('/^www\\./', '', strtolower($host)) : null;
+        };
+
+        return $normalizeHost($targetHost) === $normalizeHost($appHost);
     }
 }

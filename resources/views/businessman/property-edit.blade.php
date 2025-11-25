@@ -6,6 +6,9 @@
 @php
     use App\Support\ConciergeLink;
     use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
+
+    $asset = fn(string $path) => app()->environment(['local', 'testing']) ? asset($path) : asset('public/' . ltrim($path, '/'));
 @endphp
 
 <div class="py-12">
@@ -133,11 +136,17 @@
                             <div class="mt-3 grid grid-cols-3 gap-2">
                                 @foreach($property->images as $img)
                                     @php
-                                        $imageUrl = $img->path ? asset($img->path) : asset('images/placeholders/luxury-property.svg');
+                                        $imageUrl = $property->mediaUrl($img->path) ?? $asset('images/placeholders/luxury-property.svg');
                                     @endphp
-                                    <img src="{{ $imageUrl }}" alt="Foto atual" class="h-24 w-full rounded-xl object-cover" />
+                                    <label class="group relative block cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                                        <input type="radio" name="primary_image_id" value="{{ $img->id }}" class="peer absolute left-2 top-2 h-4 w-4 accent-lux-gold" @checked($img->is_primary) />
+                                        <img src="{{ $imageUrl }}" alt="Foto atual" class="h-24 w-full object-cover transition duration-200 group-hover:scale-[1.02]" />
+                                        <span class="absolute right-2 top-2 rounded-full bg-black/70 px-2 py-1 text-[11px] uppercase tracking-[0.25em] text-white/80">Capa</span>
+                                        <span class="pointer-events-none absolute inset-0 rounded-xl border-2 border-transparent transition peer-checked:border-lux-gold"></span>
+                                    </label>
                                 @endforeach
                             </div>
+                            <p class="mt-2 text-[11px] uppercase tracking-[0.25em] text-white/50">Selecione qual foto ser� a capa.</p>
                         @endif
                     </div>
                     <div>

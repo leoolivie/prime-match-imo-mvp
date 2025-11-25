@@ -6,7 +6,8 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
-    use Illuminate\Support\Facades\Storage;
+
+    $asset = fn(string $path) => app()->environment(['local', 'testing']) ? asset($path) : asset('public/' . ltrim($path, '/'));
 @endphp
 
 @include('components.prime-featured-section', [
@@ -131,7 +132,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? asset($imagePath) : asset('images/placeholders/luxury-property.svg');
+                        $image = $property->mediaUrl($imagePath) ?? $asset('images/placeholders/luxury-property.svg');
                         $amenities = collect($property->features ?? [])->filter()->take(2);
                     @endphp
                     <article class="lux-property-card">
@@ -184,7 +185,54 @@
                 {{ $properties->links() }}
             </div>
         </section>
-    </div>
+
+        <section class="lux-card-dark space-y-6" x-data="investorBriefingForm()">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                <div class="space-y-2">
+                    <span class="lux-badge-outline">Nao encontrou o imovel?</span>
+                    <h2 class="text-2xl font-semibold text-white">Ativamos a busca manual do concierge</h2>
+                    <p class="text-sm text-white/70">Envie seu briefing detalhado. Encaminharemos automaticamente para o Master pelo WhatsApp e pelo e-mail concierge@primematchimo.com.br, e retornaremos para voce.</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs uppercase tracking-[0.3em] text-white/60">
+                    Atendimento direto: +55 14 99684-5854
+                </div>
+            </div>
+
+            <template x-if="success">
+                <div class="rounded-2xl border border-lux-gold/50 bg-lux-gold/10 px-4 py-3 text-sm text-white/90" x-text="success"></div>
+            </template>
+
+            <template x-if="error">
+                <div class="rounded-2xl border border-red-400/40 bg-red-500/15 px-4 py-3 text-sm font-medium text-red-200" x-text="error"></div>
+            </template>
+
+            <form class="grid gap-4 md:grid-cols-2" @submit.prevent="submit">
+                <div>
+                    <label class="text-xs uppercase tracking-[0.3em] text-white/50">Nome</label>
+                    <input type="text" x-model="form.name" required class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="Seu nome completo" />
+                </div>
+                <div>
+                    <label class="text-xs uppercase tracking-[0.3em] text-white/50">Telefone</label>
+                    <input type="tel" x-model="form.phone" required class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="DDD + WhatsApp" />
+                </div>
+                <div>
+                    <label class="text-xs uppercase tracking-[0.3em] text-white/50">Cidade</label>
+                    <input type="text" x-model="form.city" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="Cidade de interesse" />
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-xs uppercase tracking-[0.3em] text-white/50">Descricao do que procura</label>
+                    <textarea x-model="form.description" required rows="4" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" placeholder="Tipologia, budget, vista, bairros, urgencia"></textarea>
+                </div>
+                <div class="md:col-span-2 flex flex-wrap items-center justify-between gap-3">
+                    <p class="text-xs uppercase tracking-[0.25em] text-white/50">Ao enviar, abriremos o WhatsApp com o resumo e confirmaremos o contato.</p>
+                    <button type="submit" class="lux-gold-button text-xs uppercase tracking-[0.3em]" :disabled="loading">
+                        <span x-show="!loading">Enviar briefing</span>
+                        <span x-show="loading">Enviando...</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+</div>
 </div>
 
 @include('investor.partials.busca-prime-modal')
@@ -215,6 +263,57 @@
             },
         };
     }
+
+    function investorBriefingForm() {
+        return {
+            form: {
+                name: '',
+                phone: '',
+                city: '',
+                description: '',
+            },
+            success: '',
+            error: '',
+            loading: false,
+            async submit() {
+                this.loading = true;
+                this.success = '';
+                this.error = '';
+
+                try {
+                    const response = await fetch('{{ route('investor.custom-request') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: JSON.stringify(this.form),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        const validation = data?.errors ? Object.values(data.errors)[0]?.[0] : null;
+                        this.error = validation ?? data?.message ?? 'Nao foi possivel enviar seu briefing agora. Tente novamente.';
+                        return;
+                    }
+
+                    this.success = data?.message ?? 'Briefing recebido. Entraremos em contato em instantes.';
+                    this.form = { name: '', phone: '', city: '', description: '' };
+
+                    if (data?.whatsapp_url) {
+                        window.open(data.whatsapp_url, '_blank');
+                    }
+                } catch (error) {
+                    this.error = 'Nao foi possivel enviar seu briefing agora. Tente novamente.';
+                } finally {
+                    this.loading = false;
+                }
+            },
+        };
+    }
 </script>
 @endpush
 @endsection
+

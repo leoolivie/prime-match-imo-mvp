@@ -9,6 +9,7 @@ use App\Models\SubscriptionPlan;
 use App\Models\TelemetryMetric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class BusinessmanDashboardController extends Controller
 {
@@ -159,7 +160,7 @@ class BusinessmanDashboardController extends Controller
             'type' => 'required|in:apartment,house,commercial,land,other',
             'transaction_type' => 'required|in:sale,rent,both',
             'price' => 'required|numeric|min:0',
-            'address' => 'nullable|string',
+            'address' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string|size:2',
             'zip_code' => 'nullable|string',
@@ -169,9 +170,11 @@ class BusinessmanDashboardController extends Controller
             'registration_number' => 'nullable|string',
             'parking' => 'nullable|integer|min:0',
             'year_built' => 'nullable|integer|min:1800|max:' . now()->year,
+            'primary_image_index' => 'nullable|integer|min:0|max:5',
         ]);
 
         $action = $request->input('action', 'save');
+        $primaryIndex = (int) ($request->input('primary_image_index', 0));
 
         $property = Property::create([
             'user_id' => Auth::id(),
@@ -198,14 +201,21 @@ class BusinessmanDashboardController extends Controller
         if ($request->hasFile('images')) {
             $images = $request->file('images');
             $images = array_slice($images, 0, 6);
+            $primaryIndex = min(max($primaryIndex, 0), count($images) - 1);
             foreach ($images as $i => $img) {
-                $img->move(public_path('storage/properties/' . $property->id), $img->getClientOriginalName());
-                
-                $relativePath = 'storage/properties/' . $property->id . '/' . $img->getClientOriginalName();
-                
+                $directory = public_path('storage/properties/' . $property->id);
+                if (!File::exists($directory)) {
+                    File::makeDirectory($directory, 0755, true);
+                }
+
+                $filename = $img->hashName();
+                $img->move($directory, $filename);
+
+                $path = 'storage/properties/' . $property->id . '/' . $filename;
+
                 $property->images()->create([
-                    'path' => $relativePath,
-                    'is_primary' => $i === 0,
+                    'path' => $path,
+                    'is_primary' => $i === $primaryIndex,
                     'order' => $i,
                 ]);
             }
@@ -255,6 +265,7 @@ class BusinessmanDashboardController extends Controller
             'year_built' => 'nullable|integer|min:1800|max:' . now()->year,
             'status' => 'nullable|in:available,reserved,sold,rented',
             'active' => 'sometimes|boolean',
+            'primary_image_id' => 'nullable|integer',
         ]);
 
         $action = $request->input('action', 'save');
@@ -273,7 +284,16 @@ class BusinessmanDashboardController extends Controller
             $allowed = max(0, 6 - $existing);
             $images = array_slice($images, 0, $allowed);
             foreach ($images as $i => $img) {
-                $path = $img->store('properties/' . $property->id, 'public');
+                $directory = public_path('storage/properties/' . $property->id);
+                if (!File::exists($directory)) {
+                    File::makeDirectory($directory, 0755, true);
+                }
+
+                $filename = $img->hashName();
+                $img->move($directory, $filename);
+
+                $path = 'storage/properties/' . $property->id . '/' . $filename;
+
                 $property->images()->create([
                     'path' => $path,
                     'is_primary' => false,
@@ -285,8 +305,36 @@ class BusinessmanDashboardController extends Controller
         // Handle video replacement
         if ($request->hasFile('video')) {
             $video = $request->file('video');
-            $vpath = $video->store('properties/videos/' . $property->id, 'public');
+            $directory = public_path('storage/properties/videos/' . $property->id);
+
+            if (!File::exists($directory)) {
+                File::makeDirectory($directory, 0755, true);
+            }
+
+            $filename = $video->hashName();
+            $video->move($directory, $filename);
+
+            $vpath = 'storage/properties/videos/' . $property->id . '/' . $filename;
+
             $property->update(['video_url' => $vpath]);
+        }
+
+        // Update primary image selection if provided
+        if ($request->filled('primary_image_id')) {
+            $primaryId = (int) $request->input('primary_image_id');
+            if ($property->images()->where('id', $primaryId)->exists()) {
+                $property->images()->update(['is_primary' => false]);
+                $property->images()->where('id', $primaryId)->update(['is_primary' => true]);
+            }
+        } else {
+            // Ensure there is at least one primary image
+            $hasPrimary = $property->images()->where('is_primary', true)->exists();
+            if (!$hasPrimary) {
+                $firstImage = $property->images()->orderBy('order')->first();
+                if ($firstImage) {
+                    $firstImage->update(['is_primary' => true]);
+                }
+            }
         }
 
         if ($action === 'preview') {

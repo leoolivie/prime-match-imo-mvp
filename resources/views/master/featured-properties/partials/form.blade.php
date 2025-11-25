@@ -126,6 +126,23 @@
             </div>
 
             <div>
+                <label class="lux-form-label" for="hero_video">Vídeo hero (opcional)</label>
+                <input type="file" name="hero_video" id="hero_video" class="lux-input" accept="video/mp4,video/quicktime,video/webm">
+                <p class="mt-2 text-xs text-white/50">Envie um MP4 curto para autoplay silencioso no carrossel. Se houver vídeo, ele aparece antes da imagem hero.</p>
+                @if($featuredProperty->video_url)
+                    <div class="mt-4 space-y-3">
+                        <video class="h-48 w-full rounded-2xl object-cover" controls muted>
+                            <source src="{{ $featuredProperty->video_url }}" type="video/mp4">
+                        </video>
+                        <label class="inline-flex items-center gap-2 text-xs text-white/70">
+                            <input type="checkbox" name="remove_video" value="1" class="h-4 w-4 rounded border-white/20 bg-white/10">
+                            Remover vídeo atual
+                        </label>
+                    </div>
+                @endif
+            </div>
+
+            <div>
                 <label class="lux-form-label" for="gallery_images">Galeria (até 6 imagens)</label>
                 <input type="file" name="gallery_images[]" id="gallery_images" class="lux-input" accept="image/*" multiple>
                 <p class="mt-2 text-xs text-white/50">Use fotos complementares para reforçar vista, áreas comuns e lifestyle.</p>

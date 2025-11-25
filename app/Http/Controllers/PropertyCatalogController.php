@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\FeaturedProperty;
 use App\Models\Property;
 use App\Models\TelemetryMetric;
+use App\Models\User;
+use App\Notifications\InvestorCustomRequest;
 use App\Services\TelemetryRecorder;
 use App\Support\ConciergeLink;
 use App\Support\Format;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class PropertyCatalogController extends Controller
@@ -211,6 +214,39 @@ class PropertyCatalogController extends Controller
         ]);
     }
 
+    public function customRequest(Request $request, TelemetryRecorder $telemetry)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:120'],
+            'phone' => ['required', 'string', 'max:40'],
+            'city' => ['nullable', 'string', 'max:120'],
+            'description' => ['required', 'string', 'max:1200'],
+        ]);
+
+        $telemetry->record('investor_custom_request', [
+            'user_type' => 'investidor',
+            'context' => 'catalogo',
+        ], [
+            'city' => $validated['city'] ?? null,
+        ]);
+
+        $notification = new InvestorCustomRequest($validated);
+        $masters = User::query()->where('role', 'master')->get();
+
+        if ($masters->isNotEmpty()) {
+            Notification::send($masters, $notification);
+        }
+
+        Notification::route('mail', 'concierge@primematchimo.com.br')->notify($notification);
+
+        $whatsappUrl = 'https://wa.me/5514996845854?text=' . rawurlencode($this->buildCustomRequestMessage($validated));
+
+        return response()->json([
+            'message' => 'Recebemos seu briefing. Vamos entrar em contato pelo concierge.',
+            'whatsapp_url' => $whatsappUrl,
+        ]);
+    }
+
     protected function parseFilters(Request $request): array
     {
         $priceRange = match ($request->query('price_range')) {
@@ -230,5 +266,18 @@ class PropertyCatalogController extends Controller
             'area_min' => $request->integer('area_min'),
             'sort' => $request->query('sort'),
         ];
+    }
+
+    protected function buildCustomRequestMessage(array $data): string
+    {
+        $city = $data['city'] ?: 'Cidade nao informada';
+
+        return sprintf(
+            'Ola concierge, sou %s. Telefone: %s. Cidade: %s. Procuro: %s. Pode me ajudar?',
+            $data['name'],
+            $data['phone'],
+            $city,
+            $data['description']
+        );
     }
 }

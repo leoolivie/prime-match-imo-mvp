@@ -6,7 +6,8 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
-    use Illuminate\Support\Facades\Storage;
+
+    $asset = fn(string $path) => app()->environment(['local', 'testing']) ? asset($path) : asset('public/' . ltrim($path, '/'));
 
     $canManageProperties = $user->hasApprovedPropertyAccess();
 @endphp
@@ -44,7 +45,7 @@
                     <div class="lux-stat-bubble">
                         <span class="text-white/60">Portfólio</span>
                         <span class="text-2xl font-semibold text-white">{{ number_format($stats['total_properties']) }}</span>
-                        <span class="text-white/40">Imóveis cadastrados</span>
+                        <span class="text-white/40">Imóveis</span>
                     </div>
                     <div class="lux-stat-bubble">
                         <span class="text-white/60">Ativos</span>
@@ -144,7 +145,7 @@
                 @forelse($properties as $property)
                     @php
                         $imagePath = optional($property->primaryImage)->path;
-                        $image = $imagePath ? asset($imagePath) : asset('images/placeholders/luxury-property.svg');
+                        $image = $property->mediaUrl($imagePath) ?? $asset('images/placeholders/luxury-property.svg');
                         $metrics = $property->dashboard_metrics ?? ['views7' => 0, 'views30' => 0, 'clicks30' => 0, 'conversion' => 0];
                     @endphp
                     <article class="lux-property-card">
