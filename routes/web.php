@@ -80,7 +80,8 @@ Route::middleware(['auth'])->prefix('broker')->name('broker.')->group(function (
 // Master/Admin routes
 Route::middleware(['auth', 'role:master'])->prefix('master')->name('master.')->group(function () {
     Route::get('/dashboard', [MasterDashboardController::class, 'index'])->name('dashboard');
-    
+    Route::get('/dashboard/export', [MasterDashboardController::class, 'exportExecutiveReport'])->name('dashboard.export');
+
     // Users
     Route::get('/users', [MasterDashboardController::class, 'users'])->name('users');
     Route::get('/users/create', [MasterDashboardController::class, 'createUser'])->name('users.create');

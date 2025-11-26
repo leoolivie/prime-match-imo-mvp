@@ -20,29 +20,30 @@
                         <a href="{{ route('master.partners') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Parceiros Estratégicos</a>
                         <a href="{{ route('master.featured-properties.index') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ativos em Destaque</a>
                         <a href="{{ route('master.opportunities.edit') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Oportunidades de Investimento</a>
+                        <a href="{{ route('master.dashboard.export') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Exportar Relatório Executivo</a>
                     </div>
                 </div>
                 {{-- Stats Otimizados para Investidores/Gestão --}}
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
                     <div class="lux-stat-bubble">
                         <span class="text-white/60 uppercase tracking-[0.2em]">Valor Total de Ativos</span>
-                        <span class="text-3xl font-semibold text-white">{{ $stats['total_asset_value'] ?? 'R$ 0' }}</span>
+                        <span class="text-3xl font-semibold text-white">{{ $stats['formatted_asset_value'] ?? 'R$ 0,00' }}</span>
                         <span class="text-white/40 text-sm">Em carteira</span>
                     </div>
                     <div class="lux-stat-bubble">
                         <span class="text-white/60 uppercase tracking-[0.2em]">Cap Rate Médio</span>
-                        <span class="text-3xl font-semibold text-white">{{ $stats['avg_cap_rate'] ?? '0.00%' }}</span>
-                        <span class="text-white/40 text-sm">Projeção de Renda</span>
+                        <span class="text-3xl font-semibold text-white">{{ $stats['formatted_avg_cap_rate'] ?? '0,00%' }}</span>
+                        <span class="text-white/40 text-sm">Projeção de Renda e liquidez</span>
                     </div>
                     <div class="lux-stat-bubble">
                         <span class="text-white/60 uppercase tracking-[0.2em]">Investidores Ativos</span>
-                        <span class="text-3xl font-semibold text-white">{{ number_format($stats['investors'] ?? 0) }}</span>
+                        <span class="text-3xl font-semibold text-white">{{ number_format($stats['active_investors'] ?? 0) }}</span>
                         <span class="text-white/40 text-sm">Com perfil validado</span>
                     </div>
                     <div class="lux-stat-bubble">
                         <span class="text-white/60 uppercase tracking-[0.2em]">Conversão (30d)</span>
-                        <span class="text-3xl font-semibold text-white">{{ $stats['investor_conversion_rate'] ?? '0.00%' }}</span>
-                        <span class="text-white/40 text-sm">Leads para Data Room</span>
+                        <span class="text-3xl font-semibold text-white">{{ $stats['formatted_investor_conversion_rate'] ?? '0,00%' }}</span>
+                        <span class="text-white/40 text-sm">Leads qualificados para Data Room</span>
                     </div>
                 </div>
             </div>
@@ -56,28 +57,40 @@
                         <p class="text-sm text-white/60">Performance · Viabilidade · Relatórios · Segmentação</p>
                     </div>
                     <div class="flex flex-wrap gap-2 text-xs uppercase tracking-[0.3em] text-white/60">
-                        <span class="lux-tab lux-tab-active">Performance</span>
-                        <span class="lux-tab">Viabilidade</span>
-                        <span class="lux-tab">Relatórios</span>
-                        <span class="lux-tab">Segmentação</span>
+                        <a class="lux-tab lux-tab-active" href="{{ route('master.properties') }}">Performance</a>
+                        <a class="lux-tab" href="{{ route('master.opportunities.edit') }}">Viabilidade</a>
+                        <a class="lux-tab" href="{{ route('master.dashboard.export') }}">Relatórios</a>
+                        <a class="lux-tab" href="{{ route('master.users') }}">Segmentação</a>
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div class="lux-card-gold">
                         <h3 class="text-lg font-semibold text-white">Radar de Performance de Ativos</h3>
                         <p class="mt-2 text-sm text-white/70">KPIs de Cap Rate, ROI e Liquidez em tempo real com alertas de oportunidade.</p>
+                        <dl class="mt-3 space-y-1 text-sm text-white/80">
+                            <div class="flex justify-between"><dt>Ativos ativos</dt><dd>{{ $stats['active_properties'] }}</dd></div>
+                            <div class="flex justify-between"><dt>Ticket médio</dt><dd>{{ $stats['formatted_avg_ticket'] }}</dd></div>
+                            <div class="flex justify-between"><dt>Visitas (30d)</dt><dd>{{ number_format($stats['visits_30']) }}</dd></div>
+                        </dl>
+                        <a href="{{ route('master.properties') }}" class="mt-3 inline-flex text-xs uppercase tracking-[0.3em] text-yellow-200">Abrir carteira</a>
                     </div>
                     <div class="lux-card-gold">
                         <h3 class="text-lg font-semibold text-white">Gerar Relatórios de Viabilidade</h3>
                         <p class="mt-2 text-sm text-white/70">Exportação de análise de *due diligence* e projeção de fluxo de caixa.</p>
+                        <p class="mt-2 text-xs text-white/60">Última atualização de métricas em tempo real de visitas, conversão e leads qualificados.</p>
+                        <a href="{{ route('master.dashboard.export') }}" class="mt-3 inline-flex text-xs uppercase tracking-[0.3em] text-yellow-200">Exportar CSV executivo</a>
                     </div>
                     <div class="lux-card-gold">
                         <h3 class="text-lg font-semibold text-white">Ajustes de Modelo de Negócio</h3>
                         <p class="mt-2 text-sm text-white/70">Controle a precificação, parâmetros de Cap Rate e permissões de acesso ao Data Room.</p>
+                        <p class="mt-2 text-xs text-white/60">Cap Rate médio estimado: <span class="font-semibold text-yellow-200">{{ $stats['formatted_avg_cap_rate'] }}</span></p>
+                        <a href="{{ route('master.partners') }}" class="mt-3 inline-flex text-xs uppercase tracking-[0.3em] text-yellow-200">Estruturar parceiros</a>
                     </div>
                     <div class="lux-card-gold">
                         <h3 class="text-lg font-semibold text-white">Segmentação de Investidores</h3>
                         <p class="mt-2 text-sm text-white/70">Filtre investidores por perfil de risco, budget e histórico de aquisição.</p>
+                        <p class="mt-2 text-xs text-white/60">Base ativa: {{ number_format($stats['investors']) }} investidores · Leads (30d): {{ number_format($stats['lead_volume_30']) }}</p>
+                        <a href="{{ route('master.users') }}" class="mt-3 inline-flex text-xs uppercase tracking-[0.3em] text-yellow-200">Abrir segmentação</a>
                     </div>
                 </div>
                 <div class="rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-white/70">
