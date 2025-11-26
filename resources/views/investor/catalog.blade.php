@@ -6,6 +6,7 @@
 @php
     use App\Support\ConciergeLink;
     use App\Support\Format;
+    use Illuminate\Support\Str;
 
     $asset = fn(string $path) => app()->environment(['local', 'testing']) ? asset($path) : asset('public/' . ltrim($path, '/'));
 @endphp
@@ -123,63 +124,105 @@
             </form>
         </section>
 
-        <section class="space-y-6">
+        <section class="space-y-6" x-data="luxCarousel" x-init="init()">
             <div class="flex flex-wrap items-center justify-between gap-3">
-                <h2 class="text-2xl font-semibold text-white">{{ $properties->total() }} imóveis encontrados</h2>
+                <div class="space-y-1">
+                    <h2 class="text-2xl font-semibold text-white">{{ $properties->total() }} imóveis encontrados</h2>
+                    <p class="text-sm text-white/60">Passe o mouse para ver destaques rápidos e deslize no carrossel.</p>
+                </div>
                 <span class="lux-badge-outline">Todos acompanham concierge</span>
             </div>
-            <div class="lux-grid-cards">
-                @forelse($properties as $property)
-                    @php
-                        $imagePath = optional($property->primaryImage)->path;
-                        $image = $property->mediaUrl($imagePath) ?? $asset('images/placeholders/luxury-property.svg');
-                        $amenities = collect($property->features ?? [])->filter()->take(2);
-                    @endphp
-                    <article class="lux-property-card">
-                        <div class="overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0B]">
-                            <img src="{{ $image }}" alt="{{ $property->title }}" class="h-52 w-full object-cover" loading="lazy" />
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex items-start justify-between gap-3">
-                                <div>
-                                    <h3 class="text-xl font-semibold text-white">{{ $property->title }}</h3>
-                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
+            <div class="relative">
+                <button type="button" @click="scrollPrev" :disabled="!canPrev" class="absolute left-0 z-10 hidden h-full w-12 items-center justify-center rounded-l-2xl bg-gradient-to-r from-black/80 to-transparent text-white transition hover:from-black/95 sm:flex" :class="{ 'opacity-50 cursor-not-allowed': !canPrev }" aria-label="Voltar carrossel">
+                    ←
+                </button>
+                <div class="overflow-hidden">
+                    <div class="grid gap-5 sm:flex sm:gap-5 sm:overflow-x-auto sm:pb-4 sm:pr-2 sm:pt-1 sm:scroll-smooth sm:snap-x sm:snap-mandatory [&::-webkit-scrollbar]:hidden" x-ref="track" style="scrollbar-width: none;" @wheel.prevent="scrollByWheel($event)">
+                        @forelse($properties as $property)
+                            @php
+                                $imagePath = optional($property->primaryImage)->path;
+                                $image = $property->mediaUrl($imagePath) ?? $asset('images/placeholders/luxury-property.svg');
+                                $amenities = collect($property->features ?? [])->filter()->take(3);
+                                $summary = Str::limit($property->short_description ?? $property->description ?? 'Detalhes sob consulta com o concierge.', 120);
+                            @endphp
+                            <article class="group relative flex min-w-[320px] max-w-[360px] snap-center flex-col gap-4 rounded-3xl border border-white/5 bg-gradient-to-b from-white/5 to-black/40 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.4)] transition duration-300 hover:-translate-y-1 hover:border-lux-gold/50 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+                                <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0B]">
+                                    <img src="{{ $image }}" alt="{{ $property->title }}" class="h-56 w-full object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" />
+                                    <div class="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                        <div class="space-y-3 p-4">
+                                            <div class="flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-lux-gold">
+                                                <span>Concierge ativo</span>
+                                                <span class="h-px flex-1 bg-white/20"></span>
+                                            </div>
+                                            <p class="text-sm text-white/80">{{ $summary }}</p>
+                                            <div class="flex flex-wrap gap-2 text-[13px] text-white/70">
+                                                <span class="badge-outline">{{ Format::currency($property->price) }}</span>
+                                                @if($property->area)
+                                                    <span class="badge-outline">{{ Format::area($property->area) }}</span>
+                                                @endif
+                                                @if($property->bedrooms)
+                                                    <span class="badge-outline">{{ $property->bedrooms }} quartos</span>
+                                                @endif
+                                                @if($property->bathrooms)
+                                                    <span class="badge-outline">{{ $property->bathrooms }} suítes</span>
+                                                @endif
+                                            </div>
+                                            <div class="flex flex-wrap gap-2 text-[13px] text-white/60">
+                                                @forelse($amenities as $amenity)
+                                                    <span class="lux-badge-outline">{{ $amenity }}</span>
+                                                @empty
+                                                    <span class="lux-badge-outline">Amenidades sob consulta</span>
+                                                @endforelse
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="space-y-3">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-white">{{ $property->title }}</h3>
+                                            <p class="text-[11px] uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 text-[13px] text-white/70">
+                                        <span class="badge-outline">{{ Format::currency($property->price) }}</span>
+                                        @if($property->area)
+                                            <span class="badge-outline">{{ Format::area($property->area) }}</span>
+                                        @endif
+                                        @if($property->bedrooms)
+                                            <span class="badge-outline">{{ $property->bedrooms }} quartos</span>
+                                        @endif
+                                        @if($property->bathrooms)
+                                            <span class="badge-outline">{{ $property->bathrooms }} suítes</span>
+                                        @endif
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 text-[13px] text-white/60">
+                                        @forelse($amenities as $amenity)
+                                            <span class="lux-badge-outline">{{ $amenity }}</span>
+                                        @empty
+                                            <span class="lux-badge-outline">Amenidades sob consulta</span>
+                                        @endforelse
+                                    </div>
+                                    <div class="flex flex-wrap gap-3">
+                                        <a href="{{ route('properties.show', ['property' => $property, 'source' => 'catalog']) }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ver detalhes</a>
+                                        <a href="{{ ConciergeLink::forInvestorCard($property) }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Falar com o concierge</a>
+                                    </div>
+                                </div>
+                            </article>
+                        @empty
+                            <div class="lux-card-dark w-full">
+                                <h3 class="text-xl font-semibold text-white">Nenhum imóvel encontrado</h3>
+                                <p class="mt-3 text-sm text-white/60">Ajuste os filtros ou acione o concierge prime para receber novas recomendações.</p>
+                                <a href="{{ ConciergeLink::build('investidor_card', ['city' => 'Nova busca prime', 'type' => 'curadoria personalizada'], ['user_type' => 'investidor', 'source' => 'catalog_empty']) }}" target="_blank" rel="noopener" class="mt-4 inline-flex">
+                                    <span class="lux-gold-button text-xs uppercase tracking-[0.3em]">Concierge agora</span>
+                                </a>
                             </div>
-                            <div class="flex flex-wrap gap-3 text-sm text-white/70">
-                                <span class="badge-outline">{{ Format::currency($property->price) }}</span>
-                                @if($property->area)
-                                    <span class="badge-outline">{{ Format::area($property->area) }}</span>
-                                @endif
-                                @if($property->bedrooms)
-                                    <span class="badge-outline">{{ $property->bedrooms }} quartos</span>
-                                @endif
-                                @if($property->bathrooms)
-                                    <span class="badge-outline">{{ $property->bathrooms }} suítes</span>
-                                @endif
-                            </div>
-                            <div class="flex flex-wrap gap-2 text-sm text-white/60">
-                                @forelse($amenities as $amenity)
-                                    <span class="lux-badge-outline">{{ $amenity }}</span>
-                                @empty
-                                    <span class="lux-badge-outline">Amenidades sob consulta</span>
-                                @endforelse
-                            </div>
-                            <div class="flex flex-wrap gap-3">
-                                <a href="{{ route('properties.show', ['property' => $property, 'source' => 'catalog']) }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ver detalhes</a>
-                                <a href="{{ ConciergeLink::forInvestorCard($property) }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Falar com o concierge</a>
-                            </div>
-                        </div>
-                    </article>
-                @empty
-                    <div class="lux-card-dark md:col-span-3">
-                        <h3 class="text-xl font-semibold text-white">Nenhum imóvel encontrado</h3>
-                        <p class="mt-3 text-sm text-white/60">Ajuste os filtros ou acione o concierge prime para receber novas recomendações.</p>
-                        <a href="{{ ConciergeLink::build('investidor_card', ['city' => 'Nova busca prime', 'type' => 'curadoria personalizada'], ['user_type' => 'investidor', 'source' => 'catalog_empty']) }}" target="_blank" rel="noopener" class="mt-4 inline-flex">
-                            <span class="lux-gold-button text-xs uppercase tracking-[0.3em]">Concierge agora</span>
-                        </a>
+                        @endforelse
                     </div>
-                @endforelse
+                </div>
+                <button type="button" @click="scrollNext" :disabled="!canNext" class="absolute right-0 top-0 z-10 hidden h-full w-12 items-center justify-center rounded-r-2xl bg-gradient-to-l from-black/80 to-transparent text-white transition hover:from-black/95 sm:flex" :class="{ 'opacity-50 cursor-not-allowed': !canNext }" aria-label="Avançar carrossel">
+                    →
+                </button>
             </div>
             <div>
                 {{ $properties->links() }}
@@ -260,6 +303,53 @@
                         }, delay);
                     });
                 });
+            },
+        }));
+
+        Alpine.data('luxCarousel', () => ({
+            track: null,
+            handleScroll: null,
+            canPrev: false,
+            canNext: true,
+            scrollAmount: 360,
+            init() {
+                this.track = this.$refs.track;
+
+                if (!this.track) return;
+
+                this.handleScroll = () => this.updateButtons();
+                this.updateButtons();
+
+                this.track.addEventListener('scroll', this.handleScroll);
+                window.addEventListener('resize', this.handleScroll);
+            },
+            destroy() {
+                this.track?.removeEventListener('scroll', this.handleScroll);
+                window.removeEventListener('resize', this.handleScroll);
+            },
+            updateButtons() {
+                if (!this.track) return;
+
+                const overflow = this.track.scrollWidth > this.track.clientWidth + 1;
+                const maxScroll = Math.max(this.track.scrollWidth - this.track.clientWidth - 1, 0);
+
+                this.canPrev = overflow && this.track.scrollLeft > 0;
+                this.canNext = overflow && this.track.scrollLeft < maxScroll;
+                this.scrollAmount = Math.max(Math.round(this.track.clientWidth * 0.9), 320);
+            },
+            scrollNext() {
+                this.track?.scrollBy({ left: this.scrollAmount, behavior: 'smooth' });
+            },
+            scrollPrev() {
+                this.track?.scrollBy({ left: -this.scrollAmount, behavior: 'smooth' });
+            },
+            scrollByWheel(event) {
+                const horizontal = Math.abs(event.deltaX) >= Math.abs(event.deltaY);
+
+                if (!horizontal) return;
+
+                event.preventDefault();
+                this.track?.scrollBy({ left: event.deltaX, behavior: 'smooth' });
             },
         }));
 
