@@ -38,7 +38,20 @@ class InvestorDashboardController extends Controller
             ->take(16)
             ->get();
 
-        $propertyFilters = Property::query()
+        $profilePreference = PrimeSearch::where('user_id', $user->id)
+            ->orderByDesc('create_alert')
+            ->latest()
+            ->first();
+
+        $propertyFiltersQuery = Property::query()
+            ->where('active', true)
+            ->where('status', 'available');
+
+        if ($profilePreference) {
+            $this->applyProfileCompatibility($propertyFiltersQuery, $profilePreference);
+        }
+
+        $propertyFilters = $propertyFiltersQuery
             ->select('city')
             ->whereNotNull('city')
             ->distinct()
@@ -48,6 +61,10 @@ class InvestorDashboardController extends Controller
         $propertiesQuery = Property::with(['primaryImage', 'owner'])
             ->where('active', true)
             ->where('status', 'available');
+
+        if ($profilePreference) {
+            $this->applyProfileCompatibility($propertiesQuery, $profilePreference);
+        }
 
         if ($request->filled('city') && $request->city !== 'todas') {
             $propertiesQuery->where('city', $request->city);
@@ -87,6 +104,7 @@ class InvestorDashboardController extends Controller
             'properties',
             'propertyFilters',
             'metrics',
+            'profilePreference',
         ));
     }
 
@@ -225,5 +243,47 @@ class InvestorDashboardController extends Controller
         );
 
         return redirect()->away('https://wa.me/5514996845854?text=' . $message);
+    }
+
+    protected function applyProfileCompatibility($query, PrimeSearch $profile): void
+    {
+        if ($profile->property_type !== 'any') {
+            $query->where('type', $profile->property_type);
+        }
+
+        if ($profile->transaction_type !== 'both') {
+            $query->where(function ($q) use ($profile) {
+                $q->where('transaction_type', $profile->transaction_type)
+                    ->orWhere('transaction_type', 'both');
+            });
+        }
+
+        if ($profile->city) {
+            $query->whereRaw('LOWER(city) = ?', [strtolower($profile->city)]);
+        }
+
+        if ($profile->state) {
+            $query->whereRaw('LOWER(state) = ?', [strtolower($profile->state)]);
+        }
+
+        if ($profile->min_price) {
+            $query->where('price', '>=', $profile->min_price);
+        }
+
+        if ($profile->max_price) {
+            $query->where('price', '<=', $profile->max_price);
+        }
+
+        if ($profile->min_bedrooms) {
+            $query->where('bedrooms', '>=', $profile->min_bedrooms);
+        }
+
+        if ($profile->min_bathrooms) {
+            $query->where('bathrooms', '>=', $profile->min_bathrooms);
+        }
+
+        if ($profile->min_area) {
+            $query->where('area', '>=', $profile->min_area);
+        }
     }
 }

@@ -48,6 +48,11 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // Garante que o papel venha preenchido mesmo se o front estiver desatualizado
+        $request->merge([
+            'role' => $request->input('role', 'investor'),
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',

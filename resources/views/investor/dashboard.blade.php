@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Dashboard do Investidor Prime')
 
@@ -6,7 +6,7 @@
 @include('components.prime-featured-section', [
     'featured' => $featuredProperties,
     'title' => 'Vitrine Prime do Investidor',
-    'subtitle' => 'Os 16 imóveis curados pelo Master aparecem primeiro para acelerar suas análises.',
+    'subtitle' => 'Os 16 imÃ³veis curados pelo Master aparecem primeiro para acelerar suas anÃ¡lises.',
 ])
 
 <div class="py-12">
@@ -16,13 +16,13 @@
                 <div class="space-y-5">
                     <span class="lux-badge-gold">Investidor prime</span>
                     <div class="space-y-4">
-                        <h1 class="font-poppins text-4xl font-semibold text-white">Bem-vindo ao seu cockpit cinematográfico</h1>
-                        <p class="max-w-2xl text-white/70">Acompanhe matches IA, negociações e watchlist em um layout premium com filtros inteligentes, concierge instantâneo e métricas em tempo real.</p>
+                        <h1 class="font-poppins text-4xl font-semibold text-white">Bem-vindo ao seu cockpit cinematogrÃ¡fico</h1>
+                        <p class="max-w-2xl text-white/70">Acompanhe matches IA, negociaÃ§Ãµes e watchlist em um layout premium com filtros inteligentes, concierge instantÃ¢neo e mÃ©tricas em tempo real.</p>
                     </div>
                     <div class="flex flex-wrap gap-3">
                         <button type="button" @click="window.dispatchEvent(new CustomEvent('busca-prime-open'))" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Ativar busca prime</button>
                         <a href="{{ route('investor.search') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Nova busca manual</a>
-                        <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, gostaria de revisar minhas recomendações.') }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Falar com concierge</a>
+                        <a href="https://wa.me/5514996845854?text={{ rawurlencode('OlÃ¡ concierge Prime Match Imo, gostaria de revisar minhas recomendaÃ§Ãµes.') }}" target="_blank" rel="noopener" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Falar com concierge</a>
                     </div>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-3">
@@ -32,7 +32,7 @@
                         <span class="text-white/40">Atualizado em tempo real</span>
                     </div>
                     <div class="lux-stat-bubble">
-                        <span class="text-white/60">Negociações</span>
+                        <span class="text-white/60">NegociaÃ§Ãµes</span>
                         <span class="text-2xl font-semibold text-white">{{ number_format($metrics['negotiations']) }}</span>
                         <span class="text-white/40">Em andamento</span>
                     </div>
@@ -55,16 +55,16 @@
                                 <span>{{ ucfirst($search->property_type ?? 'Qualquer tipologia') }}</span>
                                 <span class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $search->created_at->diffForHumans() }}</span>
                             </div>
-                            <p class="mt-2 text-xs uppercase tracking-[0.3em] text-white/40">{{ $search->city ?: 'Todas as cidades' }} {{ $search->state ? '• ' . $search->state : '' }}</p>
+                            <p class="mt-2 text-xs uppercase tracking-[0.3em] text-white/40">{{ $search->city ?: 'Todas as cidades' }} {{ $search->state ? 'â€¢ ' . $search->state : '' }}</p>
                         </li>
                     @endforeach
                 </ul>
             </div>
             <div class="lux-card-dark">
                 <h3 class="text-lg font-semibold text-white">Concierge</h3>
-                <p class="mt-2 text-sm text-white/60">Todas as interações registram intenção automaticamente e abrem o canal apropriado preenchendo os dados do investidor.</p>
+                <p class="mt-2 text-sm text-white/60">Todas as interaÃ§Ãµes registram intenÃ§Ã£o automaticamente e abrem o canal apropriado preenchendo os dados do investidor.</p>
                 <div class="mt-4 grid gap-3">
-                    <a href="https://wa.me/5514996845854?text={{ rawurlencode('Olá concierge Prime Match Imo, preciso de suporte para avançar em uma negociação.') }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">WhatsApp concierge</a>
+                    <a href="https://wa.me/5514996845854?text={{ rawurlencode('OlÃ¡ concierge Prime Match Imo, preciso de suporte para avanÃ§ar em uma negociaÃ§Ã£o.') }}" target="_blank" rel="noopener" class="lux-gold-button text-xs uppercase tracking-[0.3em]">WhatsApp concierge</a>
                     <a href="tel:+5514996845854" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Telefone</a>
                     <a href="mailto:concierge@primematchimo.com.br" class="lux-outline-button text-xs uppercase tracking-[0.3em]">E-mail</a>
                 </div>
@@ -102,7 +102,7 @@
                     <label class="text-xs uppercase tracking-[0.3em] text-white/50">Faixa de valor</label>
                     <select name="value_range" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none">
                         <option value="todas">Todas</option>
-                        <option value="ate-1m" @selected(request('value_range') === 'ate-1m')>Até R$ 1M</option>
+                        <option value="ate-1m" @selected(request('value_range') === 'ate-1m')>AtÃ© R$ 1M</option>
                         <option value="1-5m" @selected(request('value_range') === '1-5m')>R$ 1M - R$ 5M</option>
                         <option value="5-10m" @selected(request('value_range') === '5-10m')>R$ 5M - R$ 10M</option>
                         <option value="10m+" @selected(request('value_range') === '10m+')>Acima de R$ 10M</option>
@@ -116,15 +116,30 @@
 
         <section class="space-y-6">
             <div class="flex flex-wrap items-center justify-between gap-3">
-                <h2 class="text-2xl font-semibold text-white">Recomendações ativas</h2>
+                <div class="flex flex-wrap items-center gap-3">
+                    <h2 class="text-2xl font-semibold text-white">Recomendações ativas</h2>
+                    @if($profilePreference)
+                        <span class="lux-badge-gold">Compatível com seu briefing</span>
+                    @else
+                        <span class="lux-badge-outline">Use a busca prime para personalizar</span>
+                    @endif
+                </div>
                 <span class="lux-badge-outline">{{ $properties->total() }} oportunidades</span>
             </div>
             <div class="lux-grid-cards">
                 @forelse($properties as $property)
+                    @php
+                        $imagePath = optional($property->primaryImage)->path;
+                        $image = $property->mediaUrl($imagePath) ?? asset('images/placeholders/luxury-property.svg');
+                        $amenities = collect($property->features ?? [])->filter()->take(2);
+                    @endphp
                     <article class="lux-property-card">
+                        <div class="overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0B]">
+                            <img src="{{ $image }}" alt="{{ $property->title }}" class="h-52 w-full object-cover" loading="lazy" />
+                        </div>
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} • {{ $property->state }}</p>
+                                <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $property->city }} - {{ $property->state }}</p>
                                 <h3 class="mt-2 text-xl font-semibold text-white">{{ $property->title }}</h3>
                             </div>
                             <span class="lux-property-status text-white/70">{{ $property->status_label }}</span>
@@ -148,7 +163,15 @@
                                 <p class="mt-1 text-lg font-semibold text-white">{{ $property->area ? number_format($property->area, 0, ',', '.') . ' m²' : '—' }}</p>
                             </div>
                         </div>
+                        <div class="flex flex-wrap gap-2 text-sm text-white/60">
+                            @forelse($amenities as $amenity)
+                                <span class="lux-badge-outline">{{ $amenity }}</span>
+                            @empty
+                                <span class="lux-badge-outline">Amenidades sob consulta</span>
+                            @endforelse
+                        </div>
                         <div class="flex flex-wrap gap-3">
+                            <a href="{{ route('properties.show', ['property' => $property, 'source' => 'investor_dashboard']) }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ver detalhes</a>
                             <form method="POST" action="{{ route('investor.lead.concierge', $property) }}" target="_blank">
                                 @csrf
                                 <button type="submit" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Falar com concierge</button>
@@ -174,7 +197,7 @@
         <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div class="lux-card-dark">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-semibold text-white">Negociações e matches recentes</h2>
+                    <h2 class="text-xl font-semibold text-white">NegociaÃ§Ãµes e matches recentes</h2>
                     <span class="lux-badge-outline">Pipeline concierge</span>
                 </div>
                 <div class="mt-6 space-y-4">
@@ -183,7 +206,7 @@
                             <div class="flex flex-wrap items-center justify-between gap-3">
                                 <div>
                                     <h3 class="text-lg font-semibold text-white">{{ $lead->property->title }}</h3>
-                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $lead->property->city }} • {{ $lead->property->state }}</p>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-white/50">{{ $lead->property->city }} â€¢ {{ $lead->property->state }}</p>
                                 </div>
                                 <span class="lux-property-status text-white/70">{{ ucfirst($lead->status) }}</span>
                             </div>
@@ -197,7 +220,7 @@
                             </div>
                         </div>
                     @empty
-                        <p class="text-sm text-white/60">Você ainda não possui negociações ativas. Explore as recomendações e acione o concierge para iniciar novas oportunidades.</p>
+                        <p class="text-sm text-white/60">VocÃª ainda nÃ£o possui negociaÃ§Ãµes ativas. Explore as recomendaÃ§Ãµes e acione o concierge para iniciar novas oportunidades.</p>
                     @endforelse
                 </div>
                 <div class="mt-6">
@@ -206,22 +229,22 @@
             </div>
             <div class="space-y-6">
                 <div class="lux-card-dark">
-                    <h3 class="text-lg font-semibold text-white">Tendências da curadoria</h3>
+                    <h3 class="text-lg font-semibold text-white">TendÃªncias da curadoria</h3>
                     <ul class="mt-4 space-y-3 text-sm text-white/60">
-                        <li>• Corporate AAA com contratos longos e reajuste IPCA seguem em alta.</li>
-                        <li>• Produtos hospitality com concierge completo entregam ROI médio de 16% a.a.</li>
-                        <li>• Segmento agro premium com dossiê ambiental ganhou demanda na última semana.</li>
+                        <li>â€¢ Corporate AAA com contratos longos e reajuste IPCA seguem em alta.</li>
+                        <li>â€¢ Produtos hospitality com concierge completo entregam ROI mÃ©dio de 16% a.a.</li>
+                        <li>â€¢ Segmento agro premium com dossiÃª ambiental ganhou demanda na Ãºltima semana.</li>
                     </ul>
                 </div>
                 <div class="lux-card-dark">
                     <h3 class="text-lg font-semibold text-white">Dicas prime</h3>
-                    <p class="mt-2 text-sm text-white/60">Personalize alertas por faixa de valor e perfil de risco. Quanto mais você interage, mais a IA calibrada pelo concierge adapta suas recomendações.</p>
+                    <p class="mt-2 text-sm text-white/60">Personalize alertas por faixa de valor e perfil de risco. Quanto mais vocÃª interage, mais a IA calibrada pelo concierge adapta suas recomendaÃ§Ãµes.</p>
                 </div>
                 <div class="lux-card-dark">
-                    <h3 class="text-lg font-semibold text-white">Histórico de buscas</h3>
+                    <h3 class="text-lg font-semibold text-white">HistÃ³rico de buscas</h3>
                     <ul class="mt-4 space-y-3 text-sm text-white/60">
                         @foreach($searches->take(3) as $search)
-                            <li>• {{ ucfirst($search->property_type ?? 'Qualquer') }} em {{ $search->city ?: 'todas as cidades' }} {{ $search->state ? '(' . $search->state . ')' : '' }}</li>
+                            <li>â€¢ {{ ucfirst($search->property_type ?? 'Qualquer') }} em {{ $search->city ?: 'todas as cidades' }} {{ $search->state ? '(' . $search->state . ')' : '' }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -232,3 +255,6 @@
 
 @include('investor.partials.busca-prime-modal')
 @endsection
+
+
+
