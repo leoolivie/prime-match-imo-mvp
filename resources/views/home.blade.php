@@ -145,47 +145,85 @@
 </section>
 
 {{-- Como Funciona Section --}}
-<section class="lux-section">
-    <div class="lux-container">
-        <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-            <div class="space-y-6">
-                <div class="inline-block">
-                    <span class="px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-xs uppercase tracking-[0.3em] text-yellow-300 font-semibold">Como Funciona</span>
+<section class="lux-section relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-transparent to-blue-500/10 blur-3xl opacity-60"></div>
+    <div class="lux-container relative z-10">
+        <div class="flex flex-col gap-12 lg:flex-row lg:items-start">
+            <div class="space-y-6 max-w-xl">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-yellow-300 animate-pulse"></span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-yellow-200 font-semibold">Como funciona</span>
                 </div>
-                <h2 class="font-poppins text-5xl font-bold text-white leading-tight">Três Passos para Encontrar Seu Ativo Ideal</h2>
-                <p class="text-lg text-white/60 leading-relaxed">Intermediação curada: o concierge recebe seu briefing, valida seu perfil patrimonial e acompanha cada movimento com transparência total.</p>
+                <div class="space-y-4">
+                    <h2 class="font-poppins text-5xl font-bold text-white leading-tight">Uma jornada premium, sem ruído.</h2>
+                    <p class="text-lg text-white/70 leading-relaxed">Processo concierge com checkpoints claros, rituais de validação e acompanhamento ativo. Você vê o pipeline evoluir em tempo real.</p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-[16px] border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Tempo médio de resposta</p>
+                        <p class="text-3xl font-bold text-yellow-300 mt-2">&lt; 5 min</p>
+                    </div>
+                    <div class="rounded-[16px] border border-white/10 bg-white/5 p-5 backdrop-blur-md">
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Curadoria com IA + humano</p>
+                        <p class="text-3xl font-bold text-yellow-300 mt-2">100%</p>
+                    </div>
+                </div>
             </div>
-            <div class="space-y-6">
-                {{-- Step 1 --}}
-                <div class="flex gap-6 p-6 rounded-[16px] border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                    <div class="flex-shrink-0">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold text-xl">01</div>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-white">Cadastre ou Explore</h3>
-                        <p class="text-sm text-white/60 mt-2">Empresários cadastram ativos exclusivos com análise financeira. Investidores exploram oportunidades alinhadas ao seu objetivo de retorno.</p>
+
+            <div class="flex-1 grid gap-6">
+                <div class="relative pl-10">
+                    <div class="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-yellow-300/60 via-white/20 to-transparent"></div>
+                    <div class="flex gap-4 items-start p-6 rounded-[18px] border border-white/10 bg-white/5 backdrop-blur-xl hover:border-yellow-300/40 transition-all duration-300">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold">01</div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3">
+                                <h3 class="text-xl font-bold text-white">Briefing estratégico</h3>
+                                <span class="px-3 py-1 rounded-full bg-yellow-400/20 text-xs text-yellow-200 border border-yellow-400/30">Perfil investidor</span>
+                            </div>
+                            <p class="text-sm text-white/70">Investidor ou empresário compartilha objetivo de retorno, ticket e localização prioritária. Concierge já monta o dossiê de busca.</p>
+                        </div>
                     </div>
                 </div>
 
-                {{-- Step 2 --}}
-                <div class="flex gap-6 p-6 rounded-[16px] border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                    <div class="flex-shrink-0">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold text-xl">02</div>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-white">Concierge Filtra e Valida</h3>
-                        <p class="text-sm text-white/60 mt-2">Você fala direto com o Concierge Prime no WhatsApp. Ele entende seu perfil de risco e seleciona os ativos com melhor viabilidade financeira.</p>
+                <div class="relative pl-10">
+                    <div class="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-yellow-300/60 via-white/20 to-transparent"></div>
+                    <div class="flex gap-4 items-start p-6 rounded-[18px] border border-white/10 bg-white/5 backdrop-blur-xl hover:border-yellow-300/40 transition-all duration-300">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold">02</div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3">
+                                <h3 class="text-xl font-bold text-white">Curadoria &amp; Viabilidade</h3>
+                                <span class="px-3 py-1 rounded-full bg-blue-500/20 text-xs text-blue-100 border border-blue-400/30">Data Room</span>
+                            </div>
+                            <p class="text-sm text-white/70">Pipeline enxuto com ativos validados: cap rate, upside, riscos e documentação em um card visual. Feedback pelo WhatsApp em tempo real.</p>
+                        </div>
                     </div>
                 </div>
 
-                {{-- Step 3 --}}
-                <div class="flex gap-6 p-6 rounded-[16px] border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                    <div class="flex-shrink-0">
-                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold text-xl">03</div>
+                <div class="relative pl-10">
+                    <div class="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-yellow-300/60 via-white/20 to-transparent"></div>
+                    <div class="flex gap-4 items-start p-6 rounded-[18px] border border-white/10 bg-white/5 backdrop-blur-xl hover:border-yellow-300/40 transition-all duration-300">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold">03</div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3">
+                                <h3 class="text-xl font-bold text-white">Negociação assistida</h3>
+                                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-xs text-emerald-100 border border-emerald-400/30">SLA concierge</span>
+                            </div>
+                            <p class="text-sm text-white/70">Visitas, proposta formal, estruturação societária e fechamento acompanhados pelo mesmo concierge. Tudo com segurança e agilidade.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-white">Intermediação até o Fechamento</h3>
-                        <p class="text-sm text-white/60 mt-2">Organizamos visitas, dossiê completo, proposta formal e negociação assistida. Sempre com segurança, discrição e agilidade máxima.</p>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-[18px] border border-yellow-400/30 bg-gradient-to-r from-yellow-500/10 to-transparent p-6 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.2em] text-yellow-200">Concierge Prime</p>
+                            <p class="text-2xl font-semibold text-white mt-2">Canal direto no WhatsApp</p>
+                        </div>
+                        <i class="fas fa-whatsapp text-2xl text-yellow-300"></i>
+                    </div>
+                    <div class="rounded-[18px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Visão executiva</p>
+                        <p class="text-sm text-white/70 mt-2">Cards com resumo financeiro, status e próximos passos — visual e objetivo, como um board de investimentos.</p>
                     </div>
                 </div>
             </div>
@@ -195,71 +233,105 @@
 
 {{-- Benefícios Prime Section --}}
 <section class="lux-section relative overflow-hidden">
-    {{-- Background Accent --}}
-    <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-transparent to-transparent"></div>
-    
-    <div class="lux-container relative z-10">
-        <div class="space-y-12">
-            <div class="space-y-4">
-                <div class="inline-block">
-                    <span class="px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-xs uppercase tracking-[0.3em] text-yellow-300 font-semibold">Vantagens Competitivas</span>
+    <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-blue-500/10 to-transparent"></div>
+
+    <div class="lux-container relative z-10 space-y-10">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div class="space-y-3">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-yellow-300"></span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-yellow-200 font-semibold">Vantagens competitivas</span>
                 </div>
-                <h2 class="text-5xl font-bold text-white">Por Que Escolher a Prime Match Imo</h2>
+                <h2 class="text-5xl font-bold text-white">Escolha a plataforma mais prime do mercado.</h2>
+                <p class="text-white/70 max-w-2xl">Um ecossistema de serviços premium, tecnologia proprietária e segurança jurídica para proteger seu capital e acelerar decisões.</p>
+            </div>
+            <div class="flex gap-3">
+                <div class="rounded-[14px] border border-white/10 bg-white/5 px-4 py-3 text-right">
+                    <p class="text-xs uppercase tracking-[0.2em] text-white/60">NPS Concierge</p>
+                    <p class="text-3xl font-bold text-yellow-300">96</p>
+                </div>
+                <div class="rounded-[14px] border border-white/10 bg-white/5 px-4 py-3 text-right">
+                    <p class="text-xs uppercase tracking-[0.2em] text-white/60">Tickets ativos</p>
+                    <p class="text-3xl font-bold text-yellow-300">R$ 280M+</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+            <div class="grid gap-6 md:grid-cols-2">
+                <div class="group rounded-[22px] border border-yellow-400/25 bg-gradient-to-br from-yellow-400/15 via-white/5 to-transparent p-7 shadow-[0_20px_60px_rgba(245,158,11,0.08)] transition duration-300 hover:-translate-y-1 hover:border-yellow-300/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-12 w-12 rounded-full bg-yellow-400/25 flex items-center justify-center group-hover:bg-yellow-400/35 transition">
+                            <i class="fas fa-shield-alt text-yellow-200 text-lg"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-[0.2em] text-yellow-100">Curadoria autoral</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Due diligence premium</h3>
+                    <p class="text-white/70 text-sm">Auditoria financeira, laudos técnicos e compliance jurídico centralizados em um data room seguro.</p>
+                </div>
+
+                <div class="group rounded-[22px] border border-white/10 bg-white/5 p-7 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-yellow-300/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center group-hover:bg-yellow-400/30 transition">
+                            <i class="fas fa-gem text-yellow-200 text-lg"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-[0.2em] text-yellow-100">Exclusividade prime</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Zero ruído, zero duplicidade</h3>
+                    <p class="text-white/70 text-sm">Cada ativo é único. Sem anúncios replicados ou concorrência entre canais — só oportunidades blindadas.</p>
+                </div>
+
+                <div class="group rounded-[22px] border border-white/10 bg-white/5 p-7 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-yellow-300/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center group-hover:bg-yellow-400/30 transition">
+                            <i class="fas fa-chart-line text-yellow-200 text-lg"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-[0.2em] text-yellow-100">Inteligência financeira</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Cap rate, upside e liquidez</h3>
+                    <p class="text-white/70 text-sm">Painéis executivos com projeção de fluxo de caixa, cenários de valorização e riscos mapeados.</p>
+                </div>
+
+                <div class="group rounded-[22px] border border-white/10 bg-white/5 p-7 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-yellow-300/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center group-hover:bg-yellow-400/30 transition">
+                            <i class="fas fa-headset text-yellow-200 text-lg"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-[0.2em] text-yellow-100">Concierge sempre on</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Suporte one-to-one</h3>
+                    <p class="text-white/70 text-sm">Canal direto 24/7, com o mesmo especialista acompanhando briefing, visitas e assinatura.</p>
+                </div>
             </div>
 
-            <div class="grid gap-8 md:grid-cols-3">
-                {{-- Benefit 1 --}}
-                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
-                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
-                        <i class="fas fa-shield-alt text-yellow-300 text-lg"></i>
+            <div class="rounded-[24px] border border-yellow-400/25 bg-gradient-to-b from-yellow-400/15 via-black/10 to-black/30 p-8 shadow-[0_25px_70px_rgba(245,158,11,0.12)] flex flex-col gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/25 flex items-center justify-center">
+                        <i class="fas fa-handshake text-yellow-200 text-lg"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Curadoria Premium</h3>
-                    <p class="text-white/70 leading-relaxed">Seleção rígida de ativos com análise humana + IA. Cada imóvel passa por validação financeira, documentação e avaliação de risco.</p>
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-yellow-100">Intermediação segura</p>
+                        <h3 class="text-2xl font-semibold text-white">Deal room com governança</h3>
+                    </div>
                 </div>
 
-                {{-- Benefit 2 --}}
-                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
-                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
-                        <i class="fas fa-gem text-yellow-300 text-lg"></i>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-[16px] border border-white/10 bg-black/20 p-5">
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Documentos</p>
+                        <p class="text-white font-semibold mt-2">Laudos, certidões e contratos em um fluxo único.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Exclusividade Garantida</h3>
-                    <p class="text-white/70 leading-relaxed">Ativos únicos na plataforma, sem duplicidade de anúncios e sem concorrência de múltiplos canais. Oportunidades verdadeiramente exclusivas.</p>
+                    <div class="rounded-[16px] border border-white/10 bg-black/20 p-5">
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Governança</p>
+                        <p class="text-white font-semibold mt-2">Checklist de compliance, riscos e aprovação em tempo real.</p>
+                    </div>
                 </div>
 
-                {{-- Benefit 3 --}}
-                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
-                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
-                        <i class="fas fa-headset text-yellow-300 text-lg"></i>
+                <div class="rounded-[16px] border border-yellow-400/30 bg-gradient-to-r from-yellow-500/15 to-transparent p-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-yellow-200">Estruturação avançada</p>
+                        <p class="text-white font-semibold mt-2">SPV, SPE ou M&amp;A estruturados com apoio jurídico de ponta.</p>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Concierge 24/7</h3>
-                    <p class="text-white/70 leading-relaxed">Um único concierge dedicado conduz toda a sua jornada no WhatsApp. Suporte premium, resposta rápida e acompanhamento personalizado.</p>
-                </div>
-
-                {{-- Benefit 4 --}}
-                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
-                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
-                        <i class="fas fa-chart-line text-yellow-300 text-lg"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Análise Financeira Completa</h3>
-                    <p class="text-white/70 leading-relaxed">Cap Rate estimado, potencial de valorização, custos operacionais e projeção de fluxo de caixa. Decisões baseadas em dados.</p>
-                </div>
-
-                {{-- Benefit 5 --}}
-                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
-                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
-                        <i class="fas fa-lock text-yellow-300 text-lg"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Data Room Seguro</h3>
-                    <p class="text-white/70 leading-relaxed">Acesso centralizado a documentação completa, laudos de avaliação e due diligence. Transparência total com segurança máxima.</p>
-                </div>
-
-                {{-- Benefit 6 --}}
-                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
-                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
-                        <i class="fas fa-handshake text-yellow-300 text-lg"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-3">Intermediação Segura</h3>
-                    <p class="text-white/70 leading-relaxed">Negociação assistida, proposta formal acompanhada e suporte até o fechamento. Segurança patrimonial em cada etapa.</p>
+                    <i class="fas fa-arrow-right text-yellow-300 text-xl"></i>
                 </div>
             </div>
         </div>
