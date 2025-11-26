@@ -50,16 +50,10 @@ class TelemetryMetric extends Model
             'metadata_hash' => $metadataHash,
         ];
 
-        $update = [
-            'metadata' => empty($metadata) ? null : $metadata,
-            'updated_at' => now(),
-        ];
-
-        static::query()->updateOrCreate($values, $update);
-
-        static::query()
-            ->where($values)
-            ->increment('count');
+        $metric = static::query()->firstOrNew($values);
+        $metric->metadata = empty($metadata) ? null : $metadata;
+        $metric->count = ($metric->count ?? 0) + 1;
+        $metric->save();
     }
 
     public static function sumForProperty(int $propertyId, string $eventName, ?int $days = null): int
