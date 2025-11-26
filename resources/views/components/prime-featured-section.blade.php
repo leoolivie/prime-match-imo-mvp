@@ -1,7 +1,7 @@
-﻿@props([
+@props([
     'featured' => collect(),
     'title' => 'Imóveis em Destaque Prime',
-    'subtitle' => 'Coleção selecionada manualmente pelo Concierge Master para abrir sua experiência com ativos exclusivos.',
+    'subtitle' => 'Ativos selecionados manualmente pelo Concierge Master para investidores que buscam imóveis raros, com tese clara de valorização e prontos para receber capital.',
 ])
 
 @php
@@ -38,24 +38,38 @@
     <div class="relative lux-container space-y-10">
         <div class="flex flex-col items-center gap-6 text-center">
             <div class="max-w-4xl space-y-4">
-                <span class="lux-badge-gold">Colecao prime</span>
-                <h2 class="font-poppins text-4xl font-semibold text-white sm:text-5xl">{{ $title }}</h2>
-                <p class="max-w-3xl text-sm text-white/60 sm:text-base">{{ $subtitle }}</p>
+                <span class="lux-badge-gold">Coleção Prime • Acesso restrito</span>
+
+                <h2 class="font-poppins text-4xl font-semibold text-white sm:text-5xl">
+                    Imóveis em Destaque Prime
+                </h2>
+
+                <p class="max-w-3xl text-sm text-white/65 sm:text-base">
+                    Ativos selecionados manualmente pelo Concierge Master para investidores que buscam
+                    imóveis raros, com tese clara de valorização e prontos para receber capital.
+                </p>
             </div>
 
             <p class="max-w-3xl text-sm font-medium uppercase tracking-[0.2em] text-white/70 sm:text-base">
-                Atendimento Prime, imóveis selecionados e oportunidades exclusivas para quem investe em alto padrão.
+                CURADORIA HUMANA + DADOS PARA PROTEGER SEU TEMPO, SUA TESE E SEU CAPITAL.
             </p>
 
             <div class="flex flex-wrap justify-center gap-3">
-                <a href="{{ route('investor.catalog') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">Ver vitrine completa</a>
-                <a href="{{ route('investor.dashboard') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">Entrar como investidor</a>
+                <a href="{{ route('investor.catalog') }}"
+                   class="lux-outline-button text-xs uppercase tracking-[0.3em]">
+                    Ver todas as oportunidades
+                </a>
+                <a href="{{ route('investor.dashboard') }}"
+                   class="lux-gold-button text-xs uppercase tracking-[0.3em]">
+                    Entrar como Investidor Prime
+                </a>
             </div>
         </div>
 
         @if($featured->isEmpty())
-            <div class="rounded-3xl border border-white/10 bg-white/5 p-10 text-center text-sm text-white/60">
-                A curadoria prime esta em preparacao. Novos imoveis selecionados serao exibidos aqui em breve.
+            <div class="rounded-3xl border border-white/10 bg-white/5 p-10 text-center text-sm text-white/70 space-y-2">
+                <p>Estamos em curadoria neste momento.</p>
+                <p>Os próximos Imóveis Prime serão liberados primeiro para Investidores Prime cadastrados.</p>
             </div>
         @else
             <div
@@ -72,11 +86,11 @@
                                 $isActive = $loop->first;
 
                                 $statusLabels = [
-                                    'available' => 'Disponivel',
+                                    'available' => 'Disponível',
                                     'reserved' => 'Reservado',
-                                    'unavailable' => 'Indisponivel',
+                                    'unavailable' => 'Indisponível',
                                 ];
-                                $statusLabel = $statusLabels[$property->status ?? 'available'] ?? 'Disponivel';
+                                $statusLabel = $statusLabels[$property->status ?? 'available'] ?? 'Disponível';
 
                                 $userType = auth()->check() && auth()->user()->isBusinessman()
                                     ? 'empresario'
@@ -116,7 +130,7 @@
                                 aria-hidden="{{ $isActive ? 'false' : 'true' }}"
                             >
                                 <span class="absolute left-1/2 top-6 z-10 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#f2d57b] via-[#f8e6a7] to-[#cba135] px-5 py-1 text-[11px] font-semibold uppercase tracking-[0.4em] text-[#1d1200] shadow-[0_12px_35px_rgba(203,161,53,0.45)]">
-                                    Imovel Prime
+                                    Imóvel Prime
                                 </span>
 
                                 <div class="relative h-80 overflow-hidden" data-featured-media-container>
@@ -157,20 +171,20 @@
                                 </div>
 
                                 <div class="space-y-7 p-8">
-                                    <div class="flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-white/65">
+                                    <div class="flex flex-wrap gap-3 text-[11px] uppercase tracking-[0.28em] text-white/65">
                                         <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white">
-                                            {{ Format::currency($property->price) }}
+                                            Ticket: {{ Format::currency($property->price) }}
                                         </span>
 
                                         @if($property->area_m2)
                                             <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">
-                                                {{ Format::area($property->area_m2) }}
+                                                {{ Format::area($property->area_m2) }} área privativa
                                             </span>
                                         @endif
 
                                         @if($property->bedrooms)
                                             <span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-white/80">
-                                                {{ $property->bedrooms }} quartos
+                                                {{ $property->bedrooms }} dormitórios
                                             </span>
                                         @endif
 
@@ -181,24 +195,29 @@
                                         @endif
                                     </div>
 
-                                    <p class="text-sm text-white/70">
-                                        {{ $property->short_description ?? 'Experiencia prime com concierge dedicado e documentacao completa sob demanda.' }}
+                                    <p class="text-sm text-white/75 leading-relaxed">
+                                        {{ $property->short_description
+                                            ?? 'Ativo selecionado pela Curadoria Prime para investidores que buscam imóvel pronto, com arquitetura autoral e alto potencial de valorização na região.' }}
                                     </p>
 
                                     <div class="space-y-4 rounded-2xl border border-[#cba135]/30 bg-[#0b0b0b]/80 p-5 text-sm text-[#f5e7c2] shadow-[0_25px_80px_rgba(203,161,53,0.15)]">
                                         <p class="font-semibold uppercase tracking-[0.3em] text-[#f5d67c]">Concierge Prime</p>
                                         <p class="text-[13px] leading-relaxed text-[#f6edd5]">
-                                            Investidor Prime tem atendimento e benefícios exclusivos nos Imóveis Prime.
-                                            Fale com o Concierge Prime e invista no melhor do alto padrão com segurança, discrição e curadoria personalizada.
+                                            O Concierge Prime faz o filtro pesado por você: dossiê completo, leitura jurídica,
+                                            alinhamento com sua tese de investimento e war room no WhatsApp até o fechamento.
+                                            Você foca na decisão, nós cuidamos do caminho.
                                         </p>
                                     </div>
 
-                                    <div class="flex justify-center">
-                                        <a href="{{ $conciergeUrl }}" target="_blank" rel="noopener"
-                                           class="flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-5 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]"
-                                        >
+                                    <div class="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                                        <a href="{{ route('prime.properties.show', $property->slug ?? $property->id) }}" target="_blank" rel="noopener"
+                                           class="flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-5 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]">
                                             <span class="text-base">✶</span>
-                                            Falar com o Concierge Prime
+                                            Ver tese deste ativo
+                                        </a>
+                                        <a href="{{ $conciergeUrl }}" target="_blank" rel="noopener"
+                                           class="flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-white/80 transition duration-300 hover:border-lux-gold/70 hover:text-white">
+                                            Falar com o Concierge sobre este ativo
                                         </a>
                                     </div>
                                 </div>
@@ -212,7 +231,7 @@
                                 type="button"
                                 data-carousel-nav="prev"
                                 class="pointer-events-auto group flex items-center gap-3 rounded-full border border-white/15 bg-black/55 px-4 py-3 text-left text-white/70 shadow-[0_15px_45px_rgba(0,0,0,0.45)] backdrop-blur-sm transition hover:border-lux-gold/70 hover:text-white"
-                                aria-label="Imovel anterior"
+                                aria-label="Imóvel anterior"
                             >
                                 <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-white/15 via-white/10 to-transparent text-xl font-semibold text-white transition group-hover:border-lux-gold group-hover:text-lux-gold">
                                     &larr;
@@ -224,9 +243,9 @@
                                 type="button"
                                 data-carousel-nav="next"
                                 class="pointer-events-auto group flex items-center gap-3 rounded-full border border-white/15 bg-black/55 px-4 py-3 text-right text-white/70 shadow-[0_15px_45px_rgba(0,0,0,0.45)] backdrop-blur-sm transition hover:border-lux-gold/70 hover:text-white"
-                                aria-label="Proximo imovel"
+                                aria-label="Próximo imóvel"
                             >
-                                <span class="hidden text-[10px] uppercase tracking-[0.45em] text-white/60 sm:inline-block">Proximo</span>
+                                <span class="hidden text-[10px] uppercase tracking-[0.45em] text-white/60 sm:inline-block">Próximo</span>
                                 <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-white/15 via-white/10 to-transparent text-xl font-semibold text-white transition group-hover:border-lux-gold group-hover:text-lux-gold">
                                     &rarr;
                                 </span>
@@ -259,9 +278,9 @@
             <div class="flex items-center justify-between border-b border-white/10 bg-black/40 px-6 py-5">
                 <div class="flex items-center gap-3">
                     <span class="rounded-full bg-gradient-to-r from-[#f2d57b] via-[#f8e6a7] to-[#cba135] px-4 py-1 text-[10px] font-semibold uppercase tracking-[0.45em] text-[#1d1200]">
-                        Imovel Prime
+                        Imóvel Prime
                     </span>
-                    <span data-modal-status class="text-[10px] uppercase tracking-[0.4em] text-white/70">DISPONIVEL</span>
+                    <span data-modal-status class="text-[10px] uppercase tracking-[0.4em] text-white/70">DISPONÍVEL</span>
                 </div>
 
                 <button type="button" data-modal-close
@@ -274,7 +293,7 @@
 
             <div class="relative bg-black">
                 <div class="relative aspect-[16/9] w-full overflow-hidden" id="modalMedia">
-                    <img id="modalHero" class="h-full w-full max-h-[45vh] object-cover cursor-zoom-in" alt="Imovel Prime">
+                    <img id="modalHero" class="h-full w-full max-h-[45vh] object-cover cursor-zoom-in" alt="Imóvel Prime">
 
                     <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/80"></div>
 
@@ -294,7 +313,7 @@
 
                     <button type="button" data-thumbs-next
                             class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/70 transition hover:border-[#cba135]/70 hover:text-white"
-                            aria-label="Proximo"
+                            aria-label="Próximo"
                     >&rarr;</button>
                 </div>
             </div>
@@ -311,8 +330,9 @@
                 <div class="space-y-3 rounded-2xl border border-[#cba135]/30 bg-[#0b0b0b]/80 p-5 text-sm text-[#f5e7c2] shadow-[0_25px_80px_rgba(203,161,53,0.15)]">
                     <p class="font-semibold uppercase tracking-[0.3em] text-[#f5d67c]">Concierge Prime</p>
                     <p class="text-[13px] leading-relaxed text-[#f6edd5]">
-                        Atendimento dedicado, dossie completo e mediacao direta com o Master.
-                        Clique abaixo para falar com o Concierge Prime.
+                        Aqui você não fala com chatbot. O Concierge Prime prepara o dossiê,
+                        faz a ponte com o empresário, organiza visita e cuida da negociação ponta a ponta,
+                        sempre alinhado à sua tese e apetite de risco.
                     </p>
                 </div>
 
@@ -321,12 +341,12 @@
                        class="flex items-center justify-center gap-2 rounded-full border border-[#f0d27a]/70 bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-4 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_20px_60px_rgba(203,161,53,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(203,161,53,0.45)]"
                     >
                         <span class="text-base">✶</span>
-                        Falar com o Concierge Prime
+                        Quero analisar este ativo com o Concierge
                     </a>
 
                     <button type="button" data-modal-close
                             class="flex items-center justify-center rounded-full border border-white/15 bg-black/40 px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/80 transition hover:border-white/30 hover:text-white">
-                        Voltar a vitrine
+                        Voltar à vitrine
                     </button>
                 </div>
             </div>
@@ -335,7 +355,7 @@
                 <a data-modal-concierge-sticky href="#" target="_blank" rel="noopener"
                    class="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#f9e7b4] via-[#f6de95] to-[#cba135] px-4 py-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#1a1202] shadow-[0_14px_40px_rgba(203,161,53,0.45)]"
                 >
-                    ✶ Falar com Concierge Prime
+                    ✶ Analisar este ativo com o Concierge
                 </a>
             </div>
         </div>
@@ -358,7 +378,7 @@
 
             <button type="button" data-lightbox-next
                     class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-white/20 bg-black/60 px-4 py-3 text-white/80 backdrop-blur-sm transition hover:border-[#cba135]/70 hover:text-white"
-                    aria-label="Proximo">
+                    aria-label="Próximo">
                 &rarr;
             </button>
 
@@ -487,12 +507,18 @@
                 if (els.chips) {
                     const chips = [];
                     if (data.area) chips.push(data.area);
-                    if (data.bedrooms) chips.push(`${data.bedrooms} quartos`);
+                    if (data.bedrooms) chips.push(`${data.bedrooms} dormitórios`);
                     if (data.parking) chips.push(`${data.parking} vagas`);
-                    els.chips.innerHTML = chips.map((t) => `<span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-xs uppercase tracking-[0.25em] text-white/90">${t}</span>`).join('');
+                    els.chips.innerHTML = chips.map((t) =>
+                        `<span class="rounded-full border border-white/10 bg-[#111111] px-3 py-1 text-xs uppercase tracking-[0.25em] text-white/90">${t}</span>`
+                    ).join('');
                 }
 
-                els.description && (els.description.textContent = data.description || 'Experiência prime com concierge dedicado e documentação completa sob demanda.');
+                els.description && (els.description.textContent =
+                    data.description
+                    || 'Ativo selecionado pela Curadoria Prime para investidores que buscam imóvel pronto, com arquitetura autoral e alto potencial de valorização na região.'
+                );
+
                 if (els.conciergeBtn) els.conciergeBtn.href = data.concierge || '#';
                 if (els.conciergeSticky) els.conciergeSticky.href = data.concierge || '#';
 
@@ -508,7 +534,6 @@
                 modal.classList.add('hidden');
                 modal.setAttribute('aria-hidden', 'true');
                 document.documentElement.classList.remove('overflow-hidden');
-                // nada para pausar, pois removemos o vídeo do modal
             };
 
             document.querySelectorAll('[data-featured-open-modal]').forEach((btn) => {

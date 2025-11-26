@@ -33,7 +33,11 @@
                 @csrf
                 @php
                     $oldPrice = old('price');
-                    $priceInputValue = $oldPrice ? number_format((int) preg_replace('/\D/', '', $oldPrice), 0, '', '.') : '';
+                    $priceInputValue = '';
+                    if ($oldPrice !== null && $oldPrice !== '') {
+                        $numericValue = is_numeric($oldPrice) ? (float) $oldPrice : (float) preg_replace('/\D+/', '', $oldPrice);
+                        $priceInputValue = $numericValue ? number_format((int) round($numericValue), 0, '', '.') : '';
+                    }
                 @endphp
                 <div class="grid gap-4 md:grid-cols-2">
                     <div class="md:col-span-2">

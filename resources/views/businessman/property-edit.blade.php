@@ -40,8 +40,8 @@
                     $rawPriceValue = old('price', $property->price);
                     $priceInputValue = '';
                     if ($rawPriceValue !== null && $rawPriceValue !== '') {
-                        $digits = preg_replace('/\D/', '', (string) $rawPriceValue);
-                        $priceInputValue = $digits !== '' ? number_format((int) $digits, 0, '', '.') : '';
+                        $numericValue = is_numeric($rawPriceValue) ? (float) $rawPriceValue : (float) preg_replace('/\D+/', '', (string) $rawPriceValue);
+                        $priceInputValue = $numericValue ? number_format((int) round($numericValue), 0, '', '.') : '';
                     }
                 @endphp
                 <div class="grid gap-4 md:grid-cols-2">

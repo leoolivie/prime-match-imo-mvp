@@ -7,8 +7,8 @@
     $priceInputValue = '';
 
     if ($rawPrice !== null && $rawPrice !== '') {
-        $digitsOnly = preg_replace('/\D+/', '', (string) $rawPrice);
-        $priceInputValue = $digitsOnly !== '' ? number_format((float) $digitsOnly, 0, '', '.') : '';
+        $numericValue = is_numeric($rawPrice) ? (float) $rawPrice : (float) preg_replace('/\D+/', '', (string) $rawPrice);
+        $priceInputValue = $numericValue ? number_format((int) round($numericValue), 0, '', '.') : '';
     }
 @endphp
 

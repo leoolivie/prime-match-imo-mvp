@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Prime Match Imo — Matchmaking Premium')
+@section('title', 'Prime Match Imo — Matchmaking Premium | Investimento Patrimonial de Luxo')
 
 @section('content')
 @php
@@ -10,31 +10,43 @@
 
 @include('components.prime-featured-section', [
     'featured' => $featured,
-    'title' => 'Imóveis Prime em Destaque',
-    'subtitle' => 'Coleção selecionada manualmente pelo Concierge Master para abrir sua experiência com ativos exclusivos.',
+    'title' => 'Ativos Prime em Destaque',
+    'subtitle' => 'Seleção exclusiva de oportunidades patrimoniais curadas pelo Concierge Master para investidores de alto padrão.',
 ])
 
-<section class="lux-hero">
-    <div class="lux-container py-20 lg:py-28">
+{{-- Hero Section Premium --}}
+<section class="lux-hero relative overflow-hidden">
+    {{-- Background Gradient Premium --}}
+    <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/5 via-transparent to-blue-500/5"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl"></div>
+    
+    <div class="lux-container py-20 lg:py-32 relative z-10">
         <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
-            <div class="space-y-10">
-                <span class="lux-badge-gold">Plataforma de matchmaking curado • Concierge + IA</span>
-                <div class="space-y-6">
-                    <h1 class="font-poppins text-4xl font-semibold leading-tight text-white sm:text-5xl">
-                        Imóveis de alto padrão conectados ao investidor certo.
+            {{-- Left Column: Main Message --}}
+            <div class="space-y-12">
+                {{-- Premium Badge --}}
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-yellow-400/30 bg-yellow-400/10 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                    <span class="text-xs uppercase tracking-[0.35em] text-yellow-300 font-semibold">Plataforma de Matchmaking Curado • Concierge Prime + IA</span>
+                </div>
+
+                {{-- Main Headline --}}
+                <div class="space-y-8">
+                    <h1 class="font-poppins text-5xl lg:text-6xl font-bold leading-tight text-white">
+                        Ativos Patrimoniais de Luxo Conectados ao Investidor Ideal.
                     </h1>
-                    <p class="max-w-2xl text-base text-white/75 sm:text-lg">
-                        A Prime Match Imo é uma plataforma de matchmaking imobiliário premium.
-                        Com curadoria humana + IA e um Concierge Prime, conectamos investidores de alto padrão a imóveis exclusivos de empresários prime.
-                        Não somos uma imobiliária. Somos a ponte segura entre capital e ativos raros.
+                    <p class="max-w-2xl text-lg text-white/70 leading-relaxed">
+                        A Prime Match Imo é a plataforma de matchmaking imobiliário premium que conecta investidores de alto padrão a oportunidades patrimoniais exclusivas. Com curadoria humana, análise de viabilidade financeira e um Concierge Prime dedicado, somos a ponte segura entre capital inteligente e ativos raros de retorno superior.
                     </p>
                 </div>
-                <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('investor.catalog') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em]">
-                        Sou Investidor Prime
+
+                {{-- CTAs Premium --}}
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="{{ route('investor.catalog') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em] px-8 py-4 font-semibold hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] transition-all duration-300">
+                        <i class="fas fa-chart-line mr-2"></i>Sou Investidor Prime
                     </a>
-                    <a href="{{ route('landing.businessman') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em]">
-                        Sou Empresário Prime
+                    <a href="{{ route('landing.businessman') }}" class="lux-outline-button text-xs uppercase tracking-[0.3em] px-8 py-4 font-semibold hover:border-yellow-400/50 transition-all duration-300">
+                        <i class="fas fa-building mr-2"></i>Sou Empresário Prime
                     </a>
                     <a href="{{ ConciergeLink::build('investidor_card', [
                             'city' => 'Concierge Prime',
@@ -47,56 +59,84 @@
                         ]) }}"
                         target="_blank"
                         rel="noopener"
-                        class="lux-outline-button text-xs uppercase tracking-[0.3em]">
-                        Falar com Concierge (WhatsApp 24/7)
+                        class="lux-outline-button text-xs uppercase tracking-[0.3em] px-8 py-4 font-semibold hover:border-yellow-400/50 transition-all duration-300">
+                        <i class="fas fa-whatsapp mr-2"></i>Concierge 24/7 (WhatsApp)
                     </a>
                 </div>
-                <div class="grid gap-4 sm:grid-cols-3">
-                    <div class="lux-card-surface">
-                        <p class="text-xs uppercase tracking-[0.35em] text-white/50">Visitas assistidas</p>
-                        <p class="mt-3 text-2xl font-semibold text-white">Agenda prioritária</p>
-                        <p class="mt-1 text-sm text-white/60">O concierge organiza pré-briefing, visita e follow-up no mesmo fluxo.</p>
+
+                {{-- Trust Indicators --}}
+                <div class="grid gap-6 sm:grid-cols-3 pt-8 border-t border-white/10">
+                    <div class="space-y-2">
+                        <p class="text-3xl font-bold text-yellow-300">R$ 280M+</p>
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Tickets Ativos em Negociação</p>
                     </div>
-                    <div class="lux-card-surface">
-                        <p class="text-xs uppercase tracking-[0.35em] text-white/50">Curadoria prime</p>
-                        <p class="mt-3 text-2xl font-semibold text-white">Filtro humano + IA</p>
-                        <p class="mt-1 text-sm text-white/60">Seleção manual com dados financeiros, documentos e avaliação de risco.</p>
+                    <div class="space-y-2">
+                        <p class="text-3xl font-bold text-yellow-300">+120</p>
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Ativos Curados e Validados</p>
                     </div>
-                    <div class="lux-card-surface">
-                        <p class="text-xs uppercase tracking-[0.35em] text-white/50">Negociação</p>
-                        <p class="mt-3 text-2xl font-semibold text-white">War room no WhatsApp</p>
-                        <p class="mt-1 text-sm text-white/60">Você aprova o imóvel, o concierge conduz proposta e diligência em tempo real.</p>
+                    <div class="space-y-2">
+                        <p class="text-3xl font-bold text-yellow-300">18%</p>
+                        <p class="text-xs uppercase tracking-[0.2em] text-white/60">Taxa de Conversão Concierge</p>
                     </div>
                 </div>
             </div>
-            <div class="lux-card-dark space-y-8">
-                <div class="flex items-center justify-between gap-4">
-                    <div>
-                        <p class="text-xs uppercase tracking-[0.3em] text-white/50">Painel concierge</p>
-                        <h3 class="text-2xl font-semibold text-white">Pipeline premium monitorado</h3>
+
+            {{-- Right Column: Premium Panel --}}
+            <div class="space-y-8 rounded-[24px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent backdrop-blur-xl p-10 shadow-[0_20px_60px_rgba(245,158,11,0.1)]">
+                <div class="space-y-4 border-b border-yellow-400/20 pb-8">
+                    <div class="inline-block">
+                        <span class="px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-xs uppercase tracking-[0.3em] text-yellow-300 font-semibold">Pipeline Premium</span>
                     </div>
-                    <span class="lux-badge-outline">Curadoria concierge</span>
+                    <h3 class="text-3xl font-bold text-white">Oportunidades Monitoradas</h3>
+                    <p class="text-sm text-white/60">Acompanhamento em tempo real com SLA de 5 minutos no WhatsApp</p>
                 </div>
-                <div class="grid gap-5 sm:grid-cols-2">
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-                        <p class="text-xs uppercase tracking-[0.3em] text-white/50">Tickets ativos</p>
-                        <p class="mt-3 text-3xl font-semibold text-white">R$ 280M+</p>
-                        <p class="mt-2 text-sm text-white/60">Negociações em andamento com SLA de 5 minutos no WhatsApp.</p>
+
+                {{-- KPI Cards --}}
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-[16px] border border-yellow-400/20 bg-yellow-400/5 p-6 backdrop-blur-sm hover:bg-yellow-400/10 transition-all duration-300">
+                        <p class="text-xs uppercase tracking-[0.2em] text-yellow-300/70 font-semibold">Tempo de Resposta</p>
+                        <p class="mt-4 text-4xl font-bold text-yellow-300">3h</p>
+                        <p class="mt-2 text-xs text-white/60">Do briefing à pré-proposta</p>
                     </div>
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-                        <p class="text-xs uppercase tracking-[0.3em] text-white/50">Tempo médio</p>
-                        <p class="mt-3 text-3xl font-semibold text-white">3 horas</p>
-                        <p class="mt-2 text-sm text-white/60">Do briefing à pré-proposta entregue ao investidor.</p>
+                    <div class="rounded-[16px] border border-yellow-400/20 bg-yellow-400/5 p-6 backdrop-blur-sm hover:bg-yellow-400/10 transition-all duration-300">
+                        <p class="text-xs uppercase tracking-[0.2em] text-yellow-300/70 font-semibold">Curadoria Rigorosa</p>
+                        <p class="mt-4 text-4xl font-bold text-yellow-300">100%</p>
+                        <p class="mt-2 text-xs text-white/60">Validação humana + IA</p>
                     </div>
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-                        <p class="text-xs uppercase tracking-[0.3em] text-white/50">Imóveis curados</p>
-                        <p class="mt-3 text-3xl font-semibold text-white">+120</p>
-                        <p class="mt-2 text-sm text-white/60">Cada ativo possui galeria, ficha técnica e amenidades verificadas.</p>
+                    <div class="rounded-[16px] border border-yellow-400/20 bg-yellow-400/5 p-6 backdrop-blur-sm hover:bg-yellow-400/10 transition-all duration-300">
+                        <p class="text-xs uppercase tracking-[0.2em] text-yellow-300/70 font-semibold">Exclusividade</p>
+                        <p class="mt-4 text-4xl font-bold text-yellow-300">Única</p>
+                        <p class="mt-2 text-xs text-white/60">Sem duplicidade de anúncios</p>
                     </div>
-                    <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
-                        <p class="text-xs uppercase tracking-[0.3em] text-white/50">Conversão concierge</p>
-                        <p class="mt-3 text-3xl font-semibold text-white">18%</p>
-                        <p class="mt-2 text-sm text-white/60">Cliques em WhatsApp evoluem para proposta formal acompanhada.</p>
+                    <div class="rounded-[16px] border border-yellow-400/20 bg-yellow-400/5 p-6 backdrop-blur-sm hover:bg-yellow-400/10 transition-all duration-300">
+                        <p class="text-xs uppercase tracking-[0.2em] text-yellow-300/70 font-semibold">Suporte Dedicado</p>
+                        <p class="mt-4 text-4xl font-bold text-yellow-300">24/7</p>
+                        <p class="mt-2 text-xs text-white/60">Concierge exclusivo</p>
+                    </div>
+                </div>
+
+                {{-- Feature Highlights --}}
+                <div class="space-y-3 border-t border-yellow-400/20 pt-8">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-check text-yellow-300 mt-1"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Análise de Viabilidade Financeira</p>
+                            <p class="text-xs text-white/60">Cap Rate, valorização e fluxo de caixa projetado</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-check text-yellow-300 mt-1"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Data Room Completo</p>
+                            <p class="text-xs text-white/60">Documentação, laudos e due diligence integrados</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-check text-yellow-300 mt-1"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Intermediação Segura</p>
+                            <p class="text-xs text-white/60">Negociação assistida até o fechamento</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,34 +144,48 @@
     </div>
 </section>
 
+{{-- Como Funciona Section --}}
 <section class="lux-section">
     <div class="lux-container">
-        <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <div class="space-y-5">
-                <span class="lux-badge-outline">Como funciona</span>
-                <h2 class="font-poppins text-4xl font-semibold text-white">Três passos para a Prime Match Imo entregar o imóvel ideal</h2>
-                <p class="text-lg text-white/60">Intermediação curada: o concierge recebe seu briefing, valida perfil e acompanha cada movimento pelo WhatsApp.</p>
+        <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+            <div class="space-y-6">
+                <div class="inline-block">
+                    <span class="px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-xs uppercase tracking-[0.3em] text-yellow-300 font-semibold">Como Funciona</span>
+                </div>
+                <h2 class="font-poppins text-5xl font-bold text-white leading-tight">Três Passos para Encontrar Seu Ativo Ideal</h2>
+                <p class="text-lg text-white/60 leading-relaxed">Intermediação curada: o concierge recebe seu briefing, valida seu perfil patrimonial e acompanha cada movimento com transparência total.</p>
             </div>
-            <div class="space-y-4">
-                <div class="timeline-step">
-                    <div class="timeline-index">01</div>
+            <div class="space-y-6">
+                {{-- Step 1 --}}
+                <div class="flex gap-6 p-6 rounded-[16px] border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
+                    <div class="flex-shrink-0">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold text-xl">01</div>
+                    </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-white">Cadastre ou explore</h3>
-                        <p class="text-sm text-white/60">Empresários cadastram imóveis exclusivos. Investidores exploram oportunidades alinhadas ao seu objetivo.</p>
+                        <h3 class="text-lg font-bold text-white">Cadastre ou Explore</h3>
+                        <p class="text-sm text-white/60 mt-2">Empresários cadastram ativos exclusivos com análise financeira. Investidores exploram oportunidades alinhadas ao seu objetivo de retorno.</p>
                     </div>
                 </div>
-                <div class="timeline-step">
-                    <div class="timeline-index">02</div>
+
+                {{-- Step 2 --}}
+                <div class="flex gap-6 p-6 rounded-[16px] border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
+                    <div class="flex-shrink-0">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold text-xl">02</div>
+                    </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-white">Concierge filtra e valida</h3>
-                        <p class="text-sm text-white/60">Você fala direto com o Concierge Prime no WhatsApp. Ele entende seu perfil e seleciona os ativos ideais.</p>
+                        <h3 class="text-lg font-bold text-white">Concierge Filtra e Valida</h3>
+                        <p class="text-sm text-white/60 mt-2">Você fala direto com o Concierge Prime no WhatsApp. Ele entende seu perfil de risco e seleciona os ativos com melhor viabilidade financeira.</p>
                     </div>
                 </div>
-                <div class="timeline-step">
-                    <div class="timeline-index">03</div>
+
+                {{-- Step 3 --}}
+                <div class="flex gap-6 p-6 rounded-[16px] border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
+                    <div class="flex-shrink-0">
+                        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 text-white font-bold text-xl">03</div>
+                    </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-white">Intermediação até o fechamento</h3>
-                        <p class="text-sm text-white/60">Organizamos visitas, dossiê, proposta e negociação assistida. Sempre com segurança, discrição e agilidade.</p>
+                        <h3 class="text-lg font-bold text-white">Intermediação até o Fechamento</h3>
+                        <p class="text-sm text-white/60 mt-2">Organizamos visitas, dossiê completo, proposta formal e negociação assistida. Sempre com segurança, discrição e agilidade máxima.</p>
                     </div>
                 </div>
             </div>
@@ -139,24 +193,103 @@
     </div>
 </section>
 
-<section class="lux-section">
-    <div class="lux-container space-y-6">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-            <h2 class="text-3xl font-semibold text-white">Benefícios Prime</h2>
-            <span class="lux-badge-outline">Intermediação premium</span>
+{{-- Benefícios Prime Section --}}
+<section class="lux-section relative overflow-hidden">
+    {{-- Background Accent --}}
+    <div class="absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-transparent to-transparent"></div>
+    
+    <div class="lux-container relative z-10">
+        <div class="space-y-12">
+            <div class="space-y-4">
+                <div class="inline-block">
+                    <span class="px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-xs uppercase tracking-[0.3em] text-yellow-300 font-semibold">Vantagens Competitivas</span>
+                </div>
+                <h2 class="text-5xl font-bold text-white">Por Que Escolher a Prime Match Imo</h2>
+            </div>
+
+            <div class="grid gap-8 md:grid-cols-3">
+                {{-- Benefit 1 --}}
+                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
+                        <i class="fas fa-shield-alt text-yellow-300 text-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Curadoria Premium</h3>
+                    <p class="text-white/70 leading-relaxed">Seleção rígida de ativos com análise humana + IA. Cada imóvel passa por validação financeira, documentação e avaliação de risco.</p>
+                </div>
+
+                {{-- Benefit 2 --}}
+                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
+                        <i class="fas fa-gem text-yellow-300 text-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Exclusividade Garantida</h3>
+                    <p class="text-white/70 leading-relaxed">Ativos únicos na plataforma, sem duplicidade de anúncios e sem concorrência de múltiplos canais. Oportunidades verdadeiramente exclusivas.</p>
+                </div>
+
+                {{-- Benefit 3 --}}
+                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
+                        <i class="fas fa-headset text-yellow-300 text-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Concierge 24/7</h3>
+                    <p class="text-white/70 leading-relaxed">Um único concierge dedicado conduz toda a sua jornada no WhatsApp. Suporte premium, resposta rápida e acompanhamento personalizado.</p>
+                </div>
+
+                {{-- Benefit 4 --}}
+                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
+                        <i class="fas fa-chart-line text-yellow-300 text-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Análise Financeira Completa</h3>
+                    <p class="text-white/70 leading-relaxed">Cap Rate estimado, potencial de valorização, custos operacionais e projeção de fluxo de caixa. Decisões baseadas em dados.</p>
+                </div>
+
+                {{-- Benefit 5 --}}
+                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
+                        <i class="fas fa-lock text-yellow-300 text-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Data Room Seguro</h3>
+                    <p class="text-white/70 leading-relaxed">Acesso centralizado a documentação completa, laudos de avaliação e due diligence. Transparência total com segurança máxima.</p>
+                </div>
+
+                {{-- Benefit 6 --}}
+                <div class="group rounded-[20px] border border-yellow-400/20 bg-gradient-to-br from-yellow-400/10 to-transparent p-8 hover:border-yellow-400/40 hover:bg-yellow-400/15 transition-all duration-300">
+                    <div class="h-12 w-12 rounded-full bg-yellow-400/20 flex items-center justify-center mb-6 group-hover:bg-yellow-400/30 transition-all duration-300">
+                        <i class="fas fa-handshake text-yellow-300 text-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Intermediação Segura</h3>
+                    <p class="text-white/70 leading-relaxed">Negociação assistida, proposta formal acompanhada e suporte até o fechamento. Segurança patrimonial em cada etapa.</p>
+                </div>
+            </div>
         </div>
-        <div class="grid gap-6 md:grid-cols-3">
-            <div class="lux-card-dark space-y-3">
-                <h3 class="text-xl font-semibold text-white">Curadoria Prime</h3>
-                <p class="text-sm text-white/70">Seleção rígida de imóveis com análise humana + IA.</p>
-            </div>
-            <div class="lux-card-dark space-y-3">
-                <h3 class="text-xl font-semibold text-white">Exclusividade</h3>
-                <p class="text-sm text-white/70">Imóveis únicos na plataforma, sem duplicidade e sem briga de anúncio.</p>
-            </div>
-            <div class="lux-card-dark space-y-3">
-                <h3 class="text-xl font-semibold text-white">Concierge 24/7</h3>
-                <p class="text-sm text-white/70">Um único concierge conduz toda a jornada no WhatsApp.</p>
+    </div>
+</section>
+
+{{-- CTA Final Section --}}
+<section class="lux-section">
+    <div class="lux-container">
+        <div class="rounded-[24px] border border-yellow-400/30 bg-gradient-to-r from-yellow-400/10 to-blue-500/10 backdrop-blur-xl p-12 text-center space-y-8">
+            <h2 class="text-4xl lg:text-5xl font-bold text-white">Pronto para Encontrar Seu Ativo Ideal?</h2>
+            <p class="max-w-2xl mx-auto text-lg text-white/70">Conecte-se com nosso Concierge Prime e explore oportunidades patrimoniais exclusivas com análise financeira completa.</p>
+            <div class="flex flex-wrap gap-4 justify-center pt-4">
+                <a href="{{ route('investor.catalog') }}" class="lux-gold-button text-xs uppercase tracking-[0.3em] px-8 py-4 font-semibold">
+                    <i class="fas fa-arrow-right mr-2"></i>Explorar Ativos
+                </a>
+                <a href="{{ ConciergeLink::build('investidor_card', [
+                        'city' => 'Concierge Prime',
+                        'type' => 'matchmaking premium',
+                        'budget_min' => 5000000,
+                        'budget_max' => 25000000,
+                    ], [
+                        'user_type' => 'investidor',
+                        'source' => 'cta_final',
+                    ]) }}"
+                    target="_blank"
+                    rel="noopener"
+                    class="lux-outline-button text-xs uppercase tracking-[0.3em] px-8 py-4 font-semibold">
+                    <i class="fas fa-whatsapp mr-2"></i>Falar com Concierge
+                </a>
             </div>
         </div>
     </div>

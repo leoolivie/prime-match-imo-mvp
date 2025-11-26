@@ -1,4 +1,4 @@
-<div x-data="buscaPrime()" x-cloak @busca-prime-open.window="open = true" class="relative">
+<div x-data="buscaPrime" x-cloak @busca-prime-open.window="open = true" class="relative">
     <template x-if="open">
         <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 px-4 py-10">
             <div class="w-full max-w-2xl space-y-6 rounded-3xl border border-white/10 bg-[#0D0D0D] p-8 shadow-[0_35px_90px_rgba(0,0,0,0.55)]">
@@ -30,11 +30,11 @@
                     <div class="grid gap-4 md:grid-cols-2">
                         <div>
                             <label class="text-xs uppercase tracking-[0.3em] text-white/50">Budget mínimo</label>
-                            <input type="number" min="0" x-model="form.budget_min" placeholder="5000000" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
+                            <input type="text" inputmode="numeric" pattern="[0-9\\.]*" x-model="form.budget_min" @input="formatBudget($event, 'budget_min')" placeholder="5.000.000" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
                         </div>
                         <div>
                             <label class="text-xs uppercase tracking-[0.3em] text-white/50">Budget máximo</label>
-                            <input type="number" min="0" x-model="form.budget_max" placeholder="20000000" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
+                            <input type="text" inputmode="numeric" pattern="[0-9\\.]*" x-model="form.budget_max" @input="formatBudget($event, 'budget_max')" placeholder="20.000.000" class="mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:border-lux-gold focus:outline-none" />
                         </div>
                     </div>
                     <div>
@@ -125,13 +125,14 @@
 @once
 @push('scripts')
 <script>
-    function buscaPrime() {
-        return {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('buscaPrime', () => ({
             open: false,
             loading: false,
             submitted: false,
             error: null,
             results: [],
+            formatter: new Intl.NumberFormat('pt-BR'),
             tags: ['Vista panorâmica', 'Pé na areia', 'Heliponto', 'Triple A', 'Residencial clube', 'Turn key'],
             form: {
                 city: '',
@@ -148,6 +149,11 @@
                 } else {
                     this.form.tags = [...this.form.tags, tag];
                 }
+            },
+            formatBudget(event, field) {
+                const digits = (event.target.value || '').toString().replace(/\D/g, '');
+                this.form[field] = digits;
+                event.target.value = digits ? this.formatter.format(Number(digits)) : '';
             },
             reset() {
                 this.open = false;
@@ -226,30 +232,16 @@
             },
             openWhatsappFallback() {
                 const message = `Olá Prime Concierge, preciso ativar uma Busca Prime com o briefing: ${this.composeBriefingText()}. Pode me ajudar?`;
-                const url = 'https://wa.me/5514996845854?text=' + encodeURIComponent(message);
-                window.location.href = url;
+                const url = 'https://api.whatsapp.com/send?phone=5514996845854&text=' + encodeURIComponent(message);
+                window.open(url, '_blank', 'noopener');
             },
             openConcierge() {
-                const payload = {
-                    city: this.form.city,
-                    type: this.form.type,
-                    budget_min: this.form.budget_min,
-                    budget_max: this.form.budget_max,
-                    tags: this.form.tags,
-                    details: this.form.details,
-                    urgency: this.form.urgency,
-                };
-
-                const url = new URL('{{ route('concierge.redirect') }}');
-                url.searchParams.set('context', 'busca_prime');
-                url.searchParams.set('user_type', 'investidor');
-                url.searchParams.set('source', 'busca_prime_modal');
-                url.searchParams.set('payload', btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
-
-                window.open(url.toString(), '_blank');
+                const message = `Olá Prime Concierge, preciso ativar uma Busca Prime com o briefing: ${this.composeBriefingText()}. Pode me ajudar?`;
+                const url = 'https://api.whatsapp.com/send?phone=5514996845854&text=' + encodeURIComponent(message);
+                window.open(url, '_blank', 'noopener');
             },
-        };
-    }
+        }));
+    });
 </script>
 @endpush
 @endonce

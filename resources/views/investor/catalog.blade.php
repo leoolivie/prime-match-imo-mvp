@@ -68,7 +68,7 @@
                 </div>
                 <span class="lux-badge-outline">Telemetria agregada</span>
             </div>
-            <form method="GET" action="{{ route('investor.catalog') }}" class="grid gap-4 md:grid-cols-6" x-data="filtrosInteligentes()">
+            <form method="GET" action="{{ route('investor.catalog') }}" class="grid gap-4 md:grid-cols-6" x-data="filtrosInteligentes">
                 <div class="md:col-span-2">
                     <label class="text-xs uppercase tracking-[0.3em] text-white/50">Cidade</label>
                     <select name="city" class="mt-2 lux-select">
@@ -186,7 +186,7 @@
             </div>
         </section>
 
-        <section class="lux-card-dark space-y-6" x-data="investorBriefingForm()">
+        <section class="lux-card-dark space-y-6" x-data="investorBriefingForm">
             <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                 <div class="space-y-2">
                     <span class="lux-badge-outline">Nao encontrou o imovel?</span>
@@ -239,8 +239,8 @@
 
 @push('scripts')
 <script>
-    function filtrosInteligentes() {
-        return {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('filtrosInteligentes', () => ({
             timeout: null,
             init() {
                 const inputs = this.$el.querySelectorAll('select, input[type="number"]');
@@ -261,11 +261,9 @@
                     });
                 });
             },
-        };
-    }
+        }));
 
-    function investorBriefingForm() {
-        return {
+        Alpine.data('investorBriefingForm', () => ({
             form: {
                 name: '',
                 phone: '',
@@ -311,8 +309,8 @@
                     this.loading = false;
                 }
             },
-        };
-    }
+        }));
+    });
 </script>
 @endpush
 @endsection

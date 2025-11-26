@@ -118,12 +118,24 @@ class PropertyCatalogController extends Controller
             'clicks' => TelemetryMetric::sumForProperty($property->id, 'click_whatsapp_concierge'),
         ];
 
+        $featured = FeaturedProperty::where('status', 'available')
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
+            ->take(12)
+            ->get();
+
+        $propertiesCount = Property::where('active', true)
+            ->where('status', 'available')
+            ->count();
+
         return view('investor.show', [
             'property' => $property,
             'gallery' => $gallery,
             'amenities' => $amenities,
             'metrics' => $metrics,
             'isPreview' => $isPreview,
+            'featured' => $featured,
+            'propertiesCount' => $propertiesCount,
         ]);
     }
 

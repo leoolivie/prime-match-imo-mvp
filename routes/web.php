@@ -13,6 +13,7 @@ use App\Http\Controllers\Master\MasterDashboardController;
 use App\Http\Controllers\Master\PrimeOpportunityController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PrimeOpportunityLeadController;
+use App\Http\Controllers\PrimePropertyController;
 use App\Http\Controllers\PropertyCatalogController;
 
 /*
@@ -34,6 +35,7 @@ Route::get('/quem-somos', [PagesController::class, 'about'])->name('about');
 Route::get('/imovel/{property}', [PropertyCatalogController::class, 'show'])->name('properties.show');
 Route::get('/concierge', ConciergeRedirectController::class)->name('concierge.redirect');
 Route::post('/oportunidades-prime/leads', [PrimeOpportunityLeadController::class, 'store'])->name('landing.opportunities.leads.store');
+Route::get('/prime/imovel/{slug}', [PrimePropertyController::class, 'show'])->name('prime.properties.show');
 
 // Authentication routes
 Route::middleware('guest')->group(function () {
