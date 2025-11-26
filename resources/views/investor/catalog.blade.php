@@ -124,7 +124,7 @@
             </form>
         </section>
 
-        <section class="space-y-6" x-data="luxCarousel">
+        <section class="space-y-6" x-data="luxCarousel" x-init="init()">
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <div class="space-y-1">
                     <h2 class="text-2xl font-semibold text-white">{{ $properties->total() }} imóveis encontrados</h2>
@@ -137,7 +137,7 @@
                     ←
                 </button>
                 <div class="overflow-hidden">
-                    <div class="flex gap-5 overflow-x-auto pb-4 pr-2 pt-1 sm:scroll-smooth [&::-webkit-scrollbar]:hidden" x-ref="track" style="scrollbar-width: none;" @wheel.prevent="scrollByWheel($event)">
+                    <div class="grid gap-5 sm:flex sm:gap-5 sm:overflow-x-auto sm:pb-4 sm:pr-2 sm:pt-1 sm:scroll-smooth sm:snap-x sm:snap-mandatory [&::-webkit-scrollbar]:hidden" x-ref="track" style="scrollbar-width: none;" @wheel.prevent="scrollByWheel($event)">
                         @forelse($properties as $property)
                             @php
                                 $imagePath = optional($property->primaryImage)->path;
@@ -145,7 +145,7 @@
                                 $amenities = collect($property->features ?? [])->filter()->take(3);
                                 $summary = Str::limit($property->short_description ?? $property->description ?? 'Detalhes sob consulta com o concierge.', 120);
                             @endphp
-                            <article class="group relative flex min-w-[320px] max-w-[360px] flex-col gap-4 rounded-3xl border border-white/5 bg-gradient-to-b from-white/5 to-black/40 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.4)] transition duration-300 hover:-translate-y-1 hover:border-lux-gold/50 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+                            <article class="group relative flex min-w-[320px] max-w-[360px] snap-center flex-col gap-4 rounded-3xl border border-white/5 bg-gradient-to-b from-white/5 to-black/40 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.4)] transition duration-300 hover:-translate-y-1 hover:border-lux-gold/50 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
                                 <div class="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0B]">
                                     <img src="{{ $image }}" alt="{{ $property->title }}" class="h-56 w-full object-cover transition duration-300 group-hover:scale-[1.03]" loading="lazy" />
                                     <div class="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -323,12 +323,19 @@
                 this.track.addEventListener('scroll', this.handleScroll);
                 window.addEventListener('resize', this.handleScroll);
             },
+            destroy() {
+                this.track?.removeEventListener('scroll', this.handleScroll);
+                window.removeEventListener('resize', this.handleScroll);
+            },
             updateButtons() {
                 if (!this.track) return;
 
-                const maxScroll = this.track.scrollWidth - this.track.clientWidth - 1;
-                this.canPrev = this.track.scrollLeft > 0;
-                this.canNext = this.track.scrollLeft < maxScroll;
+                const overflow = this.track.scrollWidth > this.track.clientWidth + 1;
+                const maxScroll = Math.max(this.track.scrollWidth - this.track.clientWidth - 1, 0);
+
+                this.canPrev = overflow && this.track.scrollLeft > 0;
+                this.canNext = overflow && this.track.scrollLeft < maxScroll;
+                this.scrollAmount = Math.max(Math.round(this.track.clientWidth * 0.9), 320);
             },
             scrollNext() {
                 this.track?.scrollBy({ left: this.scrollAmount, behavior: 'smooth' });
