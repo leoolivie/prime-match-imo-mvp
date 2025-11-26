@@ -11,23 +11,13 @@ use App\Models\Lead;
 use App\Models\TelemetryMetric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
 
 class MasterDashboardController extends Controller
 {
     public function index()
     {
-        $stats = [
-            'total_users' => User::count(),
-            'investors' => User::where('role', 'investor')->count(),
-            'businessmen' => User::where('role', 'businessman')->count(),
-            'brokers' => User::where('role', 'prime_broker')->count(),
-            'total_properties' => Property::count(),
-            'active_properties' => Property::where('active', true)->count(),
-            'total_subscriptions' => Subscription::where('status', 'active')->count(),
-            'visits_30' => TelemetryMetric::globalSum('view_imovel', 30),
-            'clicks_30' => TelemetryMetric::globalSum('click_whatsapp_concierge', 30),
-        ];
-        $stats['conversion'] = $stats['visits_30'] > 0 ? round(($stats['clicks_30'] / $stats['visits_30']) * 100, 1) : 0;
+        $stats = $this->buildDashboardStats();
 
         $recentUsers = User::latest()->take(5)->get();
         $recentProperties = Property::with('owner')->latest()->take(5)->get();
@@ -199,6 +189,111 @@ class MasterDashboardController extends Controller
         $partner->update($request->all());
 
         return redirect()->route('master.partners')->with('success', 'Parceiro atualizado com sucesso!');
+    }
+
+    public function exportExecutiveReport()
+    {
+        $stats = $this->buildDashboardStats();
+        $recentProperties = Property::with('owner')->latest()->take(5)->get();
+
+        $lines = [
+            ['Painel Executivo', 'Valores consolidados'],
+            ['Valor total de ativos', $stats['formatted_asset_value']],
+            ['Ticket médio por ativo', $stats['formatted_avg_ticket']],
+            ['Cap Rate médio (estimado)', $stats['formatted_avg_cap_rate']],
+            ['Investidores ativos', $stats['active_investors']],
+            ['Conversão (30 dias)', $stats['formatted_investor_conversion_rate']],
+            ['Leads qualificados (30 dias)', $stats['lead_volume_30']],
+            ['Visitas (30 dias)', $stats['visits_30']],
+            ['Cliques em concierge (30 dias)', $stats['clicks_30']],
+            ['Propriedades ativas', $stats['active_properties']],
+        ];
+
+        $lines[] = [''];
+        $lines[] = ['Ativos recentes', 'Resumo'];
+
+        foreach ($recentProperties as $property) {
+            $lines[] = [
+                $property->title,
+                sprintf(
+                    'R$ %s • %s/%s • %s',
+                    number_format((float) $property->price, 2, ',', '.'),
+                    $property->city,
+                    $property->state,
+                    $property->status
+                ),
+            ];
+        }
+
+        $callback = function () use ($lines) {
+            $handle = fopen('php://output', 'w');
+            foreach ($lines as $line) {
+                fputcsv($handle, $line, ';');
+            }
+            fclose($handle);
+        };
+
+        return response()->streamDownload($callback, 'relatorio-executivo.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
+    }
+
+    private function buildDashboardStats(): array
+    {
+        $visits30 = TelemetryMetric::globalSum('view_imovel', 30);
+        $conciergeClicks30 = TelemetryMetric::globalSum('click_whatsapp_concierge', 30);
+        $leadVolume30 = Lead::where('created_at', '>=', now()->subDays(30))->count();
+        $conversion = $visits30 > 0 ? round(($conciergeClicks30 / $visits30) * 100, 1) : 0;
+        $investorConversion = $visits30 > 0 ? round(($leadVolume30 / $visits30) * 100, 1) : 0;
+
+        $activeProperties = Property::where('active', true)->count();
+        $propertyCount = Property::count();
+        $totalAssetValue = Property::sum('price');
+        $avgTicket = $propertyCount > 0 ? $totalAssetValue / $propertyCount : 0;
+
+        $capRates = Property::whereNotNull('features')
+            ->get()
+            ->map(function (Property $property) {
+                $features = Collection::make($property->features);
+                return $features->get('cap_rate') ?? $features->get('cap_rate_estimated');
+            })
+            ->filter()
+            ->map(fn ($value) => (float) $value);
+
+        $avgCapRate = $capRates->isNotEmpty() ? $capRates->avg() : 0;
+
+        return [
+            'total_users' => User::count(),
+            'investors' => User::where('role', 'investor')->count(),
+            'active_investors' => User::where('role', 'investor')->where('active', true)->count(),
+            'businessmen' => User::where('role', 'businessman')->count(),
+            'brokers' => User::where('role', 'prime_broker')->count(),
+            'total_properties' => $propertyCount,
+            'active_properties' => $activeProperties,
+            'total_subscriptions' => Subscription::where('status', 'active')->count(),
+            'visits_30' => $visits30,
+            'clicks_30' => $conciergeClicks30,
+            'conversion' => $conversion,
+            'lead_volume_30' => $leadVolume30,
+            'investor_conversion_rate' => $investorConversion,
+            'total_asset_value' => $totalAssetValue,
+            'formatted_asset_value' => $this->formatCurrency($totalAssetValue),
+            'avg_ticket' => $avgTicket,
+            'formatted_avg_ticket' => $this->formatCurrency($avgTicket),
+            'avg_cap_rate' => $avgCapRate,
+            'formatted_avg_cap_rate' => $this->formatPercentage($avgCapRate),
+            'formatted_investor_conversion_rate' => $this->formatPercentage($investorConversion),
+        ];
+    }
+
+    private function formatCurrency(float $value): string
+    {
+        return 'R$ ' . number_format($value, 2, ',', '.');
+    }
+
+    private function formatPercentage(float $value): string
+    {
+        return number_format($value, 2, ',', '.') . '%';
     }
 
     // Subscription Management
